@@ -1,17 +1,21 @@
+
 networks:
-  programacionIII-chivilcoy.network:
+  host:
+    external: true
+    name: "host"
+  project-tup.network:
     driver: bridge
 
 services:
   php-apache:
     build: './build/php'
     restart: unless-stopped
-    container_name: programacionIII-chivilcoy.php-apache
+    container_name: project-tup.php-apache
     tty: true
     depends_on:
       - mysql
     networks:
-      - programacionIII-chivilcoy.network
+      - project-tup.network
     ports:
       - "9091:80"
       - "444:443"
@@ -22,12 +26,12 @@ services:
   mysql:
     image: mysql:5
     restart: unless-stopped
-    container_name: programacionIII-chivilcoy.mysql
+    container_name: project-tup.mysql
     tty: true
     ports:
       - "3308:3306"
     networks:
-      - programacionIII-chivilcoy.network
+      - project-tup.network
     volumes:
       - "./build/mysql/mysql.cnf:/etc/mysql/conf.d/custom.cnf:ro"
       - "./data/mysql/dbdata:/var/lib/mysql"
@@ -39,15 +43,18 @@ services:
 
   phpmyadmin:
     image: phpmyadmin
-    container_name: programacionIII-chivilcoy.phpmyadmin
+    container_name: project-tup.phpmyadmin
     tty: true
     depends_on:
       - mysql
     ports:
-      - "8082:80"
+      - "8081:80"
     networks:
-      - programacionIII-chivilcoy.network
+      - project-tup.network
     environment:
       PMA_HOST: mysql
       PMA_ARBITRARY: 1
       PMA_PORT: 3306
+      UPLOAD_LIMIT: 64M
+      PMA_UPLOAD_MAX_FILESIZE: 64M
+      PMA_POST_MAX_SIZE: 64M
