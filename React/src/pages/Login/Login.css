@@ -1,0 +1,85 @@
+.Contenedor_Login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center;     
+  height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #e0f7fa, #80deea);
+}
+
+
+.Titulo_Login {
+  padding: 1rem;
+  
+  color: white;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.Contenedor_Formulario {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.Formulario {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 300px;
+}
+
+.Formulario input {
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.Formulario input:focus {
+  border-color: #00acc1;
+  outline: none;
+}
+
+.Boton_Login {
+  margin-top: 1rem;
+  align-self: center;
+  background-color: #00acc1;
+  color: white;
+  font-weight: bold;
+  padding: 0.5rem 1.5rem;
+  border-radius: 8px;
+  text-transform: none;
+}
+
+
+
+.Titulo_Login p {
+  font-size: 30px;
+  color: rgb(38, 35, 35);
+  font-weight: bold;
+  margin: 0;
+  
+}
+.LinkRegistrarse{
+  color: black !important;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-decoration: none !important;
+}
+.LinkRegistrarse:hover{
+  
+text-decoration: underline !important;
+color: #136873 !important;
+}

@@ -1,0 +1,24 @@
+.NavBox {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.NavButton {
+  color: white !important;          /* !important para sobreescribir estilos de MUI */
+  font-weight: 500 !important;
+  text-transform: none !important;  
+  transition: background 0.3s ease;
+}
+
+
+.NavButton:hover {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Ruta activa */
+.NavButton.active {
+  border-bottom: 2px solid white !important;
+  font-weight: 700 !important;
+}
