@@ -1,6 +1,6 @@
 import './NavBar.css';
 import { AppBar, Toolbar, Button, Box, Container } from '@mui/material';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router';
 
 const navItems = [
   { name: 'Noticias', route: '/noticias' },
