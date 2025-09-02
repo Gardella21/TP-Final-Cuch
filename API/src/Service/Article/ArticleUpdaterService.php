@@ -13,11 +13,11 @@ final readonly class ArticleUpdaterService {
         $this->finder = new ArticleFinderService();
     }
 
-    public function update(string $name, string $code, int $id): void
+    public function update(int $id, string $title, string $image, string $body): void
     {
         $article = $this->finder->find($id);
 
-        $article->modify($name, $code);
+        $article->modify($title, $image, $body);
 
         $this->repository->update($article);
     }

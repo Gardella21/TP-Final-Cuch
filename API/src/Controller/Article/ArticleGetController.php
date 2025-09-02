@@ -1,13 +1,11 @@
 <?php 
 
-use Src\Middleware\AuthMiddleware;
 use Src\Service\Article\ArticleFinderService;
 
-final readonly class ArticleGetController extends AuthMiddleware {
+final readonly class ArticleGetController {
     private ArticleFinderService $service;
 
     public function __construct() {
-        parent::__construct();
         $this->service = new ArticleFinderService();
     }
 
@@ -17,8 +15,10 @@ final readonly class ArticleGetController extends AuthMiddleware {
 
         echo json_encode([
             "id" => $article->id(),
-            "name" => $article->name(),
-            "code" => $article->code(),
+            "title" => $article->title(),
+            "image" => $article->image(),
+            "body" => $article->body(),
+            "date" => $article->date()
         ], true);
     }
 }
