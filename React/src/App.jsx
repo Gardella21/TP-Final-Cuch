@@ -11,6 +11,7 @@ import Login from './pages/Login/Login';
 import NavBar from './components/NavBar/NavBar';
 import InfoNosotros from './components/InfoNosotros/InfoNosotros';
 import Register from './pages/Register/Register';
+import { DonationsPage } from "./pages/DonationsPage/DonationsPage";
 
 function App() {
 	return (
@@ -26,11 +27,12 @@ function App() {
 						<Route path='/nosotros' element={<InfoNosotros/>}/>
 						<Route path='/socios' element={<></>}/>
 						<Route path='/catalogo' element={<></>}/>
-						<Route path='/donaciones' element={<></>}/>
+						<Route path='/donaciones' element={<DonationsPage/>}/>
 						<Route path='/users/login' element={<Login/>}/>
 						<Route path='/users' element={<Register/>}/>
 						<Route path="/login" element={<LoginPage />} />
 						<Route path="/register" element={<RegisterPage />} />
+						
 					</Route>
 
 					{/*Rutas privadas */}
