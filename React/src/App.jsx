@@ -12,6 +12,8 @@ import NavBar from './components/NavBar/NavBar';
 import InfoNosotros from './components/InfoNosotros/InfoNosotros';
 import Register from './pages/Register/Register';
 
+import InscriptionPage from "./pages/InscriptionPage/InscriptionPage";
+
 function App() {
 	return (
 		<MantineProvider defaultColorScheme="dark">
@@ -22,7 +24,7 @@ function App() {
 					<Route element={<PublicRoute />}>
 					    <Route path='/' element={<></>}/>
 						<Route path='/noticias' element={<></>}/>
-						<Route path='/cursos-y-eventos' element={<></>}/>
+						<Route path='/cursos-y-eventos' element={<InscriptionPage/>}/>
 						<Route path='/nosotros' element={<InfoNosotros/>}/>
 						<Route path='/socios' element={<></>}/>
 						<Route path='/catalogo' element={<></>}/>
