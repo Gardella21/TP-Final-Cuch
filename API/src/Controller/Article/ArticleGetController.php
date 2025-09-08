@@ -18,7 +18,7 @@ final readonly class ArticleGetController {
             "title" => $article->title(),
             "image" => $article->image(),
             "body" => $article->body(),
-            "date" => $article->date()
+            "date" => $article->date()->format('Y-m-d H:i:s')
         ], true);
     }
 }

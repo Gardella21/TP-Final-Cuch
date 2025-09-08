@@ -9,7 +9,7 @@ final class Article {
         private readonly ?int $id,
         private string $title,
         private string $image,
-        private DateTime $date,
+        private ?DateTime $date,
         private string $body,
         private bool $deleted
     ) {
@@ -39,7 +39,7 @@ final class Article {
 
     public function title(): string
     {
-        return $this->title();
+        return $this->title;
     }
 
     public function image(): string

@@ -4,7 +4,7 @@ use Src\Middleware\AuthMiddleware;
 use Src\Utils\ControllerUtils;
 use Src\Service\Article\ArticleCreatorService;
 
-final readonly class ArticlePostController  {
+final readonly class ArticlePostController{
     private ArticleCreatorService $service;
 
     public function __construct() {

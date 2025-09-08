@@ -26,7 +26,7 @@ final readonly class ArticlesGetController {
                 "title" => $response->title(),
                 "image" => $response->image(),
                 "body" => $response->body(),
-                "date" => $response->date()
+                "date" => $response->date()->format('Y-m-d H:i:s')
             ];
         }
 
