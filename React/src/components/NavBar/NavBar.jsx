@@ -9,7 +9,7 @@ const navItems = [
   { name: 'Socios', route: '/socios' },
   { name: 'Catálogo', route: '/catalogo' },
   { name: 'Donaciones', route: '/donaciones' },
-  { name: 'Login', route: '/users/login' } //temporal para test
+  { name: 'Login', route: '/login' } //temporal para test
 ];
 
 const Navbar = () => {
