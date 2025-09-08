@@ -9,22 +9,27 @@ final class Article {
         private readonly ?int $id,
         private string $title,
         private string $image,
-        private string $content,
-        private string $date
+        private ?DateTime $date,
+        private string $body,
+        private bool $deleted
     ) {
     }
 
-    public static function create(string $title, string $image, string $content, string $date): self
+    public static function create(string $title, string $image, string $body): self
     {
-        return new self(null, $title, $image, $content, $date);
+        return new self(null, $title, $image,new DateTime("now"), $body, false);
     }
 
-    public function modify(string $title, string $image, string $content, string $date): void
+    public function modify(string $title, string $image, string $body): void
     {
         $this->title = $title;
         $this->image = $image;
-        $this->content = $content;
-        $this->date = $date;
+        $this->body = $body;
+    }
+
+    public function delete(): void
+    {
+        $this->deleted = true;
     }
 
     public function id(): ?int
@@ -34,7 +39,7 @@ final class Article {
 
     public function title(): string
     {
-        return $this->title();
+        return $this->title;
     }
 
     public function image(): string
@@ -42,12 +47,16 @@ final class Article {
         return $this->image;
     }
 
-    public function content(): string
+    public function body(): string
     {
-        return $this->content;
+        return $this->body;
     }
     public function date(): DateTime
     {
-        return new DateTime($this->date);
+        return $this->date;
+    }
+    public function isDeleted(): bool
+    {
+        return $this->deleted;
     }
 }

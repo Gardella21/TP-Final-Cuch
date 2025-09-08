@@ -12,9 +12,9 @@ final readonly class ArticleCreatorService {
         $this->repository = new ArticleRepository();
     }
 
-    public function create(string $title, string $image, string $content, string $date): void
+    public function create(string $title, string $image, string $body): void
     {
-        $article = Article::create($title, $image, $content, $date);
+        $article = Article::create($title, $image, $body);
         $this->repository->insert($article);
     }
 }

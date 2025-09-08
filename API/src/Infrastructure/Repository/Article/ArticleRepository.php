@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Src\Infrastructure\Repository\Article;
 
+use DateTime;
 use Src\Infrastructure\PDO\PDOManager;
 use Src\Entity\Article\Article;
 
@@ -11,8 +12,15 @@ final readonly class ArticleRepository extends PDOManager implements ArticleRepo
 
     public function find(int $id): ?Article 
     {
-        $query = "SELECT * FROM articles WHERE id = :id";
-
+        $query = <<<HEREDOC
+                        SELECT 
+                            *
+                        FROM
+                            articles A
+                        WHERE
+                            A.id = :id AND A.deleted = 0
+                    HEREDOC;
+                    
         $parameters = [
             "id" => $id
         ];
@@ -24,7 +32,15 @@ final readonly class ArticleRepository extends PDOManager implements ArticleRepo
 
     public function search(): array
     {
-        $query = "SELECT * FROM articles";
+        $query = <<<HEREDOC
+                        SELECT 
+                            *
+                        FROM
+                            articles A
+                        WHERE
+                            A.deleted = 0
+                    HEREDOC;
+                    
         $results = $this->execute($query);
 
         $articleResults = [];
@@ -37,13 +53,13 @@ final readonly class ArticleRepository extends PDOManager implements ArticleRepo
 
     public function insert(Article $article): void
     {
-        $query = "INSERT INTO articles (title, image, content, date) VALUES (:title, :image, :content, :date) ";
+        $query = "INSERT INTO articles (title, image, date, body) VALUES (:title, :image, :date, :body) ";
 
         $parameters = [
             "title" => $article->title(),
             "image" => $article->image(),
-            "content" => $article->content(),
-            "date" => $article->date()
+            "date" => $article->date()->format('Y-m-d H:i:s'),
+            "body" => $article->body()
         ];
 
         $this->execute($query, $parameters);
@@ -57,8 +73,9 @@ final readonly class ArticleRepository extends PDOManager implements ArticleRepo
                         SET
                             title = :title,
                             image = :image,
-                            content = :content,
-                            date = :date
+                            date = :date,
+                            body = :body,
+                            deleted = :deleted
                         WHERE
                             id = :id
                     UPDATE_QUERY;
@@ -66,9 +83,10 @@ final readonly class ArticleRepository extends PDOManager implements ArticleRepo
         $parameters = [
             "title" => $article->title(),
             "image" => $article->image(),
-            "content" => $article->content(),
+            "body" => $article->body(),
             "date" => $article->date()->format('Y-m-d H:i:s'),
-            "id" => $article->id()
+            "id" => $article->id(),
+            "deleted" => $article->isDeleted()
         ];
 
         $this->execute($query, $parameters);
@@ -84,8 +102,9 @@ final readonly class ArticleRepository extends PDOManager implements ArticleRepo
             $primitive["id"],
             $primitive["title"],
             $primitive["image"],
-            $primitive["content"],
-            $primitive["date"] 
+            new DateTime($primitive["date"]),
+            $primitive["body"],
+            (bool) $primitive["deleted"],
         );
     }
 }

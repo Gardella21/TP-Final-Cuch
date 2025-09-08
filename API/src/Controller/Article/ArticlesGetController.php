@@ -23,8 +23,10 @@ final readonly class ArticlesGetController {
         foreach ($responses as $response) {
             $result[] = [
                 "id" => $response->id(),
-                "name" => $response->name(),
-                "code" => $response->code()
+                "title" => $response->title(),
+                "image" => $response->image(),
+                "body" => $response->body(),
+                "date" => $response->date()->format('Y-m-d H:i:s')
             ];
         }
 

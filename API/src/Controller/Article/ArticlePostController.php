@@ -1,12 +1,14 @@
 <?php
 
+use Src\Middleware\AuthMiddleware;
 use Src\Utils\ControllerUtils;
 use Src\Service\Article\ArticleCreatorService;
 
-final readonly class ArticlePostController {
+final readonly class ArticlePostController extends AuthMiddleware {
     private ArticleCreatorService $service;
 
     public function __construct() {
+        parent::__construct();
         $this->service = new ArticleCreatorService();
     }
 
@@ -14,9 +16,8 @@ final readonly class ArticlePostController {
     {
         $title = ControllerUtils::getPost("title");
         $image = ControllerUtils::getPost("image");
-        $content = ControllerUtils::getPost("content");
-        $date = ControllerUtils::getPost("date");
+        $body = ControllerUtils::getPost("body");
 
-        $this->service->create($title, $image, $content, $date);
+        $this->service->create($title, $image, $body);
     }
 }

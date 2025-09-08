@@ -1,11 +1,13 @@
-<?php 
+<?php
 
+use Src\Middleware\AuthMiddleware;
 use Src\Service\Article\ArticleDeleterService;
 
-final readonly class ArticleDeleteController {
+final readonly class ArticleDeleteController extends AuthMiddleware {
     private ArticleDeleterService $service;
 
     public function __construct() {
+        parent::__construct();
         $this->service = new ArticleDeleterService();
     }
 

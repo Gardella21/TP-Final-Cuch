@@ -1,20 +1,23 @@
-<?php 
+<?php
 
+use Src\Middleware\AuthMiddleware;
 use Src\Utils\ControllerUtils;
 use Src\Service\Article\ArticleUpdaterService;
 
-final readonly class ArticlePutController {
+final readonly class ArticlePutController extends AuthMiddleware {
     private ArticleUpdaterService $service;
 
     public function __construct() {
+        parent::__construct();
         $this->service = new ArticleUpdaterService();
     }
 
     public function start(int $id): void
     {
-        $name = ControllerUtils::getPost("name");
-        $code = ControllerUtils::getPost("code");
+        $title = ControllerUtils::getPost("title");
+        $image = ControllerUtils::getPost("image");
+        $body = ControllerUtils::getPost("body");
 
-        $this->service->update($name, $code, $id);
+        $this->service->update($id, $title, $image, $body);
     }
 }

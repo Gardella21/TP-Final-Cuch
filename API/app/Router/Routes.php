@@ -15,6 +15,9 @@ function startRouter(): Router
 
     include_once "Routes/FileRoutes.php";
     $routes = array_merge($routes, FileRoutes::getRoutes());
+    
+    include_once "Routes/ArticleRoutes.php";
+    $routes = array_merge($routes, ArticleRoutes::getRoutes());
 
      include_once "Routes/InscriptionRoutes.php";
     $routes = array_merge($routes, InscriptionRoutes::getRoutes());
