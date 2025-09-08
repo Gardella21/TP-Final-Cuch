@@ -11,7 +11,7 @@ final readonly class DomainRepository extends PDOManager implements DomainReposi
 
     public function find(int $id): ?Domain 
     {
-        $query = "SELECT * FROM domain WHERE id = :id AND deleted = 0";
+        $query = "SELECT * FROM domains WHERE id = :id AND deleted = 0";
 
         $parameters = [
             "id" => $id
@@ -24,7 +24,7 @@ final readonly class DomainRepository extends PDOManager implements DomainReposi
 
     public function search(): array
     {
-        $query = "SELECT * FROM domain WHERE deleted = 0";
+        $query = "SELECT * FROM domains WHERE deleted = 0";
         $results = $this->execute($query);
 
         $domainResults = [];
@@ -37,7 +37,7 @@ final readonly class DomainRepository extends PDOManager implements DomainReposi
 
     public function insert(Domain $domain): void
     {
-        $query = "INSERT INTO domain (name, code, deleted) VALUES (:name, :code, :deleted) ";
+        $query = "INSERT INTO domains (name, code, deleted) VALUES (:name, :code, :deleted) ";
 
         $parameters = [
             "name" => $domain->name(),
@@ -52,7 +52,7 @@ final readonly class DomainRepository extends PDOManager implements DomainReposi
     {
         $query = <<<UPDATE_QUERY
                         UPDATE
-                            domain
+                            domains
                         SET
                             name = :name,
                             code = :code,

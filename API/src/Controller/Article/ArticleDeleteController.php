@@ -7,6 +7,7 @@ final readonly class ArticleDeleteController extends AuthMiddleware {
     private ArticleDeleterService $service;
 
     public function __construct() {
+        parent::__construct();
         $this->service = new ArticleDeleterService();
     }
 

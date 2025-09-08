@@ -4,10 +4,11 @@ use Src\Middleware\AuthMiddleware;
 use Src\Utils\ControllerUtils;
 use Src\Service\Article\ArticleCreatorService;
 
-final readonly class ArticlePostController{
+final readonly class ArticlePostController extends AuthMiddleware {
     private ArticleCreatorService $service;
 
     public function __construct() {
+        parent::__construct();
         $this->service = new ArticleCreatorService();
     }
 

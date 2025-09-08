@@ -8,6 +8,7 @@ final readonly class ArticlePutController extends AuthMiddleware {
     private ArticleUpdaterService $service;
 
     public function __construct() {
+        parent::__construct();
         $this->service = new ArticleUpdaterService();
     }
 
