@@ -5,32 +5,28 @@ import { useLocation, Link } from 'react-router';
 const navItems = [
   { name: 'Noticias', route: '/noticias' },
   { name: 'Cursos y eventos', route: '/cursos-y-eventos' },
-  { name: 'Nosotros', route: '/nosotros' },
-  { name: 'Socios', route: '/socios' },
+  { name: 'Sobre Nosotros', route: '/nosotros' },
   { name: 'Catálogo', route: '/catalogo' },
-  { name: 'Donaciones', route: '/donaciones' },
-  { name: 'Login', route: '/login' } //temporal para test
+  { name: 'Preguntas', route: '/preguntas', icon: '❓' }, 
+  { name: 'Login', route: '/login' } // temporal para test
 ];
 
 const Navbar = () => {
   const location = useLocation(); // para saber qué ruta está activa
-  
+
   return (
     <AppBar position="static" color="primary">
       <Container maxWidth="lg">
         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
-          {/* Categorías centradas */}
           <Box className="NavBox">
             {navItems.map((item) => (
-              <Button 
-                key={item.name} 
+              <Button
+                key={item.name}
                 component={Link}
-                to={item.route} 
-                className={`NavButton ${
-                  location.pathname === item.route ? 'active' : ''
-                }`}
+                to={item.route}
+                className={`NavButton ${location.pathname === item.route ? 'active' : ''}`}
               >
-                {item.name}
+                {item.icon ? `${item.name} ${item.icon}` : item.name}
               </Button>
             ))}
           </Box>
