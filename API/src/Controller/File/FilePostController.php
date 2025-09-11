@@ -1,12 +1,14 @@
 <?php 
 
+use Src\Middleware\AuthMiddleware;
 use src\Utils\ControllerUtils;
 use Src\Service\File\FileUploaderService;
 
-final readonly class FilePostController {
+final readonly class FilePostController extends AuthMiddleware {
     private FileUploaderService $service;
 
     public function __construct() {
+        parent::__construct();
         $this->service = new FileUploaderService();
     }
 

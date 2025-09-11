@@ -9,11 +9,14 @@ import {
 } from "@mui/material";
 import "./ArticleCreationPage.css";
 import { useNavigate } from "react-router";
+import { fileService } from "../../../services/filesService";
+import { articleService } from "../../../services/articleService";
 
 export function ArticleCreationPage() {
   const [titulo, setTitulo] = useState("");
   const [contenido, setContenido] = useState("");
   const [imagen, setImagen] = useState(null);
+  const [imagenUrl, setImagenUrl] = useState(null);
   const [preview, setPreview] = useState(null);
 
   const navigate = useNavigate();
@@ -29,21 +32,16 @@ export function ArticleCreationPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append("titulo", titulo);
-    formData.append("contenido", contenido);
-    formData.append("imagen", imagen);
+     const imgUrl = fileService.UploadFile(imagen);
 
-    fetch("http://localhost:9091/noticias", {
-      method: "POST",
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then(() => {
-        navigate("/noticias"); // volver al listado
-      })
-      .catch((err) => console.error("Error creando noticia", err));
-  };
+    //  const formData = new FormData();
+    //  formData.append("titulo", titulo);
+    //  formData.append("contenido", contenido);
+    //  formData.append("imagen", imgUrl);
+    
+    // articleService.createArticle(formData);
+
+  }
 
   return (
     <div className="article-creator-bg">
