@@ -22,11 +22,14 @@ final readonly class UsersGetController {
         foreach($users as $user) {
             $responses[] = [
                 "id" => $user->id(),
+                //corrijo metodos//
                 "name" => $user->name(),
-                "genre_id" => $user->genre_id(),
-                "description" => $user->description(),
-                "image" => $user->image(),
-                "date" => $user->date()
+                "email" => $user->email(),
+                "password" => $user->password(),
+                "token" => $user->token(),
+                "token_auth_date" => $user->token_auth_date()->format("Y-m-d H:i:s"),
+                "role" => $user->date(),
+                "is_Active" => $user->isActive()
             ];
         }
 

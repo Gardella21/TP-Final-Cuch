@@ -17,10 +17,12 @@ final readonly class UserGetController {
         echo json_encode([
             "id" => $user->id(),
             "name" => $user->name(),
-            "genre_id" => $user->genre_id(),
-            "description" => $user->description(),
-            "image" => $user->image(),
-            "date" => $user->date()
+            "email" => $user->email(),
+            "password" => $user->password(),
+            "token" => $user->token(),
+            "token_auth_date" => $user->token_auth_date(),
+            "role" => $user->role(),
+            "is_Active" => $user->is_Active()
         ]);
     }
 }
