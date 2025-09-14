@@ -7,21 +7,24 @@ import { LoginPage } from "./pages/LoginPage/LoginPage";
 import { BrowserRouter, Routes, Route, Outlet } from "react-router";
 import { HomePage } from "./pages/HomePage/HomePage";
 import { PrivateRoute, PublicRoute } from "./Routes";
-
 import Header from "./components/Header/Header";
 import NavBar from './components/NavBar/NavBar';
+import Banner from "./components/Banner/Banner";
+import Footer from "./components/Footer/Footer";
 import InfoNosotros from './components/InfoNosotros/InfoNosotros';
 import { DonationsPage } from "./pages/DonationsPage/DonationsPage";
 import Questions from './components/Questions/Questions';
-
 import InscriptionPage from "./pages/InscriptionPage/InscriptionPage";
 import { ArticleManagerPage } from "./pages/Admin/Article/ArticleManagerPage";
 import { ArticleCreationPage } from "./pages/Admin/Article/ArticleCreationPage";
 
 const MainLayout = () => (
   <>
+    <Header />
     <NavBar />
+	
     <Outlet /> {/* Renders nested routes */}
+	<Footer />   
   </>
 );
 
@@ -32,7 +35,7 @@ function App() {
 				<Routes>
 					{/* Rutas con la barra de navegacion estandar */}
 					<Route element={<MainLayout />}>
-						<Route path='/' element={<></>}/>
+					    <Route path='/' element={<><Banner/> </>}/>
 						<Route path='/noticias' element={<></>}/>
 						<Route path='/cursos-y-eventos' element={<InscriptionPage/>}/>
 						<Route path='/nosotros' element={<InfoNosotros/>}/>
