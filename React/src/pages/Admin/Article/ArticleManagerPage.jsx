@@ -17,6 +17,7 @@ CircularProgress
 import { Edit, Delete } from "@mui/icons-material";
 import "./ArticleManagerPage.css";
 import { useNavigate } from "react-router";
+import { articleService } from "../../../services/articleService";
 
 
 export function ArticleManagerPage() {
@@ -26,15 +27,12 @@ export function ArticleManagerPage() {
 
 
     // Traer datos desde la api
-    useEffect(() => {
-        fetch("http://localhost:9091/articles")
-        .then((res) => res.json())
-        .then((data) => {
-        setNoticias(data);
+    articleService.getAllArticles()
+    .then(response => {
+        setNoticias(response.data); 
         setLoading(false);
-        })
-        .catch(() => setLoading(false));
-    }, []);
+    })
+    .catch(() => setLoading(false));
 
 
     const handleCrear = () => {
@@ -49,8 +47,14 @@ export function ArticleManagerPage() {
 
     const handleEliminar = (id) => {
         if (window.confirm("¿Seguro que deseas eliminar esta noticia?")) {
-            // Aquí iría el fetch DELETE a la API
-            setNoticias(noticias.filter((n) => n.id !== id));
+            articleService.deleteArticleById(id)
+            .then(() => {
+                setNoticias(noticias.filter(noticia => noticia.id !== id));
+            })
+            .catch(err => {
+                alert("Error al eliminar la noticia");
+                console.error(err);
+            }); 
         }
     };
 

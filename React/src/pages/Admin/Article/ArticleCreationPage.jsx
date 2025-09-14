@@ -16,7 +16,6 @@ export function ArticleCreationPage() {
   const [titulo, setTitulo] = useState("");
   const [contenido, setContenido] = useState("");
   const [imagen, setImagen] = useState(null);
-  const [imagenUrl, setImagenUrl] = useState(null);
   const [preview, setPreview] = useState(null);
 
   const navigate = useNavigate();
@@ -29,18 +28,21 @@ export function ArticleCreationPage() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-     const imgUrl = fileService.UploadFile(imagen);
+    const imgFormData = new FormData();
+    imgFormData.append("file", imagen);
+    const imgResponse = await fileService.UploadFile(imgFormData);
 
-    //  const formData = new FormData();
-    //  formData.append("titulo", titulo);
-    //  formData.append("contenido", contenido);
-    //  formData.append("imagen", imgUrl);
-    
-    // articleService.createArticle(formData);
 
+    const payload = {
+      title: titulo,
+      body: contenido,
+      image: imgResponse.data.url,
+    };
+    await articleService.createArticle(payload);
+    navigate("/admin/article");
   }
 
   return (
