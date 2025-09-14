@@ -7,9 +7,13 @@ import { LoginPage } from "./pages/LoginPage/LoginPage";
 import { BrowserRouter, Routes, Route, Outlet } from "react-router";
 import { HomePage } from "./pages/HomePage/HomePage";
 import { PrivateRoute, PublicRoute } from "./Routes";
+
+import Header from "./components/Header/Header";
 import NavBar from './components/NavBar/NavBar';
 import InfoNosotros from './components/InfoNosotros/InfoNosotros';
 import { DonationsPage } from "./pages/DonationsPage/DonationsPage";
+import Questions from './components/Questions/Questions';
+
 import InscriptionPage from "./pages/InscriptionPage/InscriptionPage";
 import { ArticleManagerPage } from "./pages/Admin/Article/ArticleManagerPage";
 import { ArticleCreationPage } from "./pages/Admin/Article/ArticleCreationPage";
@@ -34,6 +38,7 @@ function App() {
 						<Route path='/nosotros' element={<InfoNosotros/>}/>
 						<Route path='/catalogo' element={<></>}/>
 						<Route path='/donaciones' element={<DonationsPage/>}/>
+            <Route path='/preguntas' element={<Questions />} />
 					</Route>
 
 					{/*Rutas inaccesibles con token activo*/}
