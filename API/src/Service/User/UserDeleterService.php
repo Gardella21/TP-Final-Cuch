@@ -15,10 +15,13 @@ final readonly class UserDeleterService {
 
     public function delete(int $id): void
     {
+       //verifico si el usuario existe antes de eliminar//
         $user = $this->finder->find($id);
+        if ($user === null) {   // Excepción si no existe//
+            throw new \Exception("Usuario no encontrado");
+        }
 
-        $user->delete();
-
-        $this->repository->update($user);
+        // Eliminamos directamente desde el repository//
+        $this->repository->delete($id);  
     } 
 }

@@ -4,29 +4,37 @@ namespace Src\Service\User;
 
 use Src\Entity\User\User;
 use Src\Infrastructure\Repository\User\UserRepository;
-use Src\Service\Gender;
-use Src\Service\Gender\GenderFinderService;
 
 final readonly class UserUpdaterService {
     private UserRepository $repository;
     private UserFinderService $finder;
 
-    private GenderFinderService $genderFinder;
-
     public function __construct() {
         $this->repository = new UserRepository();
         $this->finder = new UserFinderService();
-        $this->genderFinder = new GenderFinderService();
-
     }
 
-    public function update(string $name, int $genre_id, string $description, string $image, string $date, int $id): void
-    {
-        $this ->genderFinder->find($genre_id);
-        $movie = $this->finder->find($id);
+    public function update(
+        int $id, 
+        string $name, 
+        string $email, 
+        ?string $password = null, 
+        string $role = 'visitor', 
+        bool $is_Active = true
+    ): void {
+        // Busco el usuario por su ID//
+        $user = $this->finder->find($id);
 
-        $movie->modify($name, $genre_id, $description, $image, $date);
+        // Modifico sus datos usando el método modify de la entidad User//
+        $user->modify(
+            $name,
+            $email,
+            $password,
+            $role,
+            $is_Active
+        );
 
-        $this->repository->update($movie);
+        // Guardo los cambios en la base de datos//
+        $this->repository->update($user);
     } 
 }

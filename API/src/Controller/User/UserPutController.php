@@ -13,11 +13,17 @@ final readonly class UserPutController {
     public function start(int $id): void
     {
         $name = ControllerUtils::getPost("name");
-        $genre_id = ControllerUtils::getPost("genre_id");
-        $description = ControllerUtils::getPost("description");
-        $image = ControllerUtils::getPost("image");
-        $date = ControllerUtils::getPost("date");
+        $email = ControllerUtils::getPost("email");
+        $password = ControllerUtils::getPost("password");
+        $role = ControllerUtils::getPost("role");         // adm, super_adm, visitor
+        $is_Active = ControllerUtils::getPost("is_Active"); 
 
-        $this->service->update($name, $genre_id, $description, $image, $date, $id);
+
+
+       // Convertimos is_active a booleano si viene como string o número//
+        $is_Active = filter_var($is_Active, FILTER_VALIDATE_BOOLEAN);
+
+        // Llamamos al servicio para actualizar el usuario//
+        $this->service->update($id, $name, $email, $password, $role, $is_Active);
     }
-}
+} 

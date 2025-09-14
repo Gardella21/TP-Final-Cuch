@@ -12,4 +12,9 @@ interface UserRepositoryInterface {
 
     public function insert(User $user): void;
     public function update(User $user): void;
+    /*Nuevo Metodos */
+    public function find(int $id): ?User;
+    public function delete(int $id): void;
+    public function search(): array;
+    public function authorizeAdministrative(int $userId): void;
 }

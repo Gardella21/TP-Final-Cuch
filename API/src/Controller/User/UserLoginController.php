@@ -19,7 +19,11 @@ final readonly class UserLoginController {
 
         echo json_encode([
             "token" => $user->token(),
-            "expiration_date" => $user->tokenAuthDate()->format("Y-m-d H:i:s"),
+            "expiration_date" => $user->token_auth_date()->format("Y-m-d H:i:s"),
+            /*Agrego role, is_activie obtencion de bd sol*/
+            "role" => $user->role(),
+            "is_Active" => $user->is_Active()
+
         ]);
     }
 }
