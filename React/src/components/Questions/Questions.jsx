@@ -21,7 +21,7 @@ const preguntas = [
   }
 ];
 
-const PreguntasFrecuentes = () => {
+const Questions = () => {
   return (
     <div className="preguntas-page">
       <h1>❓ Preguntas Frecuentes</h1>
@@ -38,4 +38,4 @@ const PreguntasFrecuentes = () => {
   );
 };
 
-export default PreguntasFrecuentes;
+export default Questions;
