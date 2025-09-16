@@ -1,1 +1,0 @@
-import "./ArticleManager.css";
