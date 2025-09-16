@@ -17,6 +17,8 @@ import Questions from './components/Questions/Questions';
 import InscriptionPage from "./pages/InscriptionPage/InscriptionPage";
 import { ArticleManagerPage } from "./pages/Admin/Article/ArticleManagerPage";
 import { ArticleCreationPage } from "./pages/Admin/Article/ArticleCreationPage";
+import { ArticlePage } from "./pages/ArticlePage/ArticlePage";
+import { ArticlePageDetail } from "./pages/ArticlePageDetail/ArticlePageDetail";
 
 const MainLayout = () => (
   <>
@@ -36,12 +38,13 @@ function App() {
 					{/* Rutas con la barra de navegacion estandar */}
 					<Route element={<MainLayout />}>
 					    <Route path='/' element={<><Banner/> </>}/>
-						<Route path='/noticias' element={<></>}/>
+						<Route path='/noticias' element={<ArticlePage/>} />
+                        <Route path='/articles/:id' element={<ArticlePageDetail/>} />
 						<Route path='/cursos-y-eventos' element={<InscriptionPage/>}/>
 						<Route path='/nosotros' element={<InfoNosotros/>}/>
 						<Route path='/catalogo' element={<></>}/>
 						<Route path='/donaciones' element={<DonationsPage/>}/>
-            <Route path='/preguntas' element={<Questions />} />
+                        <Route path='/preguntas' element={<Questions />} />
 					</Route>
 
 					{/*Rutas inaccesibles con token activo*/}

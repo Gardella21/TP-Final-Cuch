@@ -43,6 +43,11 @@ final readonly class ArticleRepository extends PDOManager implements ArticleRepo
                     
         $results = $this->execute($query);
 
+        
+        if (!is_array($results)) {
+            return [];
+        }
+
         $articleResults = [];
         foreach ($results as $result) {
             $articleResults[] = $this->primitiveToArticle($result);
