@@ -117,7 +117,7 @@ public function authorizeAdministrative(int $userId): void
             "email" => $user->email(),
             "password" => $user->password(),
             "token" => $user->token(),
-            "tokenAuthDate" => $user->token_auth_date()->format("Y-m-d H:i:s"),
+            "token_auth_date" => $user->token_auth_date()->format("Y-m-d H:i:s"),
             "role" => $user->role(),                  // nuevo parametro//
             "is_Active" => $user->is_Active() ? 1 : 0, // nuevo parametro//
             "id" => $user->id()
