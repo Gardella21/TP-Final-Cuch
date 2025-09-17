@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  Box,
   Button,
   Container,
   Typography,
@@ -17,66 +16,120 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  TextField
+  TextField,
+  Box,
 } from "@mui/material";
 import { Edit, Delete } from "@mui/icons-material";
 import { useNavigate } from "react-router";
 import { articleService } from "../../../services/articleService";
+import { fileService } from "../../../services/filesService";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+
 import "./ArticleManagerPage.css";
+
+// Validación Zod (sin imagen porque es archivo)
+const articleSchema = z.object({
+  title: z.string().min(1, "El título es obligatorio"),
+  body: z.string().min(1, "El contenido es obligatorio"),
+});
 
 export function ArticleManagerPage() {
   const navigate = useNavigate();
   const [noticias, setNoticias] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [openModal, setOpenModal] = useState(false); // Controla si el modal está abierto o no
-  const [currentArticle, setCurrentArticle] = useState(null); // Guarda los datos del artículo a editar
+  const [openModal, setOpenModal] = useState(false);
+  const [currentArticle, setCurrentArticle] = useState(null);
+  const [imagenFile, setImagenFile] = useState(null);
+  const [preview, setPreview] = useState(null);
 
-  // Traer datos desde la api
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(articleSchema),
+    defaultValues: {
+      title: "",
+      body: "",
+    },
+  });
+
+  // Obtener artículos
   useEffect(() => {
-    articleService.getAllArticles()
-      .then(response => {
+    articleService
+      .getAllArticles()
+      .then((response) => {
         setNoticias(response.data);
         setLoading(false);
       })
       .catch(() => setLoading(false));
-  }, []); // Esto se ejecuta una vez al cargar el componente
+  }, []);
 
-  // Abrir el modal de edición
+  // Abrir modal con datos cargados
   const handleEditar = (id) => {
-    const articulo = noticias.find(noticia => noticia.id === id);
+    const articulo = noticias.find((n) => n.id === id);
     setCurrentArticle(articulo);
+    reset({
+      title: articulo.title || "",
+      body: articulo.body || "",
+    });
+    setPreview(articulo.image || null);
+    setImagenFile(null);
     setOpenModal(true);
   };
 
-  // Cerrar el modal de edición
+  // Cerrar modal
   const handleCloseModal = () => {
     setOpenModal(false);
     setCurrentArticle(null);
+    reset();
+    setPreview(null);
+    setImagenFile(null);
   };
 
-  // Guardar cambios del artículo
-  const handleSaveChanges = () => {
-    articleService.updateArticle(currentArticle.id, currentArticle)
-      .then(response => {
-        setNoticias(noticias.map(noticia =>
-          noticia.id === currentArticle.id ? currentArticle : noticia
-        ));
-        handleCloseModal();
-      })
-      .catch(err => {
-        alert("Error al guardar los cambios");
-        console.error(err);
-      });
+  // Guardar cambios
+  const handleSaveChanges = async (data) => {
+    try {
+      let imageUrl = currentArticle.image;
+
+      if (imagenFile) {
+        const formData = new FormData();
+        formData.append("file", imagenFile);
+        const uploadResponse = await fileService.UploadFile(formData);
+        imageUrl = uploadResponse.data.url;
+      }
+
+      const payload = {
+        title: data.title,
+        body: data.body,
+        image: imageUrl,
+      };
+      console.log(currentArticle.id, payload);
+      await articleService.updateArticle(currentArticle.id, payload);
+
+      setNoticias(noticias.map((n) =>
+        n.id === currentArticle.id ? { ...n, ...payload } : n
+      ));
+
+      handleCloseModal();
+    } catch (err) {
+      alert("Error al guardar los cambios");
+      console.error(err);
+    }
   };
 
   // Eliminar artículo
-  const handleEliminar = (id) => {
+  const handleEliminar = async (id) => {
     if (window.confirm("¿Seguro que deseas eliminar esta noticia?")) {
-      articleService.deleteArticleById(id)
+      await articleService
+        .deleteArticleById(id)
         .then(() => {
-          setNoticias(noticias.filter(noticia => noticia.id !== id));
+          setNoticias(noticias.filter((n) => n.id !== id));
         })
-        .catch(err => {
+        .catch((err) => {
           alert("Error al eliminar la noticia");
           console.error(err);
         });
@@ -85,14 +138,6 @@ export function ArticleManagerPage() {
 
   const handleCrear = () => {
     navigate("/admin/article-new");
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setCurrentArticle({
-      ...currentArticle,
-      [name]: value
-    });
   };
 
   return (
@@ -131,10 +176,16 @@ export function ArticleManagerPage() {
                     <TableCell>{noticia.title}</TableCell>
                     <TableCell>{noticia.date}</TableCell>
                     <TableCell align="right">
-                      <IconButton color="primary" onClick={() => handleEditar(noticia.id)}>
+                      <IconButton
+                        color="primary"
+                        onClick={() => handleEditar(noticia.id)}
+                      >
                         <Edit />
                       </IconButton>
-                      <IconButton color="error" onClick={() => handleEliminar(noticia.id)}>
+                      <IconButton
+                        color="error"
+                        onClick={() => handleEliminar(noticia.id)}
+                      >
                         <Delete />
                       </IconButton>
                     </TableCell>
@@ -145,48 +196,77 @@ export function ArticleManagerPage() {
           </TableContainer>
         )}
 
-        {/* Modal para editar artículo */}
-        <Dialog open={openModal} onClose={handleCloseModal}>
+        {/* Modal de edición */}
+        <Dialog open={openModal} onClose={handleCloseModal} fullWidth maxWidth="sm">
           <DialogTitle>Editar Noticia</DialogTitle>
           <DialogContent>
-            {currentArticle && (
-              <>
-                <TextField
-                  label="Título"
+            <form onSubmit={handleSubmit(handleSaveChanges)}>
+              <TextField
+                label="Título"
+                variant="outlined"
+                fullWidth
+                {...register("title")}
+                margin="normal"
+                error={!!errors.title}
+                helperText={errors.title?.message}
+              />
+              <TextField
+                label="Contenido"
+                variant="outlined"
+                fullWidth
+                {...register("body")}
+                margin="normal"
+                multiline
+                rows={4}
+                error={!!errors.body}
+                helperText={errors.body?.message}
+              />
+
+              <Box className="preview-imagen" sx={{ mt: 2 }}>
+                {preview ? (
+                  <img
+                    src={preview}
+                    alt="Vista previa"
+                    style={{ width: "100%", maxHeight: 200, objectFit: "cover" }}
+                  />
+                ) : (
+                  <Typography variant="body2" color="text.secondary">
+                    Vista previa de la imagen
+                  </Typography>
+                )}
+
+                <Button
                   variant="outlined"
+                  component="label"
                   fullWidth
-                  name="title"
-                  value={currentArticle.title}
-                  onChange={handleChange}
-                  margin="normal"
-                />
-                <TextField
-                  label="Fecha"
-                  variant="outlined"
-                  fullWidth
-                  name="date"
-                  value={currentArticle.date}
-                  onChange={handleChange}
-                  margin="normal"
-                />
-                <TextField
-                  label="Contenido"
-                  variant="outlined"
-                  fullWidth
-                  name="content"
-                  value={currentArticle.content}
-                  onChange={handleChange}
-                  margin="normal"
-                  multiline
-                  rows={4}
-                />
-              </>
-            )}
+                  sx={{ mt: 1 }}
+                >
+                  Subir Imagen
+                  <input
+                    type="file"
+                    hidden
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files[0];
+                      if (file) {
+                        setImagenFile(file);
+                        setPreview(URL.createObjectURL(file));
+                      }
+                    }}
+                  />
+                </Button>
+              </Box>
+
+              <DialogActions sx={{ mt: 2 }}>
+                <Button onClick={handleCloseModal} color="secondary">
+                  Cancelar
+                </Button>
+                <Button type="submit" color="primary">
+                  Guardar Cambios
+                </Button>
+              </DialogActions>
+            </form>
           </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseModal} color="secondary">Cancelar</Button>
-            <Button onClick={handleSaveChanges} color="primary">Guardar Cambios</Button>
-          </DialogActions>
         </Dialog>
       </Container>
     </div>
