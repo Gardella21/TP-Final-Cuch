@@ -14,7 +14,7 @@
   height: auto; 
   background: #D87A2E;
   color: white;
-  border: 1px solid #333;
+  border: none;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 4px 10px rgba(10, 10, 10, 0.2);
@@ -30,7 +30,7 @@ small{
 }
 .article-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 12px 20px rgba(95, 95, 95, 0.3);
+  box-shadow: 0 12px 20px #000000(95, 95, 95, 0.3);
 }
 
 .article-image {

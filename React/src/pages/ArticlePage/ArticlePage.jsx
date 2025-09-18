@@ -6,8 +6,9 @@ import "./ArticlePage.css";
 export const ArticlePage = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const MINIO_URL = "http://localhost:9000/imagenes/";
+  
+  const MINIO_URL = "http://172.24.224.1:9000/imagenes";
+  /*const MINIO_URL = "http://localhost:9000/imagenes/";*/
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -37,7 +38,7 @@ export const ArticlePage = () => {
             <h3>{article.title}</h3>
             {article.image && (
               <img
-                src={`${MINIO_URL}${article.image}`}
+                src={article.image}
                 alt={article.title}
                 className="article-image"
               />
