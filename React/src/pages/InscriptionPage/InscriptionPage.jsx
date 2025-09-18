@@ -78,10 +78,11 @@ function InscriptionPage() {
           <TextInput className="TextInput"
             placeholder="Número de contacto"
             error={form.formState.errors.phone?.message}
-            {...form.register("phone")}
+            {...form.register("phone")} 
           />
 
           <Button
+            className="inscriptinoButton"
             variant="filled"
 			onClick={form.handleSubmit(onSubmit)}
 			loading={form.formState.isSubmitting}
