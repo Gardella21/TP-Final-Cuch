@@ -20,6 +20,7 @@ import { ArticleCreationPage } from "./pages/Admin/Article/ArticleCreationPage";
 import { ArticlePage } from "./pages/ArticlePage/ArticlePage";
 import { ArticlePageDetail } from "./pages/ArticlePageDetail/ArticlePageDetail";
 import { CatalogPage } from "./pages/CatalogPage/CatalogPage";
+import  EventPage  from "./pages/EventPage/EventPage";
 
 const MainLayout = () => (
   <>
@@ -41,7 +42,8 @@ function App() {
 					    <Route path='/' element={<><Banner/> </>}/>
 						<Route path='/noticias' element={<ArticlePage/>} />
                         <Route path='/articles/:id' element={<ArticlePageDetail/>} />
-						<Route path='/cursos-y-eventos' element={<InscriptionPage/>}/>
+						<Route path='/cursos-y-eventos' element={<EventPage/>}/>
+						<Route path='/cursos-y-eventos/form' element={<InscriptionPage/>}/>
 						<Route path='/nosotros' element={<InfoNosotros/>}/>
 						<Route path='/catalogo' element={<CatalogPage/>}/>
 						<Route path='/donaciones' element={<DonationsPage/>}/>
