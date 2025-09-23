@@ -160,7 +160,7 @@ public function authorizeAdministrative(int $userId): void
             $primitive["token"],
             new DateTime($primitive["token_auth_date"]),
             role: $primitive["role"],             // nuevo parametro//
-            is_Active: $primitive["is_Active"] == 1   // nuevo //
+            is_Active: (bool) $primitive["is_Active"] == 1   // nuevo //
         );
     }
 }
