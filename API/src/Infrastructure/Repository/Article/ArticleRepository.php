@@ -39,6 +39,7 @@ final readonly class ArticleRepository extends PDOManager implements ArticleRepo
                             articles A
                         WHERE
                             A.deleted = 0
+                        ORDER BY date DESC
                     HEREDOC;
                     
         $results = $this->execute($query);
