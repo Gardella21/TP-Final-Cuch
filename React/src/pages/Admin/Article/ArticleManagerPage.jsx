@@ -43,6 +43,8 @@ export function ArticleManagerPage() {
   const [currentArticle, setCurrentArticle] = useState(null);
   const [imagenFile, setImagenFile] = useState(null);
   const [preview, setPreview] = useState(null);
+  const [modalLoading, setModalLoading] = useState(false);
+  const [deletingID, setDeletingID] = useState(null);
 
   const {
     register,
@@ -92,6 +94,7 @@ export function ArticleManagerPage() {
 
   // Guardar cambios
   const handleSaveChanges = async (data) => {
+    setModalLoading(true);
     try {
       let imageUrl = currentArticle.image;
 
@@ -119,19 +122,21 @@ export function ArticleManagerPage() {
       alert("Error al guardar los cambios");
       console.error(err);
     }
+    setModalLoading(false);
   };
 
   // Eliminar artículo
   const handleEliminar = async (id) => {
     if (window.confirm("¿Seguro que deseas eliminar esta noticia?")) {
-      await articleService
-        .deleteArticleById(id)
-        .then(() => {
-          setNoticias(noticias.filter((n) => n.id !== id));
-        })
-        .catch((err) => {
-          alert("Error al eliminar la noticia");
-          console.error(err);
+        setDeletingID(id);
+        await articleService
+            .deleteArticleById(id)
+            .then(() => {
+            setNoticias(noticias.filter((n) => n.id !== id));
+            })
+            .catch((err) => {
+            alert("Error al eliminar la noticia");
+            console.error(err);
         });
     }
   };
@@ -183,6 +188,7 @@ export function ArticleManagerPage() {
                         <Edit />
                       </IconButton>
                       <IconButton
+                        loading={deletingID === noticia.id ? true : false}
                         color="error"
                         onClick={() => handleEliminar(noticia.id)}
                       >
@@ -261,7 +267,7 @@ export function ArticleManagerPage() {
                 <Button onClick={handleCloseModal} color="secondary">
                   Cancelar
                 </Button>
-                <Button type="submit" color="primary">
+                <Button loading={modalLoading} type="submit" color="primary">
                   Guardar Cambios
                 </Button>
               </DialogActions>

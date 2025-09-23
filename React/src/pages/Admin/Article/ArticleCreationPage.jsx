@@ -11,12 +11,14 @@ import "./ArticleCreationPage.css";
 import { useNavigate } from "react-router";
 import { fileService } from "../../../services/filesService";
 import { articleService } from "../../../services/articleService";
+import { set } from "zod";
 
 export function ArticleCreationPage() {
   const [titulo, setTitulo] = useState("");
   const [contenido, setContenido] = useState("");
   const [imagen, setImagen] = useState(null);
   const [preview, setPreview] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -31,6 +33,8 @@ export function ArticleCreationPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setLoading(true);
+
     const imgFormData = new FormData();
     imgFormData.append("file", imagen);
     const imgResponse = await fileService.UploadFile(imgFormData);
@@ -42,6 +46,8 @@ export function ArticleCreationPage() {
       image: imgResponse.data.url,
     };
     await articleService.createArticle(payload);
+    
+    setLoading(false);
     navigate("/admin/article");
   }
 
@@ -115,6 +121,7 @@ export function ArticleCreationPage() {
 
             <Box textAlign="center" mt={3}>
                 <Button
+                loading={loading}
                 type="submit"
                 variant="contained"
                 color="primary"
