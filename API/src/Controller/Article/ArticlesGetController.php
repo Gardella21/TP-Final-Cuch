@@ -16,9 +16,11 @@ final readonly class ArticlesGetController {
 
         // Aplicamos filterResponses para formatear los artículos
         $filtered = $this->filterResponses($response);
+        
+        $MINIO_URL = "http://172.24.224.1:9000/imagenes/";
 
         // Limpiamos cada artículo para que sea serializable y seguro
-        $cleanedArticles = array_map(function($article) {
+        $cleanedArticles = array_map(function($article) use ($MINIO_URL) {
             foreach ($article as $key => $value) {
                 // Si hay objetos o recursos inesperados, los reemplazamos por null
                 if (is_object($value) && !($value instanceof \DateTime)) {
@@ -33,6 +35,7 @@ final readonly class ArticlesGetController {
             if (empty($article['image'])) {
                 $article['image'] = 'placeholder.jpeg';
             }
+            $article['image'] = $MINIO_URL . $article['image'];
 
             return $article;
         }, $filtered);
