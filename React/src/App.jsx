@@ -15,8 +15,8 @@ import InfoNosotros from './components/InfoNosotros/InfoNosotros';
 import { DonationsPage } from "./pages/DonationsPage/DonationsPage";
 import Questions from './components/Questions/Questions';
 import InscriptionPage from "./pages/InscriptionPage/InscriptionPage";
-import { ArticleManagerPage } from "./pages/Admin/Article/ArticleManagerPage";
-import { ArticleCreationPage } from "./pages/Admin/Article/ArticleCreationPage";
+import { ArticleManagerPage } from "./pages/Admin/Articles/ArticleManagerPage";
+import { ArticleCreationPage } from "./pages/Admin/Articles/ArticleCreationPage";
 import { ArticlePage } from "./pages/ArticlePage/ArticlePage";
 import { ArticlePageDetail } from "./pages/ArticlePageDetail/ArticlePageDetail";
 import { CatalogPage } from "./pages/CatalogPage/CatalogPage";
@@ -58,7 +58,7 @@ function App() {
 
 					{/*Rutas inaccesibles sin token activo */}
 					<Route element={<PrivateRoute />}>
-						<Route path="/admin/article" element={<ArticleManagerPage />} />
+						<Route path="/admin/articles" element={<ArticleManagerPage />} />
 						<Route path="/admin/article-new" element={<ArticleCreationPage />} />
 					</Route>
 				</Routes>

@@ -1,0 +1,23 @@
+.admin-navbar {
+  background-color: #1976d2; /* Azul Material UI */
+}
+
+.admin-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 40px;
+  margin-right: 16px;
+}
+
+.nav-buttons button {
+  margin-left: 12px;
+}
