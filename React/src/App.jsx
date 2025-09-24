@@ -5,7 +5,6 @@ import { MantineProvider } from "@mantine/core";
 import { RegisterPage } from "./pages/RegisterPage/RegisterPage";
 import { LoginPage } from "./pages/LoginPage/LoginPage";
 import { BrowserRouter, Routes, Route, Outlet } from "react-router";
-import { HomePage } from "./pages/HomePage/HomePage";
 import { PrivateRoute, PublicRoute } from "./Routes";
 import Header from "./components/Header/Header";
 import NavBar from './components/NavBar/NavBar';
