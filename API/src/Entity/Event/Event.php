@@ -15,9 +15,9 @@ final class Event {
     ) {
     }
 
-    public static function create(string $title, string $description, string $image, ?DateTime $end_date = null): self
+    public static function create(string $title, string $description, string $image, ?DateTime $end_date = null, bool $is_active = true): self
     {
-        return new self(null, $title, $description, $image,$end_date, true );
+        return new self(null, $title, $description, $image,$end_date, $is_active );
     }
 
     public function modify(string $title, string $description, string $image,?DateTime $end_date): void
@@ -54,7 +54,7 @@ final class Event {
         return $this->end_date;
     }
 
-    public function isActive(): bool
+    public function is_active(): bool
     {
         return $this->is_active;
     }
