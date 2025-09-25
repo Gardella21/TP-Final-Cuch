@@ -35,10 +35,9 @@ final readonly class EventsGetController
                 "title"       => $event->title(),
                 "description" => $event->description(),
                 "image"       => $event->image(),
-                // 👇 usa endDate() en lugar de date()
                 "end_date"    => $event->endDate()?->format('Y-m-d') ?? null,
-                // 👇 usa isActive() en lugar de is_active()
-                "is_active"   => $event->isActive(),
+                "is_active" => $event->is_active(),
+
             ];
         }
 

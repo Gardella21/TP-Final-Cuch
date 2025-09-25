@@ -39,6 +39,25 @@ final readonly class EventRepository extends PDOManager implements EventReposito
         return $eventsResults;
     }
 
+     public function insert(Event $event): void
+    {
+        $query = "INSERT INTO events (title, description, image, end_date, is_active) 
+                    VALUES (:title, :description, :image, :end_date, :is_active) ";
+
+        $parameters = [
+            "title" => $event->title(),
+            "description" => $event->description(),
+            "image" => $event->image(),
+            "end_date" => $event->endDate()->format('Y-m-d'),
+            "is_active"=>$event->is_active()
+        ];
+
+        $this->execute($query, $parameters);
+    }
+
+
+
+
     private function primitiveToEvent(?array $primitive): ?Event
     {
         if ($primitive === null) {
@@ -50,7 +69,7 @@ final readonly class EventRepository extends PDOManager implements EventReposito
             (string) $primitive["title"],
             (string) $primitive["description"],
             (string) $primitive["image"],
-            !empty($primitive["end_date"]) ? new DateTime($primitive["end_date"]) : null, // 👈 ya sin la barra
+            !empty($primitive["end_date"]) ? new DateTime($primitive["end_date"]) : null,
             (bool) ($primitive["is_active"] ?? 0)
         );
     }

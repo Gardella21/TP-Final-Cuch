@@ -8,6 +8,12 @@ final readonly class EventRoutes {
         "url" => "/events",
         "controller" => "Event/EventsGetController.php",
         "method" => "GET"
+      ],
+      [
+        "name" => "event_post",
+        "url" => "/events",
+        "controller" => "Event/EventPostController.php",
+        "method" => "POST"
       ]
     ];
   }
