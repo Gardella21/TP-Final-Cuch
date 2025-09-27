@@ -20,13 +20,16 @@ import { ArticlePage } from "./pages/ArticlePage/ArticlePage";
 import { ArticlePageDetail } from "./pages/ArticlePageDetail/ArticlePageDetail";
 import { CatalogPage } from "./pages/CatalogPage/CatalogPage";
 import  EventPage  from "./pages/EventPage/EventPage";
+import { AdminHomePage } from "./pages/Admin/Home/AdminHomePage";
+import { EventManagerPage } from "./pages/Admin/Events/EventManagerPage";
+import { UserManagerPage } from "./pages/Admin/Users/UserManagerPage";
 
 const MainLayout = () => (
   <>
     <Header />
     <NavBar />
 	
-    <Outlet /> {/* Renders nested routes */}
+    <Outlet />
 	<Footer />   
   </>
 );
@@ -57,8 +60,12 @@ function App() {
 
 					{/*Rutas inaccesibles sin token activo */}
 					<Route element={<PrivateRoute />}>
+						<Route path= "/admin" element={<AdminHomePage/>}/>
 						<Route path="/admin/articles" element={<ArticleManagerPage />} />
 						<Route path="/admin/article-new" element={<ArticleCreationPage />} />
+						<Route path="/admin/events" element={<EventManagerPage />} />
+						<Route path="/admin/users" element={<UserManagerPage />} />
+
 					</Route>
 				</Routes>
 			</BrowserRouter>
