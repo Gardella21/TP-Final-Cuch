@@ -19,16 +19,10 @@ import { Link } from 'react-router-dom';
 import './AdminNavBar.css';
 import logo from '/Images/logo2.png';
 
-const AdminNavBar = () => {
+const AdminNavBar = ({ onLogout }) => {
   const [openDrawer, setOpenDrawer] = useState(false);
 
-  const handleLogout = () => {
-    console.log("Cerrando sesión...");
-  };
-
-  const toggleDrawer = (open) => () => {
-    setOpenDrawer(open);
-  };
+  const toggleDrawer = (open) => () => setOpenDrawer(open);
 
   return (
     <>
@@ -40,34 +34,17 @@ const AdminNavBar = () => {
             </Link>
           </div>
 
-          <div className="nav-buttons desktop-only">
-            <Button color="inherit" component={Link} to="/admin/articles">
-              Noticias
-            </Button>
-            <Button color="inherit" component={Link} to="/admin/events">
-              Cursos y Eventos
-            </Button>
-            <Button color="inherit" component={Link} to="/admin/users">
-              Usuarios
-            </Button>
-          </div>
+          <Typography variant="h4" className="welcome-panel">
+            Bienvenido al Panel Administrativo
+          </Typography>
 
           <Box sx={{ flexGrow: 1 }} />
 
-          <div className="user-section desktop-only">
-            <Box className="user-text">
-              <Typography variant="body1" className="welcome-text">
-                Bienvenido Usuario
-              </Typography>
-              <Typography
-                variant="body2"
-                className="logout-text"
-                onClick={handleLogout}
-              >
-                Cerrar sesión
-              </Typography>
-            </Box>
-            <Avatar alt="Usuario" src="/Images/avatar.png" />
+          <div className="desktop-only user-section">
+            <Avatar alt="Usuario" src="/Images/avatar.png" sx={{ mr: 1, width: 50, height: 50 }} />
+            <Button className="logout-button" onClick={onLogout}>
+              Cerrar sesión
+            </Button>
           </div>
 
           <IconButton
@@ -77,24 +54,32 @@ const AdminNavBar = () => {
             onClick={toggleDrawer(true)}
             className="mobile-only"
           >
-            <MenuIcon />
+            <MenuIcon fontSize="large" />
           </IconButton>
         </Toolbar>
       </AppBar>
 
       <Drawer anchor="right" open={openDrawer} onClose={toggleDrawer(false)}>
         <Box
-          sx={{ width: 250 }}
+          sx={{
+            width: 250,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            mt: 4
+          }}
           role="presentation"
           onClick={toggleDrawer(false)}
           onKeyDown={toggleDrawer(false)}
         >
-          <Box className="drawer-logo">
-            <img src={logo} alt="Logo" className="logo" />
-          </Box>
-          <Divider />
+          <Avatar alt="Usuario" src="/Images/avatar.png" sx={{ mb: 1, width: 60, height: 60 }} />
+          <Typography variant="body1" sx={{ mb: 2, fontWeight: 'bold' }}>
+            Bienvenido
+          </Typography>
 
-          <List>
+          <Divider sx={{ width: '100%', mb: 2 }} />
+
+          <List sx={{ width: '100%' }}>
             <ListItem disablePadding>
               <ListItemButton component={Link} to="/admin/articles">
                 <ListItemText primary="Noticias" />
@@ -110,22 +95,13 @@ const AdminNavBar = () => {
                 <ListItemText primary="Usuarios" />
               </ListItemButton>
             </ListItem>
+            <Divider sx={{ my: 2 }} />
+            <ListItem disablePadding>
+              <ListItemButton onClick={onLogout}>
+                <ListItemText primary="Cerrar sesión" />
+              </ListItemButton>
+            </ListItem>
           </List>
-          <Divider />
-
-          <Box className="drawer-user">
-            <Avatar alt="Usuario" src="/Images/avatar.png" sx={{ mb: 1 }} />
-            <Typography variant="body1" className="welcome-text">
-              Bienvenido Usuario
-            </Typography>
-            <Typography
-              variant="body2"
-              className="logout-text"
-              onClick={handleLogout}
-            >
-              Cerrar sesión
-            </Typography>
-          </Box>
         </Box>
       </Drawer>
     </>
