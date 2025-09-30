@@ -19,10 +19,15 @@ import { Link } from 'react-router-dom';
 import './AdminNavBar.css';
 import logo from '/Images/logo2.png';
 
-const AdminNavBar = ({ onLogout }) => {
+const AdminNavBar = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
 
   const toggleDrawer = (open) => () => setOpenDrawer(open);
+
+  const handleLogout = () => {
+      localStorage.removeItem("token"); // remueve el token y redirige al login
+			window.location.href = "/login";
+    }
 
   return (
     <>
@@ -42,7 +47,7 @@ const AdminNavBar = ({ onLogout }) => {
 
           <div className="desktop-only user-section">
             <Avatar alt="Usuario" src="/Images/avatar.png" sx={{ mr: 1, width: 50, height: 50 }} />
-            <Button className="logout-button" onClick={onLogout}>
+            <Button className="logout-button" onClick={handleLogout}>
               Cerrar sesión
             </Button>
           </div>
@@ -97,7 +102,7 @@ const AdminNavBar = ({ onLogout }) => {
             </ListItem>
             <Divider sx={{ my: 2 }} />
             <ListItem disablePadding>
-              <ListItemButton onClick={onLogout}>
+              <ListItemButton onClick={handleLogout}>
                 <ListItemText primary="Cerrar sesión" />
               </ListItemButton>
             </ListItem>
