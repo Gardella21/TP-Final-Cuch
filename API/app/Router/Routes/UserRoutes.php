@@ -48,6 +48,15 @@ final readonly class UserRoutes {
                 "controller" => "User/UsersSearcherController.php",
                 "method" => "GET",
                 "roles_allowed" => ["super_adm", "adm"]
+            ],
+
+            // Obtener usuario mediante token valido //
+            [
+                "name" => "user_verify_token",
+                "url" => "/users/verify",
+                "controller" => "User/UserVerifyController.php",
+                "method" => "GET",
+                "roles_allowed" => ["super_adm", "adm"]
             ]
         ];
     }
