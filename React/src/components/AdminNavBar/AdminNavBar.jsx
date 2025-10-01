@@ -40,7 +40,6 @@ const AdminNavBar = () => {
 
   return (
     <>
-      {/* <div>hola {user?.data?.name}</div> */}
       <AppBar position="static" className="admin-navbar">
         <Toolbar className="admin-toolbar">
           <div className="logo-container">
@@ -50,16 +49,25 @@ const AdminNavBar = () => {
           </div>
 
           <Typography variant="h4" className="welcome-panel">
-            Bienvenido al Panel Administrativo
+            Panel Administrativo
           </Typography>
 
           <Box sx={{ flexGrow: 1 }} />
 
-          <div className="desktop-only user-section">
-            <Avatar alt="Usuario" src="/Images/avatar.png" sx={{ mr: 1, width: 50, height: 50 }} />
-            <Button className="logout-button" onClick={handleLogout}>
-              Cerrar sesión
-            </Button>
+          <div className="user-section desktop-only">
+            <Box className="user-text">
+              <Typography variant="body1" className="welcome-text">
+                {user?.data?.name}
+              </Typography>
+              <Typography
+                variant="body2"
+                className="logout-text"
+                onClick={handleLogout}
+              >
+                Cerrar sesión
+              </Typography>
+            </Box>
+            <Avatar>{user?.data?.name[0]+user?.data?.name[1]}</Avatar>
           </div>
 
           <IconButton
@@ -87,9 +95,9 @@ const AdminNavBar = () => {
           onClick={toggleDrawer(false)}
           onKeyDown={toggleDrawer(false)}
         >
-          <Avatar alt="Usuario" src="/Images/avatar.png" sx={{ mb: 1, width: 60, height: 60 }} />
+          <Avatar sx={{ mb: 1, width: 60, height: 60 }}>{user?.data?.name[0]+user?.data?.name[1]}</Avatar>
           <Typography variant="body1" sx={{ mb: 2, fontWeight: 'bold' }}>
-            Bienvenido
+          {user?.data?.name}
           </Typography>
 
           <Divider sx={{ width: '100%', mb: 2 }} />

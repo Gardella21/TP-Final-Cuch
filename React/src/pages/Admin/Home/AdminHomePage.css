@@ -42,12 +42,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  flex-direction: row;
   border-radius: 12px;
   background-color: #fffaf5;
   cursor: pointer;
   transition: all 0.4s ease;
   box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
+}
+.admin-card-content {
+  text-align: center;
 }
 
 .admin-card:hover {
