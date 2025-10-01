@@ -16,7 +16,7 @@ export function PrivateRoute() {
 	return (
 		<>
 			<AdminNavBar />
-			<Outlet /> // Muestra el contenido de la ruta
+			<Outlet />
 		</>
 	);
 }

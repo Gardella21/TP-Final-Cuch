@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -18,9 +18,18 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
 import './AdminNavBar.css';
 import logo from '/Images/logo2.png';
+import { authService } from '../../services/authService';
 
 const AdminNavBar = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [user, setUser] = useState("");
+
+  const findUser = async () => {  // Se almacena el usuario verificado
+    setUser(await authService.verify());
+  }
+    useEffect(() => {
+      findUser();
+    }, []); 
 
   const toggleDrawer = (open) => () => setOpenDrawer(open);
 
@@ -31,6 +40,7 @@ const AdminNavBar = () => {
 
   return (
     <>
+      {/* <div>hola {user?.data?.name}</div> */}
       <AppBar position="static" className="admin-navbar">
         <Toolbar className="admin-toolbar">
           <div className="logo-container">
