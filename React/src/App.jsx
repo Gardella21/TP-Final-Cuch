@@ -5,7 +5,6 @@ import { MantineProvider } from "@mantine/core";
 import { RegisterPage } from "./pages/RegisterPage/RegisterPage";
 import { LoginPage } from "./pages/LoginPage/LoginPage";
 import { BrowserRouter, Routes, Route, Outlet } from "react-router";
-import { HomePage } from "./pages/HomePage/HomePage";
 import { PrivateRoute, PublicRoute } from "./Routes";
 import Header from "./components/Header/Header";
 import NavBar from './components/NavBar/NavBar';
@@ -15,17 +14,22 @@ import InfoNosotros from './components/InfoNosotros/InfoNosotros';
 import { DonationsPage } from "./pages/DonationsPage/DonationsPage";
 import Questions from './components/Questions/Questions';
 import InscriptionPage from "./pages/InscriptionPage/InscriptionPage";
-import { ArticleManagerPage } from "./pages/Admin/Article/ArticleManagerPage";
-import { ArticleCreationPage } from "./pages/Admin/Article/ArticleCreationPage";
+import { ArticleManagerPage } from "./pages/Admin/Articles/ArticleManagerPage";
+import { ArticleCreationPage } from "./pages/Admin/Articles/ArticleCreationPage";
 import { ArticlePage } from "./pages/ArticlePage/ArticlePage";
 import { ArticlePageDetail } from "./pages/ArticlePageDetail/ArticlePageDetail";
+import { CatalogPage } from "./pages/CatalogPage/CatalogPage";
+import  EventPage  from "./pages/EventPage/EventPage";
+import { AdminHomePage } from "./pages/Admin/Home/AdminHomePage";
+import { EventManagerPage } from "./pages/Admin/Events/EventManagerPage";
+import { UserManagerPage } from "./pages/Admin/Users/UserManagerPage";
 
 const MainLayout = () => (
   <>
     <Header />
     <NavBar />
 	
-    <Outlet /> {/* Renders nested routes */}
+    <Outlet />
 	<Footer />   
   </>
 );
@@ -40,9 +44,10 @@ function App() {
 					    <Route path='/' element={<><Banner/> </>}/>
 						<Route path='/noticias' element={<ArticlePage/>} />
                         <Route path='/articles/:id' element={<ArticlePageDetail/>} />
-						<Route path='/cursos-y-eventos' element={<InscriptionPage/>}/>
+						<Route path='/cursos-y-eventos' element={<EventPage/>}/>
+						<Route path='/cursos-y-eventos/form' element={<InscriptionPage/>}/>
 						<Route path='/nosotros' element={<InfoNosotros/>}/>
-						<Route path='/catalogo' element={<></>}/>
+						<Route path='/catalogo' element={<CatalogPage/>}/>
 						<Route path='/donaciones' element={<DonationsPage/>}/>
                         <Route path='/preguntas' element={<Questions />} />
 					</Route>
@@ -55,8 +60,12 @@ function App() {
 
 					{/*Rutas inaccesibles sin token activo */}
 					<Route element={<PrivateRoute />}>
-						<Route path="/admin/article" element={<ArticleManagerPage />} />
+						<Route path= "/admin" element={<AdminHomePage/>}/>
+						<Route path="/admin/articles" element={<ArticleManagerPage />} />
 						<Route path="/admin/article-new" element={<ArticleCreationPage />} />
+						<Route path="/admin/events" element={<EventManagerPage />} />
+						<Route path="/admin/users" element={<UserManagerPage />} />
+
 					</Route>
 				</Routes>
 			</BrowserRouter>

@@ -42,7 +42,7 @@ export function LoginPage() {
 			const token = response.data.token;
 			if (token) {
 				localStorage.setItem("token", token);
-				navigate("/admin/article");
+				navigate("/admin");
 			} else {
 				throw new Error("Ocurrió un error inesperado");
 			}
