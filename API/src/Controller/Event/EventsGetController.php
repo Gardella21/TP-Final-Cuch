@@ -26,21 +26,22 @@ final readonly class EventsGetController
     }
 
     private function filterResponses(array $responses): array
-    {
-        $result = [];
+{
+    $result = [];
 
-        foreach ($responses as $event) {
-            $result[] = [
-                "id"          => $event->id(),
-                "title"       => $event->title(),
-                "description" => $event->description(),
-                "image"       => $event->image(),
-                "end_date"    => $event->endDate()?->format('Y-m-d') ?? null,
-                "is_active" => $event->is_active(),
-
-            ];
-        }
-
-        return $result;
+    foreach ($responses as $event) {
+        $result[] = [
+            "id"          => $event->id(),
+            "title"       => $event->title(),
+            "description" => $event->description(),
+            "image"       => $event->image(),
+            "end_date"    => $event->endDate()?->format('Y-m-d') ?? null,
+            "is_active"   => $event->is_active(),   
+            "deleted"     => $event->isDeleted(),   
+        ];
     }
+
+    return $result;
+}
+
 }
