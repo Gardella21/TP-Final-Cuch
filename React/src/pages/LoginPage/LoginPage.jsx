@@ -34,17 +34,18 @@ export function LoginPage() {
 
 	async function onSubmit(formData) {
 		try {
-			setError(undefined); // Eliminar cualquier error previo
+			setError(undefined); 
 
 			const formDataJson = JSON.stringify(formData);
 			const response = await authService.login(formDataJson);
 
-			const token = response.data.token;
+			const token = response.data.user?.token;
+
 			if (token) {
 				localStorage.setItem("token", token);
 				navigate("/admin");
 			} else {
-				throw new Error("Ocurrió un error inesperado");
+				throw new Error("El servidor no devolvió un token válido");
 			}
 		} catch (error) {
 			setError(error.message);
