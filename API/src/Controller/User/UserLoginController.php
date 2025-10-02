@@ -1,29 +1,36 @@
 <?php
 
-use Src\Utils\ControllerUtils;
 use Src\Service\User\UserLoginService;
 
-final readonly class UserLoginController {
-    private UserLoginService $service;
-
-    public function __construct() {
-        $this->service = new UserLoginService();
-    }
-
+final class UserLoginController
+{
     public function start(): void
     {
-        $email = ControllerUtils::getPost("email");
-        $password = ControllerUtils::getPost("password");
+        header('Content-Type: application/json; charset=utf-8');
 
-        $user = $this->service->login($email, $password);
+        $raw = file_get_contents('php://input') ?: '{}';
+        $body = json_decode($raw, true) ?? [];
 
-        echo json_encode([
-            "token" => $user->token(),
-            "expiration_date" => $user->token_auth_date()->format("Y-m-d H:i:s"),
-            /*Agrego role, is_activie obtencion de bd sol*/
-            "role" => $user->role(),
-            "is_Active" => $user->is_Active()
+        try {
+            $service = new UserLoginService();
+            $user = $service->login(
+                $body['email'] ?? '',
+                $body['password'] ?? ''
+            );
 
-        ]);
+            echo json_encode([
+                "status" => "ok",
+                "user" => [
+                    "id" => $user->id(),
+                    "name" => $user->name(),
+                    "email" => $user->email(),
+                    "role" => $user->role(),
+                    "token" => $user->token()
+                ]
+            ]);
+        } catch (\Throwable $e) {
+            http_response_code(401);
+            echo json_encode(["error" => $e->getMessage()]);
+        }
     }
 }

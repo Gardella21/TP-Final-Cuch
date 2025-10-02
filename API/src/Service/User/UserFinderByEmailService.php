@@ -1,24 +1,23 @@
-<?php 
+<?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Src\Service\User;
 
 use Src\Entity\User\User;
 use Src\Infrastructure\Repository\User\UserRepository;
 
-final readonly class UserFinderByEmailService {
+final readonly class UserFinderByEmailService
+{
+    private UserRepository $repository;
 
-    private UserRepository $userRepository;
-
-    public function __construct() 
+    public function __construct()
     {
-        $this->userRepository = new UserRepository();
+        $this->repository = new UserRepository();
     }
 
-    public function find(string $email): ?User 
+    public function find(string $email): ?User
     {
-        return $this->userRepository->findByEmail($email);
+        return $this->repository->findByEmail($email);
     }
-
 }

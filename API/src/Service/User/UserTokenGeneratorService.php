@@ -1,28 +1,26 @@
-<?php 
+<?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Src\Service\User;
 
 use Src\Entity\User\User;
 use Src\Infrastructure\Repository\User\UserRepository;
 
-final readonly class UserTokenGeneratorService {
+final readonly class UserTokenGeneratorService
+{
+    private UserRepository $repository;
 
-    private UserRepository $userRepository;
-
-    public function __construct() 
+    public function __construct()
     {
-        $this->userRepository = new UserRepository();
+        $this->repository = new UserRepository();
     }
 
-    public function generate(User $user): User 
+    public function generate(User $user): User
     {
         $user->generateToken();
-
-        $this->userRepository->update($user);
-
+        $this->repository->update($user);
         return $user;
     }
-
 }
+

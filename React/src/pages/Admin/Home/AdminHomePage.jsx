@@ -1,9 +1,8 @@
-import React from "react";
 import { Box, Grid, Card, CardContent, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import ArticleIcon from '@mui/icons-material/Article';
-import EventIcon from '@mui/icons-material/Event';
-import PeopleIcon from '@mui/icons-material/People';
+import ArticleIcon from "@mui/icons-material/Article";
+import EventIcon from "@mui/icons-material/Event";
+import PeopleIcon from "@mui/icons-material/People";
 import "./AdminHomePage.css";
 
 export function AdminHomePage() {
@@ -12,9 +11,8 @@ export function AdminHomePage() {
   return (
     <div className="admin-home-page">
       <Typography className="sentence" component="h1">
-  Trabajar en la biblioteca es abrir puertas al conocimiento y al futuro de todos.
+        Trabajar en la biblioteca es abrir puertas al conocimiento y al futuro de todos.
       </Typography>
-
 
       <Box sx={{ flexGrow: 1, mt: 4 }}>
         <Grid container spacing={4} justifyContent="center">

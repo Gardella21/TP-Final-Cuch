@@ -1,7 +1,6 @@
-<?php 
+<?php
 
-
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Src\Service\User;
 
@@ -9,24 +8,23 @@ use Src\Entity\User\User;
 use Src\Entity\User\Exception\UserIsNotAuthorizedException;
 use Src\Infrastructure\Repository\User\UserRepository;
 
-final readonly class UserTokenValidatorService {
+final readonly class UserTokenValidatorService
+{
+    private UserRepository $repository;
 
-    private UserRepository $userRepository;
-
-    public function __construct() 
+    public function __construct()
     {
-        $this->userRepository = new UserRepository();
+        $this->repository = new UserRepository();
     }
 
-    public function validate(string $token): User 
+    public function validate(string $token): User
     {
-        $user = $this->userRepository->findByToken($token);
+        $user = $this->repository->findByToken($token);
 
-        if ($user === null) {
+        if ($user === null || !$user->is_active()) {
             throw new UserIsNotAuthorizedException();
         }
 
         return $user;
     }
-
 }
