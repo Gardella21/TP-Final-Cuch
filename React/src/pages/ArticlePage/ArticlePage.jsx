@@ -1,21 +1,25 @@
-
 import { useEffect, useState } from "react";
+import {
+  Box,
+  Card,
+  CardContent,
+  CardMedia,
+  Container,
+  Typography,
+} from "@mui/material";
 import { Link } from "react-router-dom";
-import "./ArticlePage.css"; 
+import { articleService } from "../../services/articleService";
+import "./ArticlePage.css";
 
 export const ArticlePage = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
-  
-  const MINIO_URL = "http://172.24.224.1:9000/imagenes";
-  /*const MINIO_URL = "http://localhost:9000/imagenes/";*/
 
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await fetch("http://localhost:9091/articles");
-        const data = await response.json();
-        setArticles(data);
+        const response = await articleService.getAllArticles();
+        setArticles(response.data);
       } catch (error) {
         console.error("Error fetching articles:", error);
       } finally {
@@ -26,31 +30,84 @@ export const ArticlePage = () => {
     fetchArticles();
   }, []);
 
-  if (loading) return <p>Cargando artículos...</p>;
-
-  if (articles.length === 0) return <p>No hay artículos disponibles.</p>;
-
   return (
-    <div className="articles-container">
-      <div className="articles-grid">
-        {articles.map((article) => (
-          <div key={article.id} className="article-card">
-            <h3>{article.title}</h3>
-            {article.image && (
-              <img
-                src={article.image}
-                alt={article.title}
-                className="article-image"
-              />
-            )}
-            <p>{article.body.substring(0, 100)}...</p> 
-            <small>{article.date}</small>
-            <Link to={`/articles/${article.id}`} className="read-more-btn">
-              Leer más
-            </Link>
-          </div>
-        ))}
-      </div>
-    </div>
+    <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+      <Container className="articles-container" maxWidth={false} disableGutters>
+        <Box sx={{ flexGrow: 1 }}>
+          {loading ? (
+            <Box display="flex" justifyContent="center" mt={5}>
+              <Typography variant="h6" className="loading-text">
+                Cargando...
+              </Typography>
+            </Box>
+          ) : articles.length === 0 ? (
+            <Typography variant="h6" align="center" mt={5}>
+              No hay artículos disponibles.
+            </Typography>
+          ) : (
+            <Box className="articles-grid">
+              {articles.map((article) => {
+                const dateStr = article.date || article.createdAt || null;
+                const formattedDate = dateStr
+                  ? new Date(dateStr).toLocaleDateString("es-AR", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })
+                  : null;
+
+                return (
+                  <Link
+                    to={`/articles/${article.id || article._id}`}
+                    className="article-link"
+                    key={article._id ?? article.id}
+                  >
+                    <Card className="article-card">
+                      {article.image ? (
+                        <CardMedia
+                          component="img"
+                          image={article.image}
+                          alt={article.title}
+                          className="article-image"
+                        />
+                      ) : (
+                        <div className="article-image--placeholder">Sin imagen</div>
+                      )}
+
+                      <CardContent>
+                        <Typography variant="h6" gutterBottom textAlign="center">
+                          {article.title}
+                        </Typography>
+
+                        {formattedDate && (
+                          <Typography
+                            variant="caption"
+                            display="block"
+                            className="article-date"
+                            textAlign="center"
+                          >
+                            {formattedDate}
+                          </Typography>
+                        )}
+
+                        {article.summary && (
+                          <Typography
+                            variant="body2"
+                            className="article-summary"
+                            mt={1}
+                          >
+                            {article.summary}
+                          </Typography>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </Link>
+                );
+              })}
+            </Box>
+          )}
+        </Box>
+      </Container>
+    </Box>
   );
 };
