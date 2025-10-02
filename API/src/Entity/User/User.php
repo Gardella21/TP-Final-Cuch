@@ -13,50 +13,52 @@ final class User {
         private string $password,
         private ?string $token,
         private ?DateTime $token_auth_date,
-        private string $role,      // Agrego super_adm, adm, visitor
-        private bool $is_Active  // Agrego true o false
-
+        private string $role,      // super_adm, admin, visitor //
+        private bool $is_active    
     ) {
     }
-//Agrego los prametros que faltan para poder crear objetos User//
+
+    // Método para crear un nuevo usuario //
     public static function create(
-    string $name,
-    string $email,
-    string $password,
-    string $role,
-    bool $is_Active = true,
-    ?string $token = null,
-    ?DateTime $token_auth_date = null
-
-): self {
-    return new self(
-        null,
-        $name,
-        $email,
-        password_hash($password, PASSWORD_BCRYPT),
-        $token,
-        $token_auth_date,
-        $role,
-        $is_Active
-    );
-}
-//Agrego funcion que permite actualizar datos de usuario existente//
-public function modify(
-    string $name,
-    string $email,
-    ?string $password = null,
-    string $role,
-    bool $is_Active
-): void {
-    $this->name = $name;
-    $this->email = $email;
-    if ($password !== null) {
-        $this->password = password_hash($password, PASSWORD_BCRYPT);
+        string $name,
+        string $email,
+        string $password,
+        string $role,
+        bool $is_active = true,
+        ?string $token = null,
+        ?DateTime $token_auth_date = null
+    ): self {
+        return new self(
+            null,
+            $name,
+            $email,
+            password_hash($password, PASSWORD_BCRYPT),
+            $token,
+            $token_auth_date,
+            $role,
+            $is_active
+        );
     }
-    $this->role = $role;
-    $this->is_Active = $is_Active;
-}
 
+    // Método para modificar datos de un usuario existente//
+    public function modify(
+        string $name,
+        string $email,
+        string $role,
+        bool $is_active,
+        ?string $password = null
+    ): void {
+        $this->name = $name;
+        $this->email = $email;
+        $this->role = $role;
+        $this->is_active = $is_active;
+
+        if ($password !== null) {
+            $this->password = password_hash($password, PASSWORD_BCRYPT);
+        }
+    }
+
+    // Getters //
     public function id(): ?int
     {
         return $this->id;
@@ -87,18 +89,21 @@ public function modify(
         return $this->token_auth_date;
     }
 
+    // Generar un token de sesión //
     public function generateToken(): void
     {
-        $this->token = md5($this->email.$this->id.rand(1000, 9999).date("YmdHis"));
+        $this->token = md5($this->email . $this->id . rand(1000, 9999) . date("YmdHis"));
         $this->token_auth_date = new DateTime("+1 hours");
     }
-    //Agrego role y isActive//
+
+    // Rol y estado //
     public function role(): string
     {
         return $this->role;
     }
-    public function is_Active(): bool
+
+    public function is_active(): bool
     {
-        return $this->is_Active;
+        return $this->is_active;
     }
 }

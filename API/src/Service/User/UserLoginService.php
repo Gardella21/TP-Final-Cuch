@@ -1,6 +1,4 @@
-<?php 
-
-declare(strict_types = 1);
+<?php
 
 namespace Src\Service\User;
 
@@ -23,11 +21,11 @@ final readonly class UserLoginService {
     {
         $user = $this->userRepository->findByEmailAndPassword($email, $password);
 
-        if ($user === null) {
+        // No existe o está pendiente //
+        if ($user === null || !$user->is_active()) {
             throw new UserInvalidCredentialsException();
         }
 
         return $this->tokenGenerator->generate($user);
     }
-
 }
