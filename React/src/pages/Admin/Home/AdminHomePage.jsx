@@ -18,7 +18,7 @@ export function AdminHomePage() {
         <Grid container spacing={4} justifyContent="center">
           <Grid item>
             <Card className="admin-card" onClick={() => navigate("/admin/articles")}>
-              <CardContent>
+              <CardContent className="admin-card-content">
                 <ArticleIcon fontSize="large" sx={{ mb: 1, color: "#5d3a00" }} />
                 <Typography variant="h5">Noticias</Typography>
               </CardContent>
@@ -26,15 +26,15 @@ export function AdminHomePage() {
           </Grid>
           <Grid item>
             <Card className="admin-card" onClick={() => navigate("/admin/events")}>
-              <CardContent>
+              <CardContent className="admin-card-content">
                 <EventIcon fontSize="large" sx={{ mb: 1, color: "#5d3a00" }} />
-                <Typography variant="h5">Cursos y Eventos</Typography>
+                <Typography variant="h5">Cursos y <br/> Eventos</Typography>
               </CardContent>
             </Card>
           </Grid>
           <Grid item>
             <Card className="admin-card" onClick={() => navigate("/admin/users")}>
-              <CardContent>
+              <CardContent className="admin-card-content">
                 <PeopleIcon fontSize="large" sx={{ mb: 1, color: "#5d3a00" }} />
                 <Typography variant="h5">Usuarios</Typography>
               </CardContent>

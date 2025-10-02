@@ -1,6 +1,7 @@
 import { api } from "./api";
 
 export const authService = {
+
   // Login de usuario //
   login: async (data) => {
     const res = await api.post("/users/login", data, {
@@ -23,4 +24,5 @@ export const authService = {
     api.post("/users/register", data, {
       headers: { "Content-Type": "application/json" },
     }),
+
 };

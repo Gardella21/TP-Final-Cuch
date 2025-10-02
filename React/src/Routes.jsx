@@ -23,7 +23,7 @@ export function PrivateRoute({ role }) {
 	return (
 		<>
 			<AdminNavBar />
-			<Outlet /> {/* Muestra el contenido de la ruta */}
+			<Outlet />
 		</>
 	);
 }
