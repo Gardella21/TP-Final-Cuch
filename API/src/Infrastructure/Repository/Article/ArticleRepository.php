@@ -13,16 +13,13 @@ final readonly class ArticleRepository extends PDOManager implements ArticleRepo
     public function find(int $id): ?Article 
     {
         $query = <<<HEREDOC
-                        SELECT 
-                            *
-                        FROM
-                            articles A
-                        WHERE
-                            A.id = :id AND A.deleted = 0
-                    HEREDOC;
+            SELECT *
+            FROM articles A
+            WHERE A.id = :id AND A.deleted = 0
+        HEREDOC;
                     
         $parameters = [
-            "id" => $id
+            ':id' => $id
         ];
 
         $result = $this->execute($query, $parameters);
@@ -30,21 +27,23 @@ final readonly class ArticleRepository extends PDOManager implements ArticleRepo
         return $this->primitiveToArticle($result[0] ?? null);
     }
 
-    public function search(): array
+       public function search(int $limit, int $offset): array
     {
         $query = <<<HEREDOC
-                        SELECT 
-                            *
-                        FROM
-                            articles A
-                        WHERE
-                            A.deleted = 0
-                        ORDER BY date DESC
-                    HEREDOC;
-                    
-        $results = $this->execute($query);
+            SELECT *
+            FROM articles A
+            WHERE A.deleted = 0
+            ORDER BY date DESC
+            LIMIT :limit OFFSET :offset
+        HEREDOC;
 
-        
+        $bindValues = [
+            ':limit'  => ['value' => $limit, 'type' => \PDO::PARAM_INT],
+            ':offset' => ['value' => $offset, 'type' => \PDO::PARAM_INT]
+        ];
+
+        $results = $this->executeWithBind($query, $bindValues);
+
         if (!is_array($results)) {
             return [];
         }
@@ -57,15 +56,29 @@ final readonly class ArticleRepository extends PDOManager implements ArticleRepo
         return $articleResults;
     }
 
+    public function countArticles(): int
+    {
+        $query = <<<HEREDOC
+            SELECT COUNT(*) as total
+            FROM articles A
+            WHERE A.deleted = 0
+        HEREDOC;
+
+        $results = $this->execute($query);
+
+        return isset($results[0]['total']) ? (int) $results[0]['total'] : 0;
+    }
+
     public function insert(Article $article): void
     {
-        $query = "INSERT INTO articles (title, image, date, body) VALUES (:title, :image, :date, :body) ";
+        $query = "INSERT INTO articles (title, image, date, body) 
+                  VALUES (:title, :image, :date, :body)";
 
         $parameters = [
-            "title" => $article->title(),
-            "image" => $article->image(),
-            "date" => $article->date()->format('Y-m-d H:i:s'),
-            "body" => $article->body()
+            ':title' => $article->title(),
+            ':image' => $article->image(),
+            ':date'  => $article->date()->format('Y-m-d H:i:s'),
+            ':body'  => $article->body()
         ];
 
         $this->execute($query, $parameters);
@@ -74,25 +87,23 @@ final readonly class ArticleRepository extends PDOManager implements ArticleRepo
     public function update(Article $article): void
     {
         $query = <<<UPDATE_QUERY
-                        UPDATE
-                            articles
-                        SET
-                            title = :title,
-                            image = :image,
-                            date = :date,
-                            body = :body,
-                            deleted = :deleted
-                        WHERE
-                            id = :id
-                    UPDATE_QUERY;
+            UPDATE articles
+            SET
+                title   = :title,
+                image   = :image,
+                date    = :date,
+                body    = :body,
+                deleted = :deleted
+            WHERE id = :id
+        UPDATE_QUERY;
 
         $parameters = [
-            "title" => $article->title(),
-            "image" => $article->image(),
-            "body" => $article->body(),
-            "date" => $article->date()->format('Y-m-d H:i:s'),
-            "id" => $article->id(),
-            "deleted" => $article->isDeleted() ? 1 : 0
+            ':title'   => $article->title(),
+            ':image'   => $article->image(),
+            ':body'    => $article->body(),
+            ':date'    => $article->date()->format('Y-m-d H:i:s'),
+            ':id'      => $article->id(),
+            ':deleted' => $article->isDeleted() ? 1 : 0
         ];
 
         $this->execute($query, $parameters);

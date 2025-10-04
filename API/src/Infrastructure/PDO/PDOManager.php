@@ -22,4 +22,19 @@ readonly class PDOManager {
 		$stmt->execute($parameters);
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}	
-}
+
+    public function executeWithBind(
+		string $query,
+		array $bindValues = [] 
+	): array 
+	{
+		$stmt = $this->client->prepare($query);
+
+		foreach ($bindValues as $param => $info) {
+			$stmt->bindValue($param, $info['value'], $info['type']);
+		}
+
+		$stmt->execute();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+}	
