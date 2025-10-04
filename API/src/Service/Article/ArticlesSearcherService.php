@@ -12,8 +12,13 @@ final readonly class ArticlesSearcherService {
         $this->repository = new ArticleRepository();
     }
 
-    public function search(): array
+    public function search(int $limit, int $offset): array
     {
-        return $this->repository->search();
+        return $this->repository->search($limit, $offset);
+    }
+
+    public function countArticles(): int
+    {
+        return $this->repository->countArticles();
     }
 }

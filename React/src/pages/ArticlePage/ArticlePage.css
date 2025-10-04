@@ -74,6 +74,27 @@
   margin-top: 8px;
   text-align: justify;
 }
+.pagination-container {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.pagination-button {
+  min-width: 40px;
+  padding: 6px 12px;
+  font-weight: bold;
+  border-radius: 8px;
+}
+.pagination-button.active {
+  background-color: #620707;
+  color: white;
+}
+.pagination-button:hover {
+  opacity: 0.85;
+}
 
 @media (max-width: 600px) {
   .articles-grid {
