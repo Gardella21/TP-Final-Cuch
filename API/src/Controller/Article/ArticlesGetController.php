@@ -12,16 +12,23 @@ final readonly class ArticlesGetController {
 
     public function start(): void 
     {
-    
+        // Parámetros de paginación //
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 6; 
         $offset = ($page - 1) * $limit;
 
+        $response = $this->service->search($limit, $offset); 
+
+        // Verifica por si acaso el tipo de dato //
+        if (!is_array($response)) {
+            $response = [];
+        }
+
         $filtered = $this->filterResponses($response);
-        // limpiamos los datos para evitar errores de json_encode//
+
+        //Limpiamos los datos para evitar errores con json_encode //
         $cleanedArticles = array_map(function($article) {
             foreach ($article as $key => $value) {
-                
                 if (is_object($value) && !($value instanceof \DateTime)) {
                     $article[$key] = null;
                 }
@@ -29,16 +36,28 @@ final readonly class ArticlesGetController {
                     $article[$key] = null;
                 }
             }
-
-            //aseguramos que la imagen tenga algún valor//
+            // Imagen por defecto //
             if (empty($article['image'])) {
                 $article['image'] = 'placeholder.jpeg';
             }
             return $article;
         }, $filtered);
 
+        // Total de artículos y cálculo de páginas //
+        $total = $this->service->countArticles();
+        $totalPages = ceil($total / $limit);
+
+        // respuesta final con paginación //
+        $result = [
+            "data" => $cleanedArticles,
+            "page" => $page,
+            "limit" => $limit,
+            "total" => $total,
+            "totalPages" => $totalPages
+        ];
+
         // Convertimos a JSON //
-        $json = json_encode($cleanedArticles);
+        $json = json_encode($result);
 
         if ($json === false) {
             var_dump(json_last_error_msg(), $result);
