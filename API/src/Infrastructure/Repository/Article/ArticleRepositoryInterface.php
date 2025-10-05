@@ -9,8 +9,16 @@ use Src\Entity\Article\Article;
 interface ArticleRepositoryInterface {
     public function find(int $id): ?Article;
 
-    /** @return Article[] */
-    public function search(): array;
+    /** 
+     * Buscar artículos con paginación
+     * 
+     * @param int $limit  Cantidad de artículos a devolver
+     * @param int $offset Desplazamiento para la paginación
+     * @return Article[]
+     */
+    public function search(int $limit, int $offset): array;
+
+    public function countArticles(): int;
 
     public function insert(Article $article): void;
 

@@ -1,6 +1,9 @@
-
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { Box, Typography, Button, IconButton } from "@mui/material";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import "./ArticlePageDetail.css";
 
 export const ArticlePageDetail = () => {
@@ -8,9 +11,6 @@ export const ArticlePageDetail = () => {
   const navigate = useNavigate();
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  const MINIO_URL = "http://172.24.224.1:9000/imagenes";
-  /*const MINIO_URL = "http://localhost:9000/imagenes/";*/
 
   useEffect(() => {
     const fetchArticle = async () => {
@@ -28,31 +28,93 @@ export const ArticlePageDetail = () => {
     fetchArticle();
   }, [id]);
 
-  if (loading) return <p>Cargando noticia...</p>;
-  if (!article) return <p>Noticia no encontrada</p>;
+  if (loading) {
+    return (
+      <Box className="article-loading">
+        <Typography variant="h6">Cargando...</Typography>
+      </Box>
+    );
+  }
 
-  return( 
-    <div className="article-detail-container">
-     {/* Columna izquierda: título + descripción */}
-      <div className="article-detail-text">
-      <h1 className="article-detail-title">{article.title}</h1>
-      <p className="article-detail-body">{article.body}</p>
-   </div>
+  if (!article) {
+    return (
+      <Box className="article-loading">
+        <Typography variant="h6">Noticia no encontrada</Typography>
+      </Box>
+    );
+  }
 
-    {/* Columna derecha: imagen + fecha + botón */}
-    <div className="article-detail-side">
-      {article.image && (
-        <img
-          src={article.image}
-          alt={article.title}
-          className="article-detail-image"
-      />
-    )}
-    <small className="article-detail-date">📅 {article.date}</small>
-      <button className="read-more-btn" onClick={() => navigate("/noticias")}>
-      ← Volver a noticias
-      </button>
-   </div>
-  </div>
-);
+  const currentUrl = window.location.href;
+
+  return (
+    <Box className="article-detail-container">
+      {/* Texto principal */}
+      <Box className="article-detail-text">
+        <Typography className="article-detail-date">
+          📅 {article.date}
+        </Typography>
+
+        <Typography variant="h3" className="article-detail-title">
+          {article.title}
+        </Typography>
+
+        <Typography variant="body1" className="article-detail-body">
+          {article.body}
+        </Typography>
+      </Box>
+
+      {/* Imagen + botón + compartir */}
+      <Box className="article-detail-side">
+        {article.image && (
+          <Box
+            component="img"
+            src={article.image}
+            alt={article.title}
+            className="article-detail-image"
+          />
+        )}
+
+        <Button
+          variant="contained"
+          onClick={() => navigate("/noticias")}
+          className="back-button"
+        >
+          ← Volver a noticias
+        </Button>
+
+        <Box className="share-section">
+          <Typography className="share-label">Compartí en Redes:</Typography>
+          <Box className="share-icons">
+            <IconButton
+              component="a"
+              href={`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="share-icon facebook"
+            >
+              <FacebookIcon />
+            </IconButton>
+            <IconButton
+              component="a"
+              href={`https://twitter.com/intent/tweet?url=${currentUrl}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="share-icon twitter"
+            >
+              <TwitterIcon />
+            </IconButton>
+            <IconButton
+              component="a"
+              href={`https://api.whatsapp.com/send?text=${currentUrl}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="share-icon whatsapp"
+            >
+              <WhatsAppIcon />
+            </IconButton>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
+  );
 };
