@@ -17,14 +17,11 @@ final readonly class ArticlesGetController {
         $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 6; 
         $offset = ($page - 1) * $limit;
 
-        $response = $this->service->search($limit, $offset); 
-        $total = $this->service->countArticles(); 
-
-        
         $filtered = $this->filterResponses($response);
-
+        // limpiamos los datos para evitar errores de json_encode//
         $cleanedArticles = array_map(function($article) {
             foreach ($article as $key => $value) {
+                
                 if (is_object($value) && !($value instanceof \DateTime)) {
                     $article[$key] = null;
                 }
@@ -32,21 +29,16 @@ final readonly class ArticlesGetController {
                     $article[$key] = null;
                 }
             }
+
+            //aseguramos que la imagen tenga algún valor//
             if (empty($article['image'])) {
                 $article['image'] = 'placeholder.jpeg';
             }
             return $article;
         }, $filtered);
 
-        $result = [
-            "data" => $cleanedArticles,
-            "page" => $page,
-            "limit" => $limit,
-            "total" => $total,
-            "totalPages" => ceil($total / $limit)
-        ];
-
-        $json = json_encode($result);
+        // Convertimos a JSON //
+        $json = json_encode($cleanedArticles);
 
         if ($json === false) {
             var_dump(json_last_error_msg(), $result);

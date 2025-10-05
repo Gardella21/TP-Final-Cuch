@@ -3,7 +3,7 @@
 final readonly class UserRoutes {
     public static function getRoutes(): array {
         return [
-            // Login, solo usuarios activos pueden loguearse//
+            // Login, solo usuarios activos pueden loguearse //
             [
                 "name" => "user_login",
                 "url" => "/users/login",
@@ -49,7 +49,7 @@ final readonly class UserRoutes {
             // Actualizar usuario //
             [
                 "name" => "user_update",
-                "url" => "/users",
+                "url" => "/users/{id}",
                 "controller" => "User/UserUpdateController.php",
                 "method" => "PUT",
                 "parameters" => [
@@ -60,7 +60,7 @@ final readonly class UserRoutes {
             // Eliminar usuario //
             [
                 "name" => "user_delete",
-                "url" => "/users",
+                "url" => "/users/{id}",
                 "controller" => "User/UserDeleteController.php",
                 "method" => "DELETE",
                 "parameters" => [
@@ -70,19 +70,19 @@ final readonly class UserRoutes {
 
             // Aprobar usuario pendiente solo super_adm //
             [
-              "name" => "user_approve",
-              "url" => "/users/approve", 
-              "controller" => "User/UserApproveController.php",
-              "method" => "PUT",
-              "parameters" => [
-              ["name" => "id", "type" => "int"] 
+                "name" => "user_approve",
+                "url" => "/users/approve/{id}", 
+                "controller" => "User/UserApproveController.php",
+                "method" => "PUT",
+                "parameters" => [
+                    ["name" => "id", "type" => "int"] 
                 ]
             ],
 
             // Buscar usuario por email //
             [
                 "name" => "user_search_by_email",
-                "url" => "/users/search",
+                "url" => "/users/search/{email}",
                 "controller" => "User/UserSearchByEmailController.php",
                 "method" => "GET",
                 "parameters" => [
@@ -93,7 +93,7 @@ final readonly class UserRoutes {
             // Promover usuario a admin //
             [
                 "name" => "user_promote_admin",
-                "url" => "/users/promote",
+                "url" => "/users/promote/{id}",
                 "controller" => "User/UserAuthorizeAdminController.php",
                 "method" => "PUT",
                 "parameters" => [

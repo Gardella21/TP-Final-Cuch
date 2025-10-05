@@ -10,7 +10,7 @@ final class UserApproveController
         header("Content-Type: application/json; charset=utf-8");
 
         try {
-        // valida el token y devuelve el ID del super_adm logueado //
+        //valida el token y devuelve el ID del super_adm logueado //
             $auth = new AuthMiddleware();
             $superAdmId = $auth->authenticate();
 

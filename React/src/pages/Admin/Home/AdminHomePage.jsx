@@ -36,7 +36,7 @@ export function AdminHomePage() {
             <Card className="admin-card" onClick={() => navigate("/admin/users")}>
               <CardContent className="admin-card-content">
                 <PeopleIcon fontSize="large" sx={{ mb: 1, color: "#5d3a00" }} />
-                <Typography variant="h5">Usuarios</Typography>
+                <Typography variant="h5">Gestion de suarios</Typography>
               </CardContent>
             </Card>
           </Grid>

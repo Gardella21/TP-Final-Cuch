@@ -5,7 +5,7 @@ final readonly class ArticleRoutes {
     return [
       [
         "name" => "article_get",
-        "url" => "/articles",
+        "url" => "/articles/{id}",
         "controller" => "Article/ArticleGetController.php",
         "method" => "GET",
         "parameters" => [
@@ -29,7 +29,7 @@ final readonly class ArticleRoutes {
       ],
       [
         "name" => "article_put",
-        "url" => "/articles",
+        "url" => "/articles/{id}",
         "controller" => "Article/ArticlePutController.php",
         "method" => "PUT",
         "parameters" => [
@@ -41,7 +41,7 @@ final readonly class ArticleRoutes {
       ],
       [
         "name" => "article_delete",
-        "url" => "/articles",
+        "url" => "/articles/{id}",
         "controller" => "Article/ArticleDeleteController.php",
         "method" => "DELETE",
         "parameters" => [

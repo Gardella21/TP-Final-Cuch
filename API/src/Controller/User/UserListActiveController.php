@@ -13,7 +13,7 @@ final class UserListActiveController
         $service = new UserManagementService();
         $users = $service->getActiveUsers();
 
-        // devolvemos un array plano con los datos de usuarios activos //
+        //devolvemos un array plano con los datos de usuarios activos //
         echo json_encode(
             array_map(fn($u) => [
                 "id"=> $u->id(),

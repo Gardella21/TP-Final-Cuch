@@ -32,105 +32,109 @@ export function ArticleCreationPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setLoading(true);
 
-    const imgFormData = new FormData();
-    imgFormData.append("file", imagen);
-    const imgResponse = await fileService.UploadFile(imgFormData);
+    try {
+      const imgFormData = new FormData();
+      imgFormData.append("file", imagen);
+      const imgResponse = await fileService.UploadFile(imgFormData);
 
+      const formData = new FormData();
+      formData.append("title", titulo);
+      formData.append("body", contenido);
+      formData.append("image", imgResponse.data.url);
 
-    const payload = {
-      title: titulo,
-      body: contenido,
-      image: imgResponse.data.url,
-    };
-    await articleService.createArticle(payload);
-    
-    setLoading(false);
-    navigate("/admin/article");
-  }
+      await articleService.createArticle(formData);
+      
+      setLoading(false);
+      navigate("/admin/articles");
+    } catch (error) {
+      console.error("Error al crear el artículo:", error);
+      alert("Ocurrió un error al crear la noticia");
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="article-creator-bg">
-        <Container maxWidth="md" className="crear-container">
-            <Box className="header-crear">
+      <Container maxWidth="md" className="crear-container">
+        <Box className="header-crear">
+          <Button
+            variant="contained"
+            color="primary"
+            className="volver-btn"
+            onClick={() => navigate(-1)}
+          >
+            ← Volver
+          </Button>
+          <Typography variant="h4" className="titulo-pagina">
+            Crear Nueva Noticia
+          </Typography>
+        </Box>
+
+        <form onSubmit={handleSubmit}>
+          <Paper className="preview-card">
+            <Box className="preview-contenido">
+              <TextField
+                variant="outlined"
+                placeholder="Título de la noticia"
+                value={titulo}
+                onChange={(e) => setTitulo(e.target.value)}
+                fullWidth
+                className="campo-titulo"
+              />
+
+              <TextField
+                variant="outlined"
+                placeholder="Contenido de la noticia..."
+                value={contenido}
+                onChange={(e) => setContenido(e.target.value)}
+                fullWidth
+                multiline
+                rows={6}
+                className="campo-contenido"
+              />
+            </Box>
+
+            {/* Imagen abajo */}
+            <Box className="preview-imagen">
+              {preview ? (
+                <img src={preview} alt="Vista previa" />
+              ) : (
+                <div className="preview-placeholder">
+                  <Typography variant="body2" color="text.secondary">
+                    Vista previa de la imagen
+                  </Typography>
+                </div>
+              )}
+              <Button
+                variant="outlined"
+                component="label"
+                className="btn-subir"
+              >
+                Subir Imagen
+                <input
+                  type="file"
+                  hidden
+                  accept="image/*"
+                  onChange={handleImagen}
+                />
+              </Button>
+            </Box>
+          </Paper>
+
+          <Box textAlign="center" mt={3}>
             <Button
-                variant="contained"
-                color="primary"
-                className="volver-btn"
-                onClick={() => navigate(-1)}
+              loading={loading}
+              type="submit"
+              variant="contained"
+              color="primary"
+              size="large"
             >
-                ← Volver
+              Crear Noticia
             </Button>
-            <Typography variant="h4" className="titulo-pagina">
-                Crear Nueva Noticia
-            </Typography>
-            </Box>
-
-            <form onSubmit={handleSubmit}>
-            <Paper className="preview-card">
-                <Box className="preview-contenido">
-                <TextField
-                    variant="outlined"
-                    placeholder="Título de la noticia"
-                    value={titulo}
-                    onChange={(e) => setTitulo(e.target.value)}
-                    fullWidth
-                    className="campo-titulo"
-                />
-
-                <TextField
-                    variant="outlined"
-                    placeholder="Contenido de la noticia..."
-                    value={contenido}
-                    onChange={(e) => setContenido(e.target.value)}
-                    fullWidth
-                    multiline
-                    rows={6}
-                    className="campo-contenido"
-                />
-                </Box>
-
-                {/* Imagen abajo */}
-                <Box className="preview-imagen">
-                {preview ? (
-                    <img src={preview} alt="Vista previa" />
-                ) : (
-                    <div className="preview-placeholder">
-                    <Typography variant="body2" color="text.secondary">
-                        Vista previa de la imagen
-                    </Typography>
-                    </div>
-                )}
-                <Button
-                    variant="outlined"
-                    component="label"
-                    className="btn-subir"
-                >
-                    Subir Imagen
-                    <input
-                    type="file"
-                    hidden
-                    accept="image/*"
-                    onChange={handleImagen}
-                    />
-                </Button>
-                </Box>
-            </Paper>
-
-            <Box textAlign="center" mt={3}>
-                <Button
-                loading={loading}
-                type="submit"
-                variant="contained"
-                color="primary"
-                size="large"
-                >
-                Crear Noticia
-                </Button>
-            </Box>
-            </form>
+          </Box>
+        </form>
       </Container>
     </div>
   );

@@ -13,7 +13,7 @@ final class UserListPendingController
         $service = new UserManagementService();
         $users = $service->getPendingUsers();
 
-        // devolvemos un array plano con los datos de usuarios pendientes //
+        //devolvemos un array plano con los datos de usuarios pendientes //
         echo json_encode(
             array_map(fn($u) => [
                 "id" => $u->id(),
