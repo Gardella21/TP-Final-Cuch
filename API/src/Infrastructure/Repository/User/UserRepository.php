@@ -124,14 +124,59 @@ final readonly class UserRepository extends PDOManager implements UserRepository
         return array_map(fn($row) => $this->primitiveToUser($row), $results);
     }
 
+    //Se genera un nuevo token al activar un usuario //
     public function activateUser(int $userId): void
     {
-        $this->execute("UPDATE users SET is_active = 1 WHERE id = :id", ["id" => $userId]);
+        $token = md5(uniqid((string)$userId, true));
+        $tokenAuthDate = (new DateTime('+1 hour'))->format('Y-m-d H:i:s');
+
+        $this->execute(
+            "UPDATE users 
+             SET is_active = 1, 
+                 token = :token, 
+                 token_auth_date = :token_auth_date 
+             WHERE id = :id",
+            [
+                "id" => $userId,
+                "token" => $token,
+                "token_auth_date" => $tokenAuthDate
+            ]
+        );
     }
 
+    //Se genera token y re-hashea contraseña si no lo estaba//
     public function authorizeAdmin(int $userId): void
     {
-        $this->execute("UPDATE users SET role = 'admin' WHERE id = :id", ["id" => $userId]);
+        $user = $this->find($userId);
+        if (!$user) {
+            return;
+        }
+
+        // Si la contraseña no está hasheadda se hace //
+        if (!password_get_info($user->password())['algo']) {
+            $hashed = password_hash($user->password(), PASSWORD_BCRYPT);
+        } else {
+            $hashed = $user->password();
+        }
+
+        $token = md5(uniqid((string)$userId, true));
+        $tokenAuthDate = (new DateTime('+1 hour'))->format('Y-m-d H:i:s');
+
+        $this->execute(
+            "UPDATE users 
+             SET role = 'admin',
+                 is_active = 1,
+                 password = :password,
+                 token = :token,
+                 token_auth_date = :token_auth_date
+             WHERE id = :id",
+            [
+                "id" => $userId,
+                "password" => $hashed,
+                "token" => $token,
+                "token_auth_date" => $tokenAuthDate
+            ]
+        );
     }
 
     private function primitiveToUser(?array $primitive): ?User

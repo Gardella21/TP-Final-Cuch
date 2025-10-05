@@ -1,28 +1,29 @@
 <?php
 
-use Src\Service\User\UserManagementService;
 use Src\Middleware\AuthMiddleware;
+use Src\Service\User\UserDeleterService;
 
-final class UserDeleteController
-{
+final readonly class UserDeleteController {
+    private UserDeleterService $service;
+    private AuthMiddleware $auth;
+
+    public function __construct() {
+        // Inicializamos los servicios //
+        $this->service = new UserDeleterService();
+        $this->auth = new AuthMiddleware();
+    }
+
     public function start(int $id): void
     {
-        header("Content-Type: application/json; charset=utf-8");
+        // Validar token y rol permitido //
+        $this->auth->authenticate(true, ['super_adm']);
 
-        try {
-            $auth = new AuthMiddleware();
-            $superAdmId = $auth->authenticate();
+        // Eliminar el usuario según el ID recibido //
+        $this->service->delete($id);
 
-            $service = new UserManagementService();
-            $service->deleteUser($superAdmId, $id);
-
-            echo json_encode([
-                "status" => "ok",
-                "message" => "Usuario eliminado correctamente"
-            ]);
-        } catch (\Throwable $e) {
-            http_response_code(400);
-            echo json_encode(["error" => $e->getMessage()]);
-        }
+        // Respuesta JSON al frontend //
+        header('Content-Type: application/json');
+        echo json_encode(["message" => "Usuario eliminado correctamente"]);
+        exit;
     }
 }

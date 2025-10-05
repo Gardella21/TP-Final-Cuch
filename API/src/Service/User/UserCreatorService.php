@@ -23,15 +23,16 @@ final readonly class UserCreatorService {
         string $password,
         string $role = 'visitor' 
     ): void {
+        //Verificar si ya existe un usuario con el mismo correo//
         $user = $this->userFinderByEmailService->find($email);
 
         if (!empty($user)) {
-            throw new UserAlreadyExistsException();
+            throw new UserAlreadyExistsException($email);
         }
-
         // Usuario pendiente por defecto //
         $user = User::create($name, $email, $password, $role, false);
 
+        // Guardar en base de datos //
         $this->repository->insert($user);
     }
 }

@@ -17,7 +17,7 @@ final class UserSearchByEmailController
             if ($user === null) {
                 http_response_code(404);
                 echo json_encode(["error" => "No se encontró usuario con el email: $email"]);
-                return;
+                exit;
             }
 
             echo json_encode([
@@ -27,9 +27,12 @@ final class UserSearchByEmailController
                 "role"=> $user->role(),
                 "is_active"=> $user->is_active(),
             ]);
+            exit;
+
         } catch (\Throwable $e) {
             http_response_code(500);
             echo json_encode(["error" => $e->getMessage()]);
+            exit;
         }
     }
 }
