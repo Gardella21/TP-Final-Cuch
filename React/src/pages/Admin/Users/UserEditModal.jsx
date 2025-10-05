@@ -6,79 +6,101 @@ import {
   Button,
   TextField,
   MenuItem,
+  CircularProgress,
   Box,
 } from "@mui/material";
 import { useState } from "react";
 import { userService } from "../../../services/userService";
 import "./UserEditModal.css";
 
+
 export default function UserEditModal({ user, onClose, onSave }) {
-  const [role, setRole] = useState(user.role); // rol(admin, visitor, super_adm)//
-  const [isActive, setIsActive] = useState(user.is_active); 
+  const [name, setName] = useState(user.name);
+  const [email, setEmail] = useState(user.email);
+  const [role, setRole] = useState(user.role);
+  const [loading, setLoading] = useState(false);
 
-  // Guardar cambios
-  const handleSave = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
     try {
-      const payload = {
-        id: user.id,
-        role, 
-        is_active: isActive, 
-      };
+      const payload = { name, email, role };
 
-      console.log("Actualizando usuario:", payload);
+      //actualizo usuario en backend//
+      await userService.update(user.id, payload);
 
-      await userService.update(payload);
+      //actualizo cache local para no recargar todo//
+      const cache = localStorage.getItem("users_cache");
+      if (cache) {
+        const users = JSON.parse(cache);
+        const updated = users.map((u) =>
+          u.id === user.id ? { ...u, ...payload } : u
+        );
+        localStorage.setItem("users_cache", JSON.stringify(updated));
+      }
+     //llamo a la función del padre para refrescar la lista //
       onSave();
-    } catch (err) {
-      console.error("Error al actualizar usuario:", err.response?.data || err);
+      onClose();
+    } catch (error) {
+      console.error("Error al actualizar usuario:", error);
+      alert("No se pudo actualizar el usuario");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <Dialog open={!!user} onClose={onClose}>
-      <DialogTitle className="modal-title">Editar Usuario</DialogTitle>
+    <Dialog open onClose={onClose} fullWidth maxWidth="sm">
+      <DialogTitle>Editar Usuario</DialogTitle>
       <DialogContent>
-        <Box className="modal-content">
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}
+        >
+          <TextField
+            label="Nombre"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            fullWidth
+            required
+          />
           <TextField
             label="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             fullWidth
-            margin="dense"
-            value={user.email}
-            disabled
+            required
           />
           <TextField
             select
             label="Rol"
-            fullWidth
-            margin="dense"
             value={role}
             onChange={(e) => setRole(e.target.value)}
-          >
-            <MenuItem value="super_adm">Super Admin</MenuItem>
-            <MenuItem value="admin">Administrador</MenuItem>
-            <MenuItem value="visitor">Visitante</MenuItem>
-          </TextField>
-          <TextField
-            select
-            label="Estado"
             fullWidth
-            margin="dense"
-            value={isActive ? "true" : "false"}
-            onChange={(e) => setIsActive(e.target.value === "true")}
+            required
           >
-            <MenuItem value="true">Activo</MenuItem>
-            <MenuItem value="false">Inactivo</MenuItem>
+            <MenuItem value="visitor">Visitante</MenuItem>
+            <MenuItem value="admin">Administrador</MenuItem>
+            <MenuItem value="super_adm">Super Administrador</MenuItem>
           </TextField>
+
+          <DialogActions>
+            <Button onClick={onClose} color="secondary">
+              Cancelar
+            </Button>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              disabled={loading}
+            >
+              {loading ? <CircularProgress size={24} /> : "Guardar cambios"}
+            </Button>
+          </DialogActions>
         </Box>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose} className="btn-cancel">
-          Cancelar
-        </Button>
-        <Button onClick={handleSave} className="btn-save">
-          Guardar
-        </Button>
-      </DialogActions>
     </Dialog>
   );
 }

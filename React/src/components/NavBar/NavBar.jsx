@@ -8,11 +8,11 @@ const navItems = [
   { name: 'Sobre Nosotros', route: '/nosotros' },
   { name: 'Catálogo', route: '/catalogo' },
   { name: 'Preguntas', route: '/preguntas', icon: '❓' }, 
-  { name: 'Login', route: '/login' } // temporal para test
+
 ];
 
 const Navbar = () => {
-  const location = useLocation(); // para saber qué ruta está activa
+  const location = useLocation(); // para saber qué ruta está activa //
 
   return (
     <AppBar position="static" color="primary">

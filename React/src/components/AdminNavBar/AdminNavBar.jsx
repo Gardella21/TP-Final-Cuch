@@ -32,6 +32,18 @@ const AdminNavBar = () => {
     navigate("/login"); 
   };
 
+  //Obtener la inicial del usuario guardado en localStorage//
+  const getUserInitial = () => {
+    try {
+      const userData = JSON.parse(localStorage.getItem("user"));
+      return userData?.name
+        ? userData.name.charAt(0).toUpperCase()
+        : "U";
+    } catch {
+      return "U";
+    }
+  };
+
   return (
     <>
       <AppBar position="static" className="admin-navbar">
@@ -48,13 +60,15 @@ const AdminNavBar = () => {
 
           <Box sx={{ flexGrow: 1 }} />
 
+        
           <div className="desktop-only user-section">
-            <Avatar alt="Usuario" src="/Images/avatar.png" sx={{ mr: 1, width: 50, height: 50 }} />
+            <Avatar className="user-avatar">{getUserInitial()}</Avatar>
             <Button className="logout-button" onClick={handleLogout}>
               Cerrar sesión
             </Button>
           </div>
 
+          {/* Menú móvil */}
           <IconButton
             edge="end"
             color="inherit"
@@ -80,7 +94,8 @@ const AdminNavBar = () => {
           onClick={toggleDrawer(false)}
           onKeyDown={toggleDrawer(false)}
         >
-          <Avatar alt="Usuario" src="/Images/avatar.png" sx={{ mb: 1, width: 60, height: 60 }} />
+          <Avatar className="drawer-avatar">{getUserInitial()}</Avatar>
+
           <Typography variant="body1" sx={{ mb: 2, fontWeight: 'bold' }}>
             Bienvenido
           </Typography>
@@ -106,7 +121,7 @@ const AdminNavBar = () => {
             <Divider sx={{ my: 2 }} />
             <ListItem disablePadding>
               <ListItemButton onClick={handleLogout}>
-                <ListItemText primary="Cerrar sesión" />
+                <ListItemText primary="Cerrar sesión" className="logout-text" />
               </ListItemButton>
             </ListItem>
           </List>
