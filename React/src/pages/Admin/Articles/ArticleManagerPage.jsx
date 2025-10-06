@@ -155,7 +155,7 @@ export function ArticleManagerPage() {
             onClick={handleCrear}
             variant="contained"
           >
-            + Nueva Noticia
+            <span className="texto">Nueva Noticia</span>
           </Button>
         </div>
 
@@ -166,7 +166,7 @@ export function ArticleManagerPage() {
         ) : (
           <TableContainer component={Paper} className="table-container">
             <Table>
-              <TableHead>
+              <TableHead className="table-header">
                 <TableRow>
                   <TableCell><b>ID</b></TableCell>
                   <TableCell><b>Título</b></TableCell>
@@ -176,13 +176,13 @@ export function ArticleManagerPage() {
               </TableHead>
               <TableBody>
                 {noticias.map((noticia) => (
-                  <TableRow key={noticia.id}>
+                  <TableRow className="table-row" key={noticia.id}>
                     <TableCell>{noticia.id}</TableCell>
                     <TableCell>{noticia.title}</TableCell>
                     <TableCell>{noticia.date}</TableCell>
                     <TableCell align="right">
                       <IconButton
-                        color=""
+                        className="edit-button"
                         onClick={() => handleEditar(noticia.id)}
                       >
                         <Edit />

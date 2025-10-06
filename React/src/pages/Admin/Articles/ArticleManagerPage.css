@@ -18,21 +18,35 @@
   align-items: center;
   margin-bottom: 1.5rem;
   color: rgb(70, 70, 70);
+      font-size: 2rem !important;
+    font-weight: bold;
+    font-style: italic;
+    text-align: left;
+    color: #5d3a00;
+    text-shadow: 0 0 5px #fff5e6, 0 0 10px #ffd699, 0 0 15px #ffb84d;
 }
 
 .header h4 {
   font-weight: bold;
   margin: 0;
+  
 }
+
+/* Boton Crear */
 
 .create-button {
   background-color: #606c38 !important;
   color: #fefae0 !important;
   font-size: 1rem;
   font-weight: bold;
-  padding: 10px 20px;
-  border-radius: 12px;
+  padding: 20px 20px !important;
+  border-radius: 12px !important;
   transition: background-color 0.3s ease;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  min-width: 0 !important; 
+  line-height: 1 !important;
 }
 
 .create-button:hover {
@@ -46,13 +60,35 @@
   margin-top: 3rem;
 }
 
+.table-header {
+  background-color: #5d3a00;
+}
+
+.table-header th {
+  color: #fff !important;
+  font-weight: bold;
+}
+
+.table-row {
+  background-color: #fffaf5;
+  transition: all 0.3s ease;
+}
+.table-row:hover {
+  background-color: #f0e0d6;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
 .table-container {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* --------- Estilos del modal --------- */
+.edit-button {
+  color: #8b5e34 !important;
+}
+
+/* Estilos del modal */
 .edit-modal  .MuiDialog-paper {
   border-radius: 16px !important;
   padding: 1rem !important;
@@ -104,6 +140,35 @@
   border-radius: 8px;
   max-height: 220px;
   object-fit: cover;
+}
+
+/* Vista telefono */
+@media (max-width: 600px) {
+  .create-button.MuiButton-root,
+  .create-button.MuiButton-contained {
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 45% !important;
+    padding: 0 !important;
+    min-width: 50px !important;
+    min-height: 50px !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+
+  .create-button .texto {
+    display: none !important;
+  }
+
+  .create-button::after {
+    content: "+";
+    display: inline-block;
+    font-weight: bold;
+    color: #fefae0;
+  }
 }
 
 /* Botones del modal */

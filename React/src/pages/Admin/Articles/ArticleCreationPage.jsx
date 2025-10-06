@@ -56,86 +56,84 @@ export function ArticleCreationPage() {
   };
 
   return (
-    <div className="article-creator-bg">
-      <Container maxWidth="md" className="crear-container">
-        <Box className="header-crear">
+    <div className="article-creation-page">
+        <Container maxWidth="md" className="crear-container">
           <Button
-            variant="contained"
-            color="primary"
-            className="volver-btn"
-            onClick={() => navigate(-1)}
-          >
-            ← Volver
-          </Button>
-          <Typography variant="h4" className="titulo-pagina">
-            Crear Nueva Noticia
-          </Typography>
-        </Box>
-
-        <form onSubmit={handleSubmit}>
-          <Paper className="preview-card">
-            <Box className="preview-contenido">
-              <TextField
-                variant="outlined"
-                placeholder="Título de la noticia"
-                value={titulo}
-                onChange={(e) => setTitulo(e.target.value)}
-                fullWidth
-                className="campo-titulo"
-              />
-
-              <TextField
-                variant="outlined"
-                placeholder="Contenido de la noticia..."
-                value={contenido}
-                onChange={(e) => setContenido(e.target.value)}
-                fullWidth
-                multiline
-                rows={6}
-                className="campo-contenido"
-              />
-            </Box>
-
-            {/* Imagen abajo */}
-            <Box className="preview-imagen">
-              {preview ? (
-                <img src={preview} alt="Vista previa" />
-              ) : (
-                <div className="preview-placeholder">
-                  <Typography variant="body2" color="text.secondary">
-                    Vista previa de la imagen
-                  </Typography>
-                </div>
-              )}
-              <Button
-                variant="outlined"
-                component="label"
-                className="btn-subir"
-              >
-                Subir Imagen
-                <input
-                  type="file"
-                  hidden
-                  accept="image/*"
-                  onChange={handleImagen}
-                />
-              </Button>
-            </Box>
-          </Paper>
-
-          <Box textAlign="center" mt={3}>
-            <Button
-              loading={loading}
-              type="submit"
               variant="contained"
               color="primary"
-              size="large"
+              className="volver-btn"
+              onClick={() => navigate(-1)}
             >
-              Crear Noticia
+              ← Volver
             </Button>
-          </Box>
-        </form>
-      </Container>
+            <Typography variant="h4" className="titulo-pagina">
+              Crear Nueva Noticia
+            </Typography>
+          <form onSubmit={handleSubmit}>
+            <Paper className="preview-card">
+              <Box className="preview-contenido">
+                <TextField
+                  variant="outlined"
+                  placeholder="Título de la noticia"
+                  value={titulo}
+                  onChange={(e) => setTitulo(e.target.value)}
+                  fullWidth
+                  className="campo-titulo"
+                />
+
+                <TextField
+                  variant="outlined"
+                  placeholder="Contenido de la noticia..."
+                  value={contenido}
+                  onChange={(e) => setContenido(e.target.value)}
+                  fullWidth
+                  multiline
+                  rows={6}
+                  className="campo-contenido"
+                />
+              </Box>
+
+              {/* Imagen abajo */}
+              <Box className="preview-imagen">
+                {preview ? (
+                  <img src={preview} alt="Vista previa" />
+                ) : (
+                  <div className="preview-placeholder">
+                    <Typography variant="body2" color="text.secondary">
+                      Vista previa de la imagen
+                    </Typography>
+                  </div>
+                )}
+                <Button
+                  variant="outlined"
+                  component="label"
+                  className="btn-subir"
+                >
+                  Subir Imagen
+                  <input
+                    type="file"
+                    hidden
+                    accept="image/*"
+                    onChange={handleImagen}
+                  />
+                </Button>
+              </Box>
+            </Paper>
+
+            <Box textAlign="center" mt={3}>
+              <Button
+                className="create-button"
+                loading={loading}
+                type="submit"
+                variant="contained"
+                color="primary"
+                size="large"
+              >
+                Crear Noticia
+              </Button>
+            </Box>
+          </form>
+        </Container>
     </div>
   );
 }
