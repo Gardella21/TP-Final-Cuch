@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   Box,
   Button,
+  CircularProgress,
   Container,
   Paper,
   TextField,
@@ -123,13 +124,13 @@ export function ArticleCreationPage() {
             <Box textAlign="center" mt={3}>
               <Button
                 className="create-button"
-                loading={loading}
+                disabled={loading}
                 type="submit"
                 variant="contained"
                 color="primary"
                 size="large"
               >
-                Crear Noticia
+                {loading ? <CircularProgress size={24} color="inherit" /> : "Crear Noticia"}
               </Button>
             </Box>
           </form>

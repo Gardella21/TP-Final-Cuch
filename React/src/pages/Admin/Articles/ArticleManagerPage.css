@@ -55,6 +55,7 @@
 
 /* Tabla */
 .loading {
+  color: #5d3a00;
   display: flex;
   justify-content: center;
   margin-top: 3rem;
