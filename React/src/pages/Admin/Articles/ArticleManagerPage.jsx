@@ -28,6 +28,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
 import "./ArticleManagerPage.css";
+import { red } from "@mui/material/colors";
 
 // Validación Zod (sin imagen porque es archivo)
 const articleSchema = z.object({
@@ -110,7 +111,6 @@ export function ArticleManagerPage() {
         body: data.body,
         image: imageUrl,
       };
-      console.log(currentArticle.id, payload);
       await articleService.updateArticle(currentArticle.id, payload);
 
       setNoticias(noticias.map((n) =>
@@ -146,7 +146,7 @@ export function ArticleManagerPage() {
   };
 
   return (
-    <div className="article-manager-bg">
+    <div className="article-manager-page">
       <Container className="container">
         <div className="header">
           <Typography variant="h4">Administración de Noticias</Typography>
@@ -155,7 +155,7 @@ export function ArticleManagerPage() {
             onClick={handleCrear}
             variant="contained"
           >
-            + Nueva Noticia
+            <span className="texto">Nueva Noticia</span>
           </Button>
         </div>
 
@@ -166,7 +166,7 @@ export function ArticleManagerPage() {
         ) : (
           <TableContainer component={Paper} className="table-container">
             <Table>
-              <TableHead>
+              <TableHead className="table-header">
                 <TableRow>
                   <TableCell><b>ID</b></TableCell>
                   <TableCell><b>Título</b></TableCell>
@@ -176,13 +176,13 @@ export function ArticleManagerPage() {
               </TableHead>
               <TableBody>
                 {noticias.map((noticia) => (
-                  <TableRow key={noticia.id}>
+                  <TableRow className="table-row" key={noticia.id}>
                     <TableCell>{noticia.id}</TableCell>
                     <TableCell>{noticia.title}</TableCell>
                     <TableCell>{noticia.date}</TableCell>
                     <TableCell align="right">
                       <IconButton
-                        color="primary"
+                        className="edit-button"
                         onClick={() => handleEditar(noticia.id)}
                       >
                         <Edit />
@@ -203,11 +203,12 @@ export function ArticleManagerPage() {
         )}
 
         {/* Modal de edición */}
-        <Dialog open={openModal} onClose={handleCloseModal} fullWidth maxWidth="sm">
+        <Dialog open={openModal} onClose={handleCloseModal} className="edit-aricle-dialog" fullWidth maxWidth="sm">
           <DialogTitle>Editar Noticia</DialogTitle>
           <DialogContent>
             <form onSubmit={handleSubmit(handleSaveChanges)}>
               <TextField
+                id="edit-title"
                 label="Título"
                 variant="outlined"
                 fullWidth
@@ -217,13 +218,14 @@ export function ArticleManagerPage() {
                 helperText={errors.title?.message}
               />
               <TextField
+                id="edit-body"
                 label="Contenido"
                 variant="outlined"
                 fullWidth
                 {...register("body")}
                 margin="normal"
                 multiline
-                rows={4}
+                rows={8}
                 error={!!errors.body}
                 helperText={errors.body?.message}
               />
@@ -242,6 +244,7 @@ export function ArticleManagerPage() {
                 )}
 
                 <Button
+                  className="edit-image-btn"
                   variant="outlined"
                   component="label"
                   fullWidth

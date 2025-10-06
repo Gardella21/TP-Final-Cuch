@@ -1,5 +1,5 @@
-/* Fondo y estructura del modal de Editar Usuario*/
-.MuiDialog-root .MuiDialog-paper {
+/* Fondo y estructura del modal de Editar Usuario */
+.edit-user-dialog .MuiDialog-paper {
   background: linear-gradient(180deg, #fffaf2 0%, #f5e6d3 100%) !important;
   color: #5d3a00 !important;
   font-family: "Georgia", serif !important;
@@ -7,23 +7,24 @@
   box-shadow: 0 6px 20px rgba(93, 58, 0, 0.25) !important;
 }
 
-/*Título */
-.MuiDialog-root .MuiDialogTitle-root {
+/* Título */
+.edit-user-dialog .MuiDialogTitle-root {
   color: #5d3a00 !important;
   font-weight: bold !important;
   text-align: center;
   font-size: 1.4rem !important;
   margin-bottom: 0.6rem;
 }
+
 /* Cuerpo del modal */
-.MuiDialog-root .MuiInputLabel-root {
+.edit-user-dialog .MuiInputLabel-root {
   color: #5d3a00 !important;
   font-weight: 600 !important;
 }
 
-.MuiDialog-root .MuiInputBase-input,
-.MuiDialog-root input,
-.MuiDialog-root select {
+.edit-user-dialog .MuiInputBase-input,
+.edit-user-dialog input,
+.edit-user-dialog select {
   color: #5d3a00 !important;
   border: 1px solid #d2b48c !important;
   background-color: #fffaf2 !important;
@@ -31,13 +32,13 @@
   padding: 0.4rem 0.6rem !important;
 }
 
-.MuiDialog-root .MuiInputBase-input:focus {
+.edit-user-dialog .MuiInputBase-input:focus {
   border-color: #8b5e34 !important;
   box-shadow: 0 0 6px rgba(139, 94, 52, 0.5) !important;
 }
 
-/*Boton Cancelar */
-.MuiDialog-root button.MuiButton-textSecondary {
+/* Botón Cancelar */
+.edit-user-dialog button.MuiButton-textSecondary {
   background-color: #f5e6d3 !important;
   color: #5d3a00 !important;
   font-weight: bold !important;
@@ -45,13 +46,13 @@
   transition: all 0.3s ease;
 }
 
-.MuiDialog-root button.MuiButton-textSecondary:hover {
+.edit-user-dialog button.MuiButton-textSecondary:hover {
   background-color: #e6d0b8 !important;
   transform: scale(1.05);
 }
 
-/* Boton Guardar Cambios*/
-.MuiDialog-root button.MuiButton-containedPrimary {
+/* Botón Guardar Cambios */
+.edit-user-dialog button.MuiButton-containedPrimary {
   background-color: #8b5e34 !important;
   color: #fff !important;
   font-weight: bold !important;
@@ -60,7 +61,7 @@
   transition: all 0.3s ease;
 }
 
-.MuiDialog-root button.MuiButton-containedPrimary:hover {
+.edit-user-dialog button.MuiButton-containedPrimary:hover {
   background-color: #5d3a00 !important;
   transform: translateY(-2px) scale(1.05);
 }
