@@ -1,13 +1,15 @@
-.article-manager-bg{
-    background: rgb(211, 211, 211);
-    min-height: 100vh;
-    padding: 2rem 0;
-    margin: 0;
+/* Fondo general */
+.article-manager-bg {
+  background: linear-gradient(135deg, #f5e6d3, #fdf6f0);
+  min-height: 100vh;
+  padding: 2rem 0;
+  margin: 0;
+  gap: 2rem;
 }
 
+/* Header */
 .container {
   margin-top: 2rem;
-
 }
 
 .header {
@@ -15,7 +17,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
-  color: rgb(92, 92, 92);
+  color: rgb(70, 70, 70);
 }
 
 .header h4 {
@@ -24,8 +26,8 @@
 }
 
 .create-button {
-  background-color: #1976d2; /* Azul Material */
-  color: white;
+  background-color: #606c38 !important;
+  color: #fefae0 !important;
   font-size: 1rem;
   font-weight: bold;
   padding: 10px 20px;
@@ -34,9 +36,10 @@
 }
 
 .create-button:hover {
-  background-color: #115293;
+  background-color: #283618 !important;
 }
 
+/* Tabla */
 .loading {
   display: flex;
   justify-content: center;
@@ -47,4 +50,69 @@
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* --------- Estilos del modal --------- */
+.MuiDialog-paper {
+  border-radius: 16px !important;
+  padding: 1rem !important;
+}
+
+.MuiDialogTitle-root {
+  font-weight: bold;
+  color: #283618;
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Inputs */
+#edit-title, 
+#edit-body {
+  background-color: #fff !important;
+  border-radius: 8px;
+}
+
+/* Preview imagen */
+.preview-imagen {
+  border: 1px dashed #ccc;
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+  background-color: #fafafa;
+}
+
+.preview-imagen img {
+  border-radius: 8px;
+  max-height: 220px;
+  object-fit: cover;
+}
+
+/* Botones del modal */
+.MuiDialogActions-root {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.MuiDialogActions-root button {
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 8px 20px;
+}
+
+.MuiDialogActions-root button:first-of-type {
+  color: #606c38;
+}
+
+.MuiDialogActions-root button:last-of-type {
+  background-color: #606c38 !important;
+  color: #fefae0 !important;
+}
+
+.MuiDialogActions-root button:last-of-type:hover {
+  background-color: #283618 !important;
 }

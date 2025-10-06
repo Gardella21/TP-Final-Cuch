@@ -51,7 +51,7 @@ export default function UserEditModal({ user, onClose, onSave }) {
   };
 
   return (
-    <Dialog open onClose={onClose} fullWidth maxWidth="sm">
+    <Dialog open onClose={onClose} className="edit-user-dialog" fullWidth maxWidth="sm">
       <DialogTitle>Editar Usuario</DialogTitle>
       <DialogContent>
         <Box

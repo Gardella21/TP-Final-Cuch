@@ -110,7 +110,6 @@ export function ArticleManagerPage() {
         body: data.body,
         image: imageUrl,
       };
-      console.log(currentArticle.id, payload);
       await articleService.updateArticle(currentArticle.id, payload);
 
       setNoticias(noticias.map((n) =>
@@ -182,7 +181,7 @@ export function ArticleManagerPage() {
                     <TableCell>{noticia.date}</TableCell>
                     <TableCell align="right">
                       <IconButton
-                        color="primary"
+                        color=""
                         onClick={() => handleEditar(noticia.id)}
                       >
                         <Edit />
@@ -208,6 +207,7 @@ export function ArticleManagerPage() {
           <DialogContent>
             <form onSubmit={handleSubmit(handleSaveChanges)}>
               <TextField
+                id="edit-title"
                 label="Título"
                 variant="outlined"
                 fullWidth
@@ -217,13 +217,14 @@ export function ArticleManagerPage() {
                 helperText={errors.title?.message}
               />
               <TextField
+                id="edit-body"
                 label="Contenido"
                 variant="outlined"
                 fullWidth
                 {...register("body")}
                 margin="normal"
                 multiline
-                rows={4}
+                rows={3}
                 error={!!errors.body}
                 helperText={errors.body?.message}
               />
