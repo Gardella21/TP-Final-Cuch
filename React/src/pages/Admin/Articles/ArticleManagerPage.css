@@ -1,5 +1,5 @@
 /* Fondo general */
-.article-manager-bg {
+.article-manager-page {
   background: linear-gradient(135deg, #f5e6d3, #fdf6f0);
   min-height: 100vh;
   padding: 2rem 0;
@@ -53,12 +53,12 @@
 }
 
 /* --------- Estilos del modal --------- */
-.MuiDialog-paper {
+.edit-modal  .MuiDialog-paper {
   border-radius: 16px !important;
   padding: 1rem !important;
 }
 
-.MuiDialogTitle-root {
+.edit-modal  .MuiDialogTitle-root {
   font-weight: bold;
   color: #283618;
 }
@@ -69,11 +69,26 @@
   gap: 1rem;
 }
 
+.edit-image-btn{
+  border: 2px dashed #ccc !important;
+  color: #606c38 !important;
+  width: 12rem !important;
+  font-weight: bold !important;
+  border-radius: 12px !important;
+  background-color: #fefae0 !important;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
 /* Inputs */
 #edit-title, 
 #edit-body {
   background-color: #fff !important;
+  color: #283618 !important;
   border-radius: 8px;
+}
+
+#edit-title label{
+  color: red !important;
 }
 
 /* Preview imagen */
@@ -92,27 +107,32 @@
 }
 
 /* Botones del modal */
-.MuiDialogActions-root {
+.edit-aricle-dialog .MuiInputLabel-root {
+  color: #606c38 !important;
+  font-weight: 600 !important;
+}
+
+.edit-aricle-dialog .MuiDialogActions-root {
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
 }
 
-.MuiDialogActions-root button {
+.edit-aricle-dialog .MuiDialogActions-root button {
   font-weight: bold;
   border-radius: 8px;
   padding: 8px 20px;
 }
 
-.MuiDialogActions-root button:first-of-type {
+.edit-aricle-dialog .MuiDialogActions-root button:first-of-type {
   color: #606c38;
 }
 
-.MuiDialogActions-root button:last-of-type {
+.edit-aricle-dialog .MuiDialogActions-root button:last-of-type {
   background-color: #606c38 !important;
   color: #fefae0 !important;
 }
 
-.MuiDialogActions-root button:last-of-type:hover {
+.edit-aricle-dialog .MuiDialogActions-root button:last-of-type:hover {
   background-color: #283618 !important;
 }
