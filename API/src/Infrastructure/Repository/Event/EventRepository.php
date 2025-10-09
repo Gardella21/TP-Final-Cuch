@@ -13,16 +13,13 @@ final readonly class EventRepository extends PDOManager implements EventReposito
      public function find(int $id): ?Event 
     {
         $query = <<<HEREDOC
-                        SELECT 
-                            *
-                        FROM
-                            events A
-                        WHERE
-                            A.id = :id AND A.deleted = 0
-                    HEREDOC;
+                    SELECT *
+                    FROM events A
+                    WHERE A.id = :id AND A.deleted = 0
+                HEREDOC;
                     
         $parameters = [
-            "id" => $id
+            ":id" => $id
         ];
 
         $result = $this->execute($query, $parameters);
@@ -39,12 +36,12 @@ final readonly class EventRepository extends PDOManager implements EventReposito
                     A.description,
                     A.image,
                     A.end_date,
-                    A.is_active   AS is_active,  
-                    A.deleted     AS deleted     
+                    A.is_Active,  
+                    A.deleted     
                 FROM 
                     events A
                 WHERE 
-                    A.is_active = 1
+                    A.is_Active = 1
                 AND A.deleted = 0              
                 ORDER BY A.id DESC
                 HEREDOC;
@@ -66,15 +63,15 @@ final readonly class EventRepository extends PDOManager implements EventReposito
 
      public function insert(Event $event): void
     {
-        $query = "INSERT INTO events (title, description, image, end_date, is_active) 
-                    VALUES (:title, :description, :image, :end_date, :is_active) ";
+        $query = "INSERT INTO events (title, description, image, end_date, is_Active) 
+                    VALUES (:title, :description, :image, :end_date, :is_Active) ";
 
         $parameters = [
             "title" => $event->title(),
             "description" => $event->description(),
             "image" => $event->image(),
             "end_date" => $event->endDate()->format('Y-m-d'),
-            "is_active"=>$event->is_active()
+            "is_Active"=>$event->is_Active()
         ];
 
         $this->execute($query, $parameters);
@@ -90,20 +87,20 @@ final readonly class EventRepository extends PDOManager implements EventReposito
                             description = :description,
                             image = :image,
                             end_date = :end_date,
-                            is_Active = :is_active,
+                            is_Active = :is_Active,
                             deleted = :deleted
                         WHERE
                             id = :id
                     UPDATE_QUERY;
 
         $parameters = [
-            "id" => $event->id(),
-            "title" => $event->title(),
-            "description" => $event->description(),
-            "image" => $event->image(),
-            "end_date" => $event->endDate()->format('Y-m-d'),
-            "is_active"=>$event->is_active(),
-            "deleted" => $event->isDeleted() ? 1 : 0
+            ":id" => $event->id(),
+            ":title" => $event->title(),
+            ":description" => $event->description(),
+            ":image" => $event->image(),
+            ":end_date" => $event->endDate()->format('Y-m-d'),
+            ":is_Active"=>$event->is_Active(),
+            ":deleted" => $event->isDeleted() ? 1 : 0
         ];
 
         $this->execute($query, $parameters);
@@ -123,7 +120,7 @@ final readonly class EventRepository extends PDOManager implements EventReposito
             (string) $primitive["description"],
             (string) $primitive["image"],
             !empty($primitive["end_date"]) ? new DateTime($primitive["end_date"]) : null,
-            (bool) ($primitive["is_active"] ?? 0),
+            (bool) ($primitive["is_Active"] ?? 0),
             (bool) ($primitive["deleted"] ?? 0),
             );
 
