@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: mysql:3306
--- Tiempo de generación: 06-10-2025 a las 23:14:00
+-- Tiempo de generación: 10-10-2025 a las 02:01:13
 -- Versión del servidor: 5.7.44
--- Versión de PHP: 8.2.29
+-- Versión de PHP: 8.2.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -60,6 +60,33 @@ INSERT INTO `domains` (`id`, `name`, `code`, `deleted`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `events`
+--
+
+CREATE TABLE `events` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `end_date` date DEFAULT NULL,
+  `is_Active` tinyint(1) NOT NULL,
+  `deleted` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `events`
+--
+
+INSERT INTO `events` (`id`, `title`, `description`, `image`, `end_date`, `is_Active`, `deleted`) VALUES
+(7, 'Titulo 1', '21hs.\r\nLunes Miercoles y Viernes.\r\n', '', '2025-09-24', 1, 1),
+(8, 'titulo-nuevo', 'descripcion-nueva', '', '2025-09-24', 1, 0),
+(9, 'tiutlo 3', '21hs', '', '2025-09-20', 1, 1),
+(10, 'titulo 4', 'lunes', '', '2025-09-22', 1, 0),
+(11, 'titulo', 'descripcion 1', '', '2025-09-18', 1, 0);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `users`
 --
 
@@ -80,9 +107,10 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `token`, `token_auth_date`, `role`, `is_active`) VALUES
 (3, 'usuario de prueba', 'test@mail.com', '', NULL, NULL, 'super_adm', 1),
-(4, 'Molo', 'MoloKlaus27@gmail.com', '$2y$10$I5s8MPteQb/uEgyD.CHpBOTwEvXruHKRMK4rK3T/Gl9k3RiMVrIl.', '3d4d52e64def0978606cbf07027ba021', '2025-10-02 10:22:59', 'super_adm', 1),
+(4, 'Molo', 'MoloKlaus27@gmail.com', '$2y$10$I5s8MPteQb/uEgyD.CHpBOTwEvXruHKRMK4rK3T/Gl9k3RiMVrIl.', 'f5552a5e4adbff895dae8e507ae01de8', '2025-10-08 20:48:50', 'super_adm', 1),
 (10, 'natalia', 'natalia@bibloteca.com', '$2y$10$FYtYa9NnwpBIAOKYset2I.DuMFu9lGbdw2AGw9Wj83.LBTvgFjYVS', '317b469ce0eb233c8dcda5e0d784b362', '2025-10-02 08:48:23', 'visitor', 1),
-(11, 'Sebastian', 'sebastian@mail.com', '$2y$10$CWi4.UftmUPC0UbuiDlUWOKaZPTI6Ls//GD5uzRtMQ83hueBY396m', 'a3d65359b82c05b04cd849175a9e49a2', '2025-10-06 21:08:08', 'super_adm', 1);
+(11, 'Sebastian', 'sebastian@mail.com', '$2y$10$CWi4.UftmUPC0UbuiDlUWOKaZPTI6Ls//GD5uzRtMQ83hueBY396m', 'df7f7116a1a9abb87a5e79ef1ba8394f', '2025-10-07 21:01:19', 'super_adm', 1),
+(14, 'matias', 'matias@mail.com', '$2y$10$iJbd3ysqPjgWBKbULy8ey..oyfLhm8.3QB7UourowfOREqupbjaU.', 'e6eb86312cd56f14f7a2f66fc522eae8', '2025-10-08 19:44:32', 'admin', 1);
 
 --
 -- Índices para tablas volcadas
@@ -101,6 +129,12 @@ ALTER TABLE `domains`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `events`
+--
+ALTER TABLE `events`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `users`
 --
 ALTER TABLE `users`
@@ -114,7 +148,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `articles`
 --
 ALTER TABLE `articles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `domains`
@@ -123,10 +157,16 @@ ALTER TABLE `domains`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT de la tabla `events`
+--
+ALTER TABLE `events`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
