@@ -1,11 +1,8 @@
 /* CONTENEDOR: 3 columnas centradas, responsive */
 .event-page {
-  min-height: 100vh;
   width: 100%;
-  background: #FFF5B7;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #5C4033;
-
   display: grid;
   grid-template-columns: repeat(3, 320px); /* ← 3 por fila, ancho controlado */
   justify-content: center;                 /* centra el grid */

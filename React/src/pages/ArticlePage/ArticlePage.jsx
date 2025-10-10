@@ -61,7 +61,7 @@ export const ArticlePage = () => {
   const handleNext = () => page < totalPages && setPage(page + 1);
 
   return (
-    <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
       <Container className="articles-container" maxWidth={false} disableGutters>
         <Box sx={{ flexGrow: 1 }}>
           {loading ? (

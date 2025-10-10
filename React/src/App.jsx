@@ -28,12 +28,14 @@ import { EventManagerPage } from "./pages/Admin/Events/EventManagerPage";
 import UserManagerPage from "./pages/Admin/Users/UserManagerPage";
 
 const MainLayout = () => (
-  <>
+  <div className="layout-container">
     <Header />
     <NavBar />
-    <Outlet />
+    <main className="main-content">
+      <Outlet />
+    </main>
     <Footer />
-  </>
+  </div>
 );
 
 function App() {

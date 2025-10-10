@@ -7,7 +7,7 @@ const navItems = [
   { name: 'Cursos y eventos', route: '/cursos-y-eventos' },
   { name: 'Sobre Nosotros', route: '/nosotros' },
   { name: 'Catálogo', route: '/catalogo' },
-  { name: 'Preguntas', route: '/preguntas', icon: '❓' }, 
+  { name: 'Preguntas', route: '/preguntas' }, 
 
 ];
 

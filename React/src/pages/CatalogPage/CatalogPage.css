@@ -1,7 +1,5 @@
 
 .catalog-background {
-  min-height: 100vh;
-  background: #FFF5B7;                
   display: flex;
   justify-content: center;
   align-items: flex-start;
