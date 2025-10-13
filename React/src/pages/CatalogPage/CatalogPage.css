@@ -170,3 +170,44 @@
   font-style: italic;
   opacity: 0.9;
 }
+
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 16px 0 24px;
+}
+
+
+.book-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.16);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+
+.book-meta {
+  color: #6d5246;
+  font-size: 0.92rem;
+  line-height: 1.35;
+}
+
+
+.catalog-search .MuiInputBase-input {
+  color: #5C4033;
+}
+
+
+@media (min-width: 900px) {
+  .filters-checks .MuiFormControlLabel-root {
+    margin-right: 12px;
+  }
+}
+
+
+.MuiCheckbox-root.Mui-focusVisible,
+.select-field .MuiOutlinedInput-root.Mui-focused {
+  outline: 2px solid rgba(141,110,99,0.25);
+  outline-offset: 2px;
+}
