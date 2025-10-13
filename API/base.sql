@@ -172,3 +172,64 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `books`
+--
+
+CREATE TABLE `books` (
+  `id` int(11) NOT NULL,
+  `codigo` varchar(255) NOT NULL,
+  `materia` varchar(255) NOT NULL,
+  `titulo` varchar(255) NOT NULL,
+  `autor` varchar(255) NOT NULL,
+  `editorial` varchar(255) NOT NULL,
+  `edicion` varchar(255) NOT NULL,
+  `anio` int(11) NOT NULL,
+  `disponibilidad` tinyint(1) NOT NULL,
+  `reservada` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `books`
+--
+
+INSERT INTO `books` (`id`, `codigo`, `materia`, `titulo`, `autor`, `editorial`, `edicion`, `anio`, `disponibilidad`, `reservada`) VALUES
+(23, 'LIT-001', 'Literatura', 'Cien años de soledad', 'Gabriel García Márquez', 'Sudamericana', '1a ed.', 1967, 1, 0),
+(24, 'INF-002', 'Infantil', 'El principito', 'Antoine de Saint-Exupéry', 'Salamandra', 'Reimpresión', 1943, 0, 0),
+(25, 'ENS-003', 'Ensayo', 'El Aleph', 'Jorge Luis Borges', 'Emecé', '3a ed.', 1949, 1, 0),
+(26, 'HIS-004', 'Historia', 'Historia Argentina', 'Felipe Pigna', 'Planeta', '1a ed.', 2004, 1, 0),
+(27, 'INF-005', 'Informática', 'Introducción a la Programación', 'Luis Joyanes', 'McGraw-Hill', '2a ed.', 2020, 1, 0),
+(28, 'CIE-006', 'Ciencia', 'Breves respuestas a las grandes preguntas', 'Stephen Hawking', 'Crítica', '1a ed.', 2018, 1, 0),
+(29, 'HIS-007', 'Historia', 'Constitución de la Nación Argentina (1853) – Facsímil', 'Varios', 'Edición facsimilar', 'Ed. especial', 1853, 1, 1),
+(30, 'LIT-008', 'Literatura', 'Rayuela', 'Julio Cortázar', 'Sudamericana', '1a ed.', 1963, 0, 0);
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `books`
+--
+ALTER TABLE `books`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `books`
+--
+ALTER TABLE `books`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
