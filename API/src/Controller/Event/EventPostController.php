@@ -15,19 +15,29 @@ final readonly class EventPostController{
 public function start(): void{
 
         try {
-            // Validar token y rol permitido solo 'admin' y 'super_adm' //
+            
             $this->auth->authenticate(true, ['admin', 'super_adm']);
 
-            // Obtener datos del POST //
+           
             $title = ControllerUtils::getPost("title");
             $description = ControllerUtils::getPost("description");
             $image  = ControllerUtils::getPost("image");
-            $end_date= ControllerUtils::getPost("end_date");
+            $endDateString = ControllerUtils::getPost("end_date");
+            $endDate = null;
 
-            // Crear el nuevo artículo //
-            $this->service->create($title, $description, $image,$end_date);
+            if (!empty($endDateString)) {
+                try {
+            $endDate = new \DateTime($endDateString);
+                } catch (\Exception $e) {
+            http_response_code(400);
+            echo json_encode(["error" => "Formato de fecha inválido para 'end_date'."]);
+            exit;
+            }
+                }
 
-            // Respuesta JSON //
+        
+            $this->service->create($title, $description, $image, $endDate);
+
             header('Content-Type: application/json');
             http_response_code(201);
             echo json_encode([

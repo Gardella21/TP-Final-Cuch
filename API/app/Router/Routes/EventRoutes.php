@@ -5,7 +5,7 @@ final readonly class EventRoutes {
     return [
       [
         "name" => "event_get",
-        "url" => "/events",
+        "url" => "/events/{id}",
         "controller" => "Event/EventGetController.php",
         "method" => "GET",
         "parameters" => [

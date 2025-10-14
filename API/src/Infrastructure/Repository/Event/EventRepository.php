@@ -15,7 +15,8 @@ final readonly class EventRepository extends PDOManager implements EventReposito
         $query = <<<HEREDOC
                     SELECT *
                     FROM events A
-                    WHERE A.id = :id AND A.deleted = 0
+                    WHERE A.id = :id 
+                    AND A.deleted = 0
                 HEREDOC;
                     
         $parameters = [
@@ -63,15 +64,16 @@ final readonly class EventRepository extends PDOManager implements EventReposito
 
      public function insert(Event $event): void
     {
-        $query = "INSERT INTO events (title, description, image, end_date, is_Active) 
-                    VALUES (:title, :description, :image, :end_date, :is_Active) ";
+        $query = "INSERT INTO events (title, description, image, end_date, is_Active, deleted) 
+                    VALUES (:title, :description, :image, :end_date, :is_Active, :deleted) ";
 
         $parameters = [
             "title" => $event->title(),
             "description" => $event->description(),
             "image" => $event->image(),
             "end_date" => $event->endDate()->format('Y-m-d'),
-            "is_Active"=>$event->is_Active()
+            "is_Active"=>$event->is_Active(),
+            "deleted" => $event->isDeleted() ? 1 : 0
         ];
 
         $this->execute($query, $parameters);

@@ -17,20 +17,16 @@ final readonly class EventPutController {
     public function start(int $id): void
     {
         try {
-            //validar token y rol permitido //
             $this->auth->authenticate(true);
 
-            // Obtener datos JSON del body//
             $title = ControllerUtils::getPost("title");
             $description = ControllerUtils::getPost("description");
             $image  = ControllerUtils::getPost("image");
             $end_date_str  = ControllerUtils::getPost("end_date");
             $end_date = !empty($end_date_str) ? new \DateTime($end_date_str) : null;
 
-            //Actualizar el artículo según el id recibido //
             $this->service->update($id, $title, $description, $image, $end_date);
 
-            //Respuesta JSON //
             header('Content-Type: application/json');
             http_response_code(200);
             echo json_encode(["message" => "Evento actualizado correctamente"]);
