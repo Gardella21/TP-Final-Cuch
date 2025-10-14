@@ -216,13 +216,30 @@ export function ArticleManagerPage() {
             />
           </Paper>
         )}
-
+            <Button
+      variant="outlined"
+      color="primary"
+      onClick={() => window.open("/noticias", "_blank")}
+      sx={{
+        borderColor: "#8b5e34",
+        color: "#8b5e34 ",
+        fontWeight: "bold",
+        borderRadius: "12px",
+        marginTop: "20px",
+        padding: "12px 20px",
+        backgroundColor: "#faf6f1ff",
+        "&:hover": { backgroundColor: "#e0d8ceff", borderColor: "#283618" },
+      }}
+    >
+      Ver Noticias
+    </Button>
         {/* Modal de edición */}
-        <Dialog open={openModal} onClose={handleCloseModal} fullWidth maxWidth="sm">
+        <Dialog open={openModal} onClose={handleCloseModal} className="edit-aricle-dialog" fullWidth maxWidth="sm">
           <DialogTitle>Editar Noticia</DialogTitle>
           <DialogContent>
             <form onSubmit={handleSubmit(handleSaveChanges)}>
               <TextField
+                id="edit-title"
                 label="Título"
                 variant="outlined"
                 fullWidth
@@ -232,6 +249,7 @@ export function ArticleManagerPage() {
                 helperText={errors.title?.message}
               />
               <TextField
+                id="edit-body"
                 label="Contenido"
                 variant="outlined"
                 fullWidth
@@ -243,7 +261,7 @@ export function ArticleManagerPage() {
                 helperText={errors.body?.message}
               />
 
-              <Box sx={{ mt: 2 }}>
+              <Box className="preview-imagen" sx={{ mt: 2 }}>
                 {preview ? (
                   <img
                     src={preview}
@@ -255,7 +273,14 @@ export function ArticleManagerPage() {
                     Vista previa de la imagen
                   </Typography>
                 )}
-                <Button variant="outlined" component="label" fullWidth sx={{ mt: 1 }}>
+
+                <Button
+                  className="edit-image-btn"
+                  variant="outlined"
+                  component="label"
+                  fullWidth
+                  sx={{ mt: 1 }}
+                >
                   Subir Imagen
                   <input
                     type="file"
@@ -271,14 +296,44 @@ export function ArticleManagerPage() {
                   />
                 </Button>
               </Box>
-
               <DialogActions sx={{ mt: 2 }}>
-                <Button onClick={handleCloseModal} color="secondary">
+                <Button disabled={modalLoading} onClick={handleCloseModal} color="secondary">
                   Cancelar
                 </Button>
-                <Button type="submit" color="primary" disabled={modalLoading}>
-                  Guardar Cambios
+                <Button
+                  type="submit"
+                  color="primary"
+                  variant="contained"
+                  disabled={modalLoading}
+                  sx={{
+                    position: "relative",
+                    fontWeight: "bold",
+                    borderRadius: "8px",
+                    padding: "8px 20px",
+                    backgroundColor: "#606c38",
+                    color: "#fefae0",
+                    minWidth: "160px",
+                    height: "40px",
+                    "&:hover": { backgroundColor: "#283618" },
+                  }}
+                >
+                  {modalLoading ? (
+                    <CircularProgress
+                      size={24}
+                      sx={{
+                        color: "#fefae0",
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        marginTop: "-12px",
+                        marginLeft: "-12px",
+                      }}
+                    />
+                  ) : (
+                    "Guardar Cambios"
+                  )}
                 </Button>
+
               </DialogActions>
             </form>
           </DialogContent>

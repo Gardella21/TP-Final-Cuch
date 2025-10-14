@@ -123,7 +123,7 @@ export function ArticleCreationPage() {
 
             <Box textAlign="center" mt={3}>
               <Button
-                className="create-button"
+                className="create-new-button"
                 disabled={loading}
                 type="submit"
                 variant="contained"
