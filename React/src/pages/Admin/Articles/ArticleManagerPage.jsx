@@ -18,6 +18,7 @@ import {
   DialogTitle,
   TextField,
   Box,
+  TablePagination,
 } from "@mui/material";
 import { Edit, Delete } from "@mui/icons-material";
 import { useNavigate } from "react-router";
@@ -26,11 +27,9 @@ import { fileService } from "../../../services/filesService";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-
 import "./ArticleManagerPage.css";
-import { red } from "@mui/material/colors";
 
-// Validación Zod (sin imagen porque es archivo)
+// Validación Zod
 const articleSchema = z.object({
   title: z.string().min(1, "El título es obligatorio"),
   body: z.string().min(1, "El contenido es obligatorio"),
@@ -46,6 +45,8 @@ export function ArticleManagerPage() {
   const [preview, setPreview] = useState(null);
   const [modalLoading, setModalLoading] = useState(false);
   const [deletingID, setDeletingID] = useState(null);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const {
     register,
@@ -70,6 +71,15 @@ export function ArticleManagerPage() {
       })
       .catch(() => setLoading(false));
   }, []);
+
+  // Paginación
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   // Abrir modal con datos cargados
   const handleEditar = (id) => {
@@ -98,7 +108,6 @@ export function ArticleManagerPage() {
     setModalLoading(true);
     try {
       let imageUrl = currentArticle.image;
-
       if (imagenFile) {
         const formData = new FormData();
         formData.append("file", imagenFile);
@@ -106,16 +115,12 @@ export function ArticleManagerPage() {
         imageUrl = uploadResponse.data.url;
       }
 
-      const payload = {
-        title: data.title,
-        body: data.body,
-        image: imageUrl,
-      };
+      const payload = { title: data.title, body: data.body, image: imageUrl };
       await articleService.updateArticle(currentArticle.id, payload);
 
-      setNoticias(noticias.map((n) =>
-        n.id === currentArticle.id ? { ...n, ...payload } : n
-      ));
+      setNoticias((prev) =>
+        prev.map((n) => (n.id === currentArticle.id ? { ...n, ...payload } : n))
+      );
 
       handleCloseModal();
     } catch (err) {
@@ -128,16 +133,15 @@ export function ArticleManagerPage() {
   // Eliminar artículo
   const handleEliminar = async (id) => {
     if (window.confirm("¿Seguro que deseas eliminar esta noticia?")) {
-        setDeletingID(id);
-        await articleService
-            .deleteArticleById(id)
-            .then(() => {
-            setNoticias(noticias.filter((n) => n.id !== id));
-            })
-            .catch((err) => {
-            alert("Error al eliminar la noticia");
-            console.error(err);
-        });
+      setDeletingID(id);
+      try {
+        await articleService.deleteArticleById(id);
+        setNoticias((prev) => prev.filter((n) => n.id !== id));
+      } catch (err) {
+        alert("Error al eliminar la noticia");
+        console.error(err);
+      }
+      setDeletingID(null);
     }
   };
 
@@ -150,11 +154,7 @@ export function ArticleManagerPage() {
       <Container className="container">
         <div className="header">
           <Typography variant="h4">Administración de Noticias</Typography>
-          <Button
-            className="create-button"
-            onClick={handleCrear}
-            variant="contained"
-          >
+          <Button className="create-button" onClick={handleCrear} variant="contained">
             <span className="texto">Nueva Noticia</span>
           </Button>
         </div>
@@ -164,51 +164,65 @@ export function ArticleManagerPage() {
             <CircularProgress />
           </div>
         ) : (
-          <TableContainer component={Paper} className="table-container">
-            <Table>
-              <TableHead className="table-header">
-                <TableRow>
-                  <TableCell><b>ID</b></TableCell>
-                  <TableCell><b>Título</b></TableCell>
-                  <TableCell><b>Fecha</b></TableCell>
-                  <TableCell align="right"><b>Acciones</b></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {noticias.map((noticia) => (
-                  <TableRow className="table-row" key={noticia.id}>
-                    <TableCell>{noticia.id}</TableCell>
-                    <TableCell>{noticia.title}</TableCell>
-                    <TableCell>{noticia.date}</TableCell>
-                    <TableCell align="right">
-                      <IconButton
-                        className="edit-button"
-                        onClick={() => handleEditar(noticia.id)}
-                      >
-                        <Edit />
-                      </IconButton>
-                      <IconButton
-                        loading={deletingID === noticia.id ? true : false}
-                        color="error"
-                        onClick={() => handleEliminar(noticia.id)}
-                      >
-                        <Delete />
-                      </IconButton>
-                    </TableCell>
+          <Paper className="table-container">
+            <TableContainer>
+              <Table>
+                <TableHead className="table-header">
+                  <TableRow>
+                    <TableCell><b>ID</b></TableCell>
+                    <TableCell><b>Título</b></TableCell>
+                    <TableCell><b>Fecha</b></TableCell>
+                    <TableCell align="right"><b>Acciones</b></TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                </TableHead>
+                <TableBody>
+                  {noticias
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((noticia) => (
+                      <TableRow className="table-row" key={noticia.id}>
+                        <TableCell>{noticia.id}</TableCell>
+                        <TableCell className="table-row-title">{noticia.title}</TableCell>
+                        <TableCell>{noticia.date}</TableCell>
+                        <TableCell align="right">
+                          <IconButton
+                            className="edit-button"
+                            onClick={() => handleEditar(noticia.id)}
+                          >
+                            <Edit />
+                          </IconButton>
+                          <IconButton
+                            color="error"
+                            onClick={() => handleEliminar(noticia.id)}
+                            disabled={deletingID === noticia.id}
+                          >
+                            <Delete />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+
+            <TablePagination
+              component="div"
+              count={noticias.length}
+              page={page}
+              onPageChange={handleChangePage}
+              rowsPerPage={rowsPerPage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+              labelRowsPerPage="Filas por página:"
+              rowsPerPageOptions={[5, 10, 25]}
+            />
+          </Paper>
         )}
 
         {/* Modal de edición */}
-        <Dialog open={openModal} onClose={handleCloseModal} className="edit-aricle-dialog" fullWidth maxWidth="sm">
+        <Dialog open={openModal} onClose={handleCloseModal} fullWidth maxWidth="sm">
           <DialogTitle>Editar Noticia</DialogTitle>
           <DialogContent>
             <form onSubmit={handleSubmit(handleSaveChanges)}>
               <TextField
-                id="edit-title"
                 label="Título"
                 variant="outlined"
                 fullWidth
@@ -218,7 +232,6 @@ export function ArticleManagerPage() {
                 helperText={errors.title?.message}
               />
               <TextField
-                id="edit-body"
                 label="Contenido"
                 variant="outlined"
                 fullWidth
@@ -230,7 +243,7 @@ export function ArticleManagerPage() {
                 helperText={errors.body?.message}
               />
 
-              <Box className="preview-imagen" sx={{ mt: 2 }}>
+              <Box sx={{ mt: 2 }}>
                 {preview ? (
                   <img
                     src={preview}
@@ -242,14 +255,7 @@ export function ArticleManagerPage() {
                     Vista previa de la imagen
                   </Typography>
                 )}
-
-                <Button
-                  className="edit-image-btn"
-                  variant="outlined"
-                  component="label"
-                  fullWidth
-                  sx={{ mt: 1 }}
-                >
+                <Button variant="outlined" component="label" fullWidth sx={{ mt: 1 }}>
                   Subir Imagen
                   <input
                     type="file"
@@ -270,7 +276,7 @@ export function ArticleManagerPage() {
                 <Button onClick={handleCloseModal} color="secondary">
                   Cancelar
                 </Button>
-                <Button loading={modalLoading} type="submit" color="primary">
+                <Button type="submit" color="primary" disabled={modalLoading}>
                   Guardar Cambios
                 </Button>
               </DialogActions>
