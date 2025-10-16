@@ -4,9 +4,6 @@ import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
 import "./EventPage.css"
 import { useNavigate } from "react-router-dom";
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
 import { useEffect, useState } from 'react';
 import { eventService } from "../../services/eventService";
 
@@ -26,9 +23,7 @@ const style = {
 
 function EventPage(){
     
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  
   
   
   
@@ -57,19 +52,35 @@ return(
       events ? events.map(curso=>{
       return <Card key={curso.id} className="event-Card" variant="outlined">
       <CardContent>
+        {/* Imagen del evento */}
+        {curso.image ? (
+          <img
+            src={curso.image}
+            alt={curso.title}
+            className="event-image"
+          />
+        ) : (
+          <div className="event-image-placeholder">
+            <p>Sin imagen disponible</p>
+          </div>
+        )}
         <h1>{curso.title}</h1>
         <p>{curso.description}</p>
-        <p>Fecha de Finalizacion:{curso.end_date}</p>
+        <p>Fecha de Finalización:{" "}
+          {curso.end_date
+            ? new Date(curso.end_date).toLocaleDateString("es-AR", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+              })
+            : "-"}</p>
       </CardContent>
       <CardActions>
         <Button size="small"
                 onClick={ToForm}
         >
           Inscribirse</Button>
-        <Button size="small"
-        onClick={handleOpen}>
-         + Informacion
-        </Button>
+        
       </CardActions>
       </Card >
 
@@ -77,22 +88,7 @@ return(
     }
 
 
-    <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            <strong>Mas Informacion sobre el curso o evento, horarios,dias de semanas
-            fechas</strong>
-            
-          </Typography>
-          
-        </Box>
-      </Modal>
-
+    
   </main>
 );
 }
