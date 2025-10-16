@@ -26,6 +26,7 @@ import { EventManagerPage } from "./pages/Admin/Events/EventManagerPage";
 
 // CORRECCIÓN: default import para UserManagerPage
 import UserManagerPage from "./pages/Admin/Users/UserManagerPage";
+import { EventCreationPage } from "./pages/Admin/Events/EventCreationPage";
 
 const MainLayout = () => (
   <div className="layout-container">
@@ -69,6 +70,7 @@ function App() {
             <Route path="/admin/articles" element={<ArticleManagerPage />} />
             <Route path="/admin/article-new" element={<ArticleCreationPage />} />
             <Route path="/admin/events" element={<EventManagerPage />} />
+            <Route path="/admin/event-new" element={<EventCreationPage />} />
             {/* Usuarios: accesible por adm y super_adm */}
             <Route path="/admin/users" element={<UserManagerPage />} />
           </Route>
