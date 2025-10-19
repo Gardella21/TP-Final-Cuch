@@ -1,11 +1,17 @@
-<?php 
+<?php
+declare(strict_types=1);
 
 namespace Src\Entity\User\Exception;
 
-use Exception;
+use DomainException;
 
-final class UserAlreadyExistsException extends Exception {
-    public function __construct() {
-        parent::__construct('El email ingresado ya se encuentra en uso.');
+final class UserAlreadyExistsException extends DomainException
+{
+    public function __construct(
+        string $message = 'El email ingresado ya se encuentra en uso.',
+        int $code = 0,
+        ?\Throwable $previous = null
+    ) {
+        parent::__construct($message, $code, $previous);
     }
 }

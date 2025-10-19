@@ -7,7 +7,6 @@ use PDOException;
 
 final class PDOClient {
 
-    /** @var PDO[] $activeClients */
     private static array $activeClients = [];
 
     public function connect(): PDO
@@ -30,7 +29,7 @@ final class PDOClient {
     {
         try {
             $conn = new PDO(
-                $this->generateUrl(),                     // DSN con charset
+                $this->generateUrl(),                     
                 $_ENV['DATABASE_USER'],
                 $_ENV['DATABASE_PASSWORD'],
                 [
@@ -39,7 +38,6 @@ final class PDOClient {
                 ]
             );
 
-            // Refuerzo de charset/collation por si el servidor ignora el DSN
             $conn->exec("SET NAMES utf8mb4");
             $conn->exec("SET CHARACTER SET utf8mb4");
             $conn->exec("SET SESSION collation_connection = utf8mb4_general_ci");
@@ -55,7 +53,6 @@ final class PDOClient {
 
     private function generateUrl(): string
     {
-        // hice esto para que la base de datos y la API manejen bien los acentos y otros caracteres sin romper ni mostrar simbolos raros.
         return sprintf(
             '%s:host=%s;dbname=%s;charset=utf8mb4',
             $_ENV['DATABASE_DRIVER'],

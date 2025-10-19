@@ -1,11 +1,16 @@
-<?php 
+<?php
+declare(strict_types=1);
 
 namespace Src\Entity\User\Exception;
 
-use Exception;
+final class UserNotFoundException extends \RuntimeException
+{
+    public function __construct(int|string $idOrEmail)
+    {
+        $msg = is_int($idOrEmail)
+            ? "Usuario no encontrado (id: {$idOrEmail})."
+            : "Usuario no encontrado (email: {$idOrEmail}).";
 
-final class UserNotFoundException extends Exception {
-    public function __construct(int $id) {
-        parent::__construct("No se encontro el usuario correspondiente. Id: ".$id);
+        parent::__construct($msg);
     }
 }
