@@ -47,7 +47,7 @@ function EventPage(){
                     
 
 return(
-  <main className="event-page">
+  <main id="eventos"className="event-page">
     {
       events ? events.map(curso=>{
       return <Card key={curso.id} className="event-Card" variant="outlined">

@@ -1,23 +1,121 @@
-.info-page { 
-  padding: 2rem;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  color: #5C4033; 
+/* Contenedor*/
+.info-page {
+  --card-max: 1200px; 
+  position: relative;
+  padding: 0.6rem 1rem 1rem;
+  color: #5C4033;
+  background: url("/public/images/FotoNosotros.jpg") top center / cover no-repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden; 
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><text y="24" font-size="24">📚</text></svg>'), auto;
 }
-
-/* Bloques de información */
+/*Card */
 .info-section {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: #EADBC8; 
+  position: relative;
+  width: min(98vw, var(--card-max)); 
+  max-width: var(--card-max);
+  margin: 0.6rem auto 1rem;
+  padding: 1rem 1.5rem 1.5rem;
+  background: #EADBC8;
   border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease, filter 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  text-align: justify;
+  overflow: hidden;
+  transform-origin: center;
+  transition: transform 180ms ease, box-shadow 180ms ease;
 }
 
-.info-section:hover {
-  transform: translateY(-5px) scale(1.02); 
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25); 
-  filter: brightness(1.05); 
+@media (hover: hover) and (pointer: fine) {
+  .info-section:hover {
+    transform: scale(1.035);
+    box-shadow:
+      0 18px 45px rgba(0,0,0,0.25),
+      0 0 0 6px rgba(255,255,255,0.80),
+      0 0 34px rgba(255,255,255,0.85);
+  }
 }
 
+.info-section h1 {
+  margin: 0 0 0.5rem;
+  text-align: center;
+  color: #5C4033;
+}
+
+.info-section p {
+  margin: 0;
+  line-height: 1.8;
+  font-size: 1.05rem;
+}
+
+/* Links naranja oscuro */
+.info-section a {
+  color: #d25b00;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.05rem;
+  display: inline-block;
+  transition: font-size 0.18s ease, color 0.18s ease;
+}
+.info-section a:hover {
+  font-size: 1.18rem;
+  color: #d25b00;
+  text-decoration: underline;
+}
+
+/* Imagen */
+.info-section img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  margin-top: 0.75rem;
+  border-radius: 14px;
+  object-fit: cover;
+  object-position: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+}
+/*Flechas */
+.arrow-btn {
+  position: absolute;
+  top: calc(0.6rem + 50%);
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border: 2px solid #fff;
+  background: rgba(0,0,0,0.28);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 1.8rem;
+  cursor: pointer;
+  z-index: 5;
+}
+/* colocadas justo por fuera del ancho maximo de la card */
+.arrow-btn.left  { left: calc(50% - var(--card-max)/2 - 56px); }
+.arrow-btn.right { right: calc(50% - var(--card-max)/2 - 56px); }
+
+@media (max-width: 1200px) {
+  .info-section { width: calc(100vw - 2rem); }  
+  .arrow-btn.left  { left: 6px; }               
+  .arrow-btn.right { right: 6px; }
+}
+@media (max-width: 900px) {
+  /* flechas en fila (lado a lado) debajo de la card */
+  .info-page { display: block; text-align: center; }
+
+  .arrow-btn {
+    position: static !important;
+    transform: none !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    margin: 0.6rem 0.4rem 0;
+    width: 44px;
+    height: 44px;
+    font-size: 1.8rem;
+    vertical-align: middle;
+  }
+  /* en movil */
+  .info-section { padding: 0.9rem 1rem 1.2rem; transform: none !important; }
+}

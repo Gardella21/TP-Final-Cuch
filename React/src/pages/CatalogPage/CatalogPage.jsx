@@ -90,7 +90,7 @@ export function CatalogPage() {
   );
 
   return (
-    <div className="catalog-background">
+    <div  id="catalogo" className="catalog-background">
       <Container maxWidth="lg" className="catalog">
         <Typography variant="h2" className="catalog-title">
           Catálogo

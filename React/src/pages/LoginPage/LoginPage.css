@@ -4,8 +4,11 @@
   justify-content: center;
   align-items: center;
   padding: 32px 16px;
-}
 
+  /* Agregado: igual que Register (fondo + color) */
+  background: #fff8ef;   /* fondo clarito tipo crema */
+  color: #4a2c2a;        /* texto marrón oscuro */
+}
 
 .loginPage .container {
   max-width: 420px;
@@ -26,7 +29,6 @@
   transform: translateY(-5px) scale(1.02);
   box-shadow: 0px 12px 28px rgba(0, 0, 0, 0.25);
 }
-
 
 .loginPage header {
   text-align: center;
@@ -54,16 +56,14 @@
   opacity: 0.9;
 }
 
-
 .loginPage header p,
 .loginPage header .mantine-Text-root {
-  color: #000;   
+  color: #5C4033;   /* igual que Register */
   font-size: 0.95rem;
 }
 
-
 .loginPage header a {
-  color: #000;   
+  color: #8D493A;   /* igual que Register */
   font-weight: 500;
   text-decoration: none;
   transition: color 0.3s ease;
@@ -74,13 +74,11 @@
   color: #5C4033; 
 }
 
-
 .loginPage form {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
-
 
 .loginPage .errorMessage {
   color: #C0392B; 
@@ -88,7 +86,6 @@
   text-align: center;
   margin-top: -8px;
 }
-
 
 .loginPage button {
   text-transform: none !important;
@@ -104,3 +101,18 @@
   transform: translateY(-3px);
   box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.3);
 }
+
+/* Mensajes */
+.pendingMsg {
+  background: #fff1e6;        /* crema suave para aviso “pendiente” */
+  color: #4a2c2a;
+  border: 1px solid #e2c9b0;
+}
+.pendingMsg * { color: #4a2c2a; }
+
+.errorMsg {
+  background: #fdecea;        /* rojo muy suave para errores */
+  color: #7a2e2a;
+  border: 1px solid #f5c6c4;
+}
+.errorMsg * { color: #7a2e2a; }
