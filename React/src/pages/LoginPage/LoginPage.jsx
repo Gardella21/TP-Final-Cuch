@@ -1,5 +1,5 @@
 import "./LoginPage.css";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Button,
   Container,
@@ -7,12 +7,13 @@ import {
   Text,
   TextInput,
   Title,
+  Alert,
 } from "@mantine/core";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authService } from "../../services/authService";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const UserSchema = z.object({
   email: z
@@ -25,36 +26,113 @@ const UserSchema = z.object({
 });
 
 export function LoginPage() {
-  const form = useForm({
-    resolver: zodResolver(UserSchema),
-  });
-
+  const form = useForm({ resolver: zodResolver(UserSchema) });
   const navigate = useNavigate();
   const [error, setError] = useState(undefined);
+  const [pendingMsg, setPendingMsg] = useState(undefined);
+
+  // auto-ocultar alertas a los 6s
+  useEffect(() => {
+    if (!pendingMsg) return;
+    const t = setTimeout(() => setPendingMsg(undefined), 6000);
+    return () => clearTimeout(t);
+  }, [pendingMsg]);
+
+  useEffect(() => {
+    if (!error) return;
+    const t = setTimeout(() => setError(undefined), 6000);
+    return () => clearTimeout(t);
+  }, [error]);
+
+  // Mapea payload de backend a mensajes claros
+  function mapBackendToMessage(status, payload) {
+    const raw =
+      (typeof payload === "string" ? payload : payload?.error || payload?.message || "") || "";
+
+    // pendiente / no autorizado
+    if ((status === 401 || status === 403) && /autorizad|pendient|aprobaci|inactiv/i.test(raw)) {
+      return {
+        pending:
+          "Tu solicitud aún está pendiente. Un administrador debe aprobarla antes de iniciar sesión.",
+      };
+    }
+    // credenciales inválidas
+    if (status === 401 || /credencial|password|contrase(?:ñ|n)a|clave|incorrect/i.test(raw)) {
+      return { error: "Correo o contraseña incorrectos." };
+    }
+    // email inválido
+    if (status === 400 && /email|correo/i.test(raw)) {
+      return { error: "El correo electrónico no es válido." };
+    }
+    // fallback
+    if (raw) return { error: raw };
+    return { error: "Error al iniciar sesión" };
+  }
 
   async function onSubmit(formData) {
     try {
       setError(undefined);
+      setPendingMsg(undefined);
 
-      const formDataJson = JSON.stringify(formData);
-      const response = await authService.login(formDataJson);
+      // Enviar el OBJETO (Axios lo serializa), no stringify
+      const response = await authService.login(formData);
 
-      //Verificamos que el backend devolvio un usuario valido//
-      const user = response?.data?.user;
+      // Si tu Axios no rechaza 4xx/5xx:
+      if (response?.status && response.status >= 400) {
+        const msg = mapBackendToMessage(response.status, response.data);
+        if (msg.pending) setPendingMsg(msg.pending);
+        if (msg.error) setError(msg.error);
+        return;
+      }
 
-      if (user?.token) {
-        // Guardamos todo para que el avatar lea el nombre y rol //
-        localStorage.setItem("user", JSON.stringify(user));
-        localStorage.setItem("token", user.token);
-        localStorage.setItem("role", user.role);
+      const data = response?.data || {};
+      const headers = response?.headers || {};
+      const user = data?.user || {};
 
-        navigate("/admin");
-      } else {
+      // Token tolerante (varias ubicaciones)
+      const token =
+        user?.token ??
+        data?.token ??
+        headers["x-api-key"] ??
+        headers["X-API-KEY"] ??
+        data?.auth?.token ??
+        null;
+
+      if (!token) {
+        try {
+          localStorage.removeItem("token");
+        } catch {}
         throw new Error("El servidor no devolvió un token válido");
       }
-    } catch (error) {
-      console.error("Error en login:", error);
-      setError(error.message || "Error al iniciar sesión");
+
+      // Normalizar SIEMPRE en la misma key: current_user
+      const normalizado = {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        nombre: user.nombre ?? user.name ?? "",
+        apellido: user.apellido ?? user.lastName ?? "",
+      };
+
+      // Guardado consistente
+      localStorage.setItem("token", token);
+      if (normalizado.role) {
+        localStorage.setItem("role", String(normalizado.role).toLowerCase());
+      }
+      localStorage.setItem("current_user", JSON.stringify(normalizado));
+
+      // Avisar al header (avatar) que cambió el usuario
+      window.dispatchEvent(new Event("auth:user-changed"));
+
+      navigate("/admin");
+    } catch (err) {
+      // Caso normal: Axios rechazó (status no-2xx)
+      const status = err?.response?.status;
+      const data = err?.response?.data;
+      const msg = mapBackendToMessage(status, data);
+      if (msg.pending) setPendingMsg(msg.pending);
+      if (msg.error) setError(msg.error);
+      console.error("Error en login:", err);
     }
   }
 
@@ -63,10 +141,21 @@ export function LoginPage() {
       <Container className="container">
         <header>
           <Title>Bienvenido!</Title>
-          <Text>
-            ¿Aún no tienes una cuenta? <Link to="/register">Registrarse</Link>
-          </Text>
         </header>
+
+        {/* Solicitud pendiente */}
+        {pendingMsg ? (
+          <Alert className="pendingMsg" color="blue" variant="filled" radius="md" mt="md">
+            {pendingMsg}
+          </Alert>
+        ) : null}
+
+        {/* Errores (credenciales/email) */}
+        {error ? (
+          <Alert className="errorMsg" color="red" variant="light" radius="md" mt="md">
+            {error}
+          </Alert>
+        ) : null}
 
         <form>
           <TextInput
@@ -74,22 +163,24 @@ export function LoginPage() {
             error={form.formState.errors.email?.message}
             {...form.register("email")}
           />
-
           <PasswordInput
             placeholder="Contraseña"
             error={form.formState.errors.password?.message}
             {...form.register("password")}
           />
-
-          {error ? <p className="errorMessage">{error}</p> : null}
-
           <Button
+            fullWidth
+            mt="md"
             variant="filled"
             onClick={form.handleSubmit(onSubmit)}
             loading={form.formState.isSubmitting}
           >
             Iniciar sesión
           </Button>
+
+          <Text ta="center" mt="md">
+            ¿Aún no tienes una cuenta? <Link to="/register">Registrarse</Link>
+          </Text>
         </form>
       </Container>
     </main>
