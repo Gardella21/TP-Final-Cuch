@@ -16,16 +16,19 @@ final readonly class BookRoutes {
         ]
       ],
       [
+        "name" => "books_update",
+        "url" => "/books/update",
+        "controller" => "Book/BooksUpdateController.php",
+        "method" => "POST"
+      ],
+      [
         "name" => "books_get",
         "url" => "/books",
         "controller" => "Book/BooksGetController.php",
         "method" => "POST"
-      ], 
-
+      ]
     ];
-
   }
-
 }
 
       

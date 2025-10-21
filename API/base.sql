@@ -151,11 +151,6 @@ ALTER TABLE `events`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
-
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --

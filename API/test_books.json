@@ -1,0 +1,147 @@
+{
+  "books": [
+    {
+      "codigo": "B001",
+      "materia": "Literatura",
+      "titulo": "Cien años de soledad",
+      "autor": "Gabriel García Márquez",
+      "editorial": "Sudamericana",
+      "edicion": "1",
+      "anio": 1967,
+      "disponibilidad": 1,
+      "reservada": 0
+    },
+    {
+      "codigo": "B002",
+      "materia": "Ficción",
+      "titulo": "1984",
+      "autor": "George Orwell",
+      "editorial": "Secker & Warburg",
+      "edicion": "1",
+      "anio": 1949,
+      "disponibilidad": 1,
+      "reservada": 0
+    },
+    {
+      "codigo": "B003",
+      "materia": "Ciencia",
+      "titulo": "Breve historia del tiempo",
+      "autor": "Stephen Hawking",
+      "editorial": "Bantam Books",
+      "edicion": "1",
+      "anio": 1988,
+      "disponibilidad": 1,
+      "reservada": 0
+    },
+    {
+      "codigo": "B004",
+      "materia": "Filosofía",
+      "titulo": "Más allá del bien y del mal",
+      "autor": "Friedrich Nietzsche",
+      "editorial": "Penguin Classics",
+      "edicion": "1",
+      "anio": 1886,
+      "disponibilidad": 1,
+      "reservada": 0
+    },
+    {
+      "codigo": "B005",
+      "materia": "Historia",
+      "titulo": "Sapiens: De animales a dioses",
+      "autor": "Yuval Noah Harari",
+      "editorial": "Harper",
+      "edicion": "1",
+      "anio": 2011,
+      "disponibilidad": 1,
+      "reservada": 0
+    },
+    {
+      "codigo": "LIT-001",
+      "materia": "Literatura",
+      "titulo": "Cien años de soledad",
+      "autor": "Gabriel García Márquez",
+      "editorial": "Sudamericana",
+      "edicion": "1a ed.",
+      "anio": 1967,
+      "disponibilidad": 1,
+      "reservada": 0
+    },
+    {
+      "codigo": "INF-002",
+      "materia": "Infantil",
+      "titulo": "El principito",
+      "autor": "Antoine de Saint-Exupéry",
+      "editorial": "Salamandra",
+      "edicion": "Reimpresión",
+      "anio": 1943,
+      "disponibilidad": 0,
+      "reservada": 0
+    },
+    {
+      "codigo": "ENS-003",
+      "materia": "Ensayo",
+      "titulo": "El Aleph",
+      "autor": "Jorge Luis Borges",
+      "editorial": "Emecé",
+      "edicion": "3a ed.",
+      "anio": 1949,
+      "disponibilidad": 1,
+      "reservada": 0
+    },
+    {
+      "codigo": "HIS-004",
+      "materia": "Historia",
+      "titulo": "Historia Argentina",
+      "autor": "Felipe Pigna",
+      "editorial": "Planeta",
+      "edicion": "1a ed.",
+      "anio": 2004,
+      "disponibilidad": 1,
+      "reservada": 0
+    },
+    {
+      "codigo": "INF-005",
+      "materia": "Informática",
+      "titulo": "Introducción a la Programación",
+      "autor": "Luis Joyanes",
+      "editorial": "McGraw-Hill",
+      "edicion": "2a ed.",
+      "anio": 2020,
+      "disponibilidad": 1,
+      "reservada": 0
+    },
+    {
+      "codigo": "CIE-006",
+      "materia": "Ciencia",
+      "titulo": "Breves respuestas a las grandes preguntas",
+      "autor": "Stephen Hawking",
+      "editorial": "Crítica",
+      "edicion": "1a ed.",
+      "anio": 2018,
+      "disponibilidad": 1,
+      "reservada": 0
+    },
+    {
+      "codigo": "HIS-007",
+      "materia": "Historia",
+      "titulo": "Constitución de la Nación Argentina (1853) – Facsímil",
+      "autor": "Varios",
+      "editorial": "Edición facsimilar",
+      "edicion": "Ed. especial",
+      "anio": 1853,
+      "disponibilidad": 1,
+      "reservada": 1
+    },
+    {
+      "codigo": "LIT-008",
+      "materia": "Literatura",
+      "titulo": "Rayuela",
+      "autor": "Julio Cortázar",
+      "editorial": "Sudamericana",
+      "edicion": "1a ed.",
+      "anio": 1963,
+      "disponibilidad": 0,
+      "reservada": 0
+    }
+  ]
+}
