@@ -9,8 +9,8 @@ import { PrivateRoute, PublicRoute } from "./Routes";
 
 import Header from "./components/Header/Header";
 import NavBar from './components/NavBar/NavBar';
-import Banner from "./components/Banner/Banner";
 import Footer from "./components/Footer/Footer";
+import { HomePage } from "./pages/HomePage/HomePage";
 import InfoNosotros from './components/InfoNosotros/InfoNosotros';
 import { DonationsPage } from "./pages/DonationsPage/DonationsPage";
 import Questions from './components/Questions/Questions';
@@ -47,7 +47,7 @@ function App() {
 
           {/* Rutas con la barra de navegación estándar */}
           <Route element={<MainLayout />}>
-            <Route path='/' element={<><Banner/></>} />
+            <Route path='/' element={<HomePage/>} />
             <Route path='/noticias' element={<ArticlePage />} />
             <Route path='/articles/:id' element={<ArticlePageDetail />} />
             <Route path='/cursos-y-eventos' element={<EventPage />} />

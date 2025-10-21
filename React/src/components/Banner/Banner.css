@@ -8,7 +8,7 @@
   justify-content: center;
   overflow: hidden;
   animation: banner-fade 2s ease-in-out;
-  border-radius: 10px;
+  border-radius: none;
 }
 
 /* Capa cálida encima de la imagen */
