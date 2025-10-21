@@ -82,6 +82,54 @@ final readonly class BookRepository extends PDOManager implements BookRepository
         return $bookResults;
     }
 
+    public function beginTransaction(): void
+    {
+        $this->getConnection()->beginTransaction();
+    }
+
+    public function commit(): void
+    {
+        $this->getConnection()->commit();   
+        
+    }
+
+    public function rollback(): void
+    {
+        $this->getConnection()->rollBack();
+    }       
+
+    public function insertBooks(array $books): int
+    {
+        $query = "INSERT INTO books (codigo, materia, titulo, autor, editorial, edicion, anio, disponibilidad, reservada)
+                  VALUES (:codigo, :materia, :titulo, :autor, :editorial, :edicion, :anio, :disponibilidad, :reservada)";
+
+        $insertedCount = 0;
+
+        foreach ($books as $book) {
+            $parameters = [
+                "codigo"        => $book['codigo'] ?? null,
+                "materia"       => $book['materia'] ?? null,
+                "titulo"        => $book['titulo'] ?? null,
+                "autor"         => $book['autor'] ?? null,
+                "editorial"     => $book['editorial'] ?? null,
+                "edicion"       => $book['edicion'] ?? null,
+                "anio"          => $book['anio'] ?? null,
+                "disponibilidad"=> isset($book['disponibilidad']) ? (int)$book['disponibilidad'] : 1,
+                "reservada"     => isset($book['reservada']) ? (int)$book['reservada'] : 0
+            ];
+
+            $this->execute($query, $parameters);
+            $insertedCount++;
+        }
+
+        return $insertedCount;
+    }
+    public function clearAllBooks(): void
+    {
+        $query = "DELETE FROM books";
+        $this->execute($query, []);
+    }
+
     private function primitiveToBook(?array $primitive): ?Book
     {
         if ($primitive === null) {
