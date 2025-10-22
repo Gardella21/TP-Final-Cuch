@@ -23,14 +23,12 @@ const style = {
 
 function EventPage(){
     
-  
-  
-  
-  
     const navigate = useNavigate();
-    const ToForm=()=>{
-      navigate("/cursos-y-eventos/form");
-    };
+    const ToForm = (id) => {
+  navigate(`/cursos-y-eventos/form/${id}`); 
+};
+
+
 
     const [ events, setEvents ] = useState(undefined)
     async function fetchData(){
@@ -77,7 +75,7 @@ return(
       </CardContent>
       <CardActions>
         <Button size="small"
-                onClick={ToForm}
+                onClick={() => ToForm(curso.id)}
         >
           Inscribirse</Button>
         

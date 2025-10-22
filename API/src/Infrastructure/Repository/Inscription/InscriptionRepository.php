@@ -15,14 +15,17 @@ final readonly class InscriptionRepository extends PDOManager implements Inscrip
 
     public function insert(Inscription $inscription): void
     {
-        $query = "INSERT INTO inscriptions (name, surname, email, phone) VALUES (:name, :surname, :email, :phone) ";
+        $query = "INSERT INTO inscriptions (name, surname, email, phone, id_event) 
+          VALUES (:name, :surname, :email, :phone, :id_event)";
 
         $parameters = [
             "name" => $inscription->name(),
             "surname" => $inscription->surname(),
             "email" => $inscription->email(),
-            "phone" => $inscription->phone()
+            "phone" => $inscription->phone(),
+            "id_event" => $inscription->idEvent()
         ];
+
 
         $this->execute($query, $parameters);
     }

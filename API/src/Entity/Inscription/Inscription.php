@@ -9,13 +9,14 @@ final class Inscription {
         private string $name,
         private string $surname,
         private string $email,
-        private int $phone
+        private int $phone,
+        private int $idEvent 
     ) {
     }
 
-    public static function create(string $name, string $surname, string $email, int $phone): self
+    public static function create(string $name, string $surname, string $email, int $phone, int $idEvent): self
     {
-        return new self(null, $name, $surname, $email, $phone);
+        return new self(null, $name, $surname, $email, $phone, $idEvent);
     }
 
 
@@ -41,5 +42,9 @@ final class Inscription {
     public function phone(): int
     {
         return $this->phone;
+    }
+    public function idEvent(): int
+    {
+        return $this->idEvent;
     }
 }
