@@ -51,7 +51,7 @@ function App() {
             <Route path='/noticias' element={<ArticlePage />} />
             <Route path='/articles/:id' element={<ArticlePageDetail />} />
             <Route path='/cursos-y-eventos' element={<EventPage />} />
-            <Route path='/cursos-y-eventos/form' element={<InscriptionPage />} />
+            <Route path="/cursos-y-eventos/form/:id_event" element={<InscriptionPage />} />
             <Route path='/nosotros' element={<InfoNosotros />} />
             <Route path='/catalogo' element={<CatalogPage />} />
             <Route path='/donaciones' element={<DonationsPage />} />
