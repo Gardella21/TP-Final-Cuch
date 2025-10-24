@@ -66,12 +66,9 @@ return(
         <p>{curso.description}</p>
         <p>Fecha de Finalización:{" "}
           {curso.end_date
-            ? new Date(curso.end_date).toLocaleDateString("es-AR", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-              })
-            : "-"}</p>
+            ? curso.end_date.split("-").reverse().join("-") 
+            : "-"}
+        </p>
       </CardContent>
       <CardActions>
         <Button size="small"
