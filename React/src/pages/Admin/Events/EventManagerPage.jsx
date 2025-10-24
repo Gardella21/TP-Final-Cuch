@@ -85,12 +85,7 @@ export function EventManagerPage() {
       .catch(() => setLoading(false));
   }, []);
 
-  // Paginación
-  const handleChangePage = (_evt, newPage) => setPage(newPage);
-  const handleChangeRowsPerPage = (evt) => {
-    setRowsPerPage(parseInt(evt.target.value, 10));
-    setPage(0);
-  };
+  
 
   // Abrir modal con datos cargados
   const handleEditar = (id) => {
@@ -174,6 +169,10 @@ export function EventManagerPage() {
     navigate("/admin/event-new");
   };
 
+  const handleInscriptions = () => {
+    navigate("/admin/inscriptions");
+  };
+
 
   return (
     <div className="event-manager-page">
@@ -229,16 +228,7 @@ export function EventManagerPage() {
               </Table>
             </TableContainer>
 
-            <TablePagination
-              component="div"
-              count={events.length}
-              page={page}
-              onPageChange={handleChangePage}
-              rowsPerPage={rowsPerPage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              labelRowsPerPage="Filas por página:"
-              rowsPerPageOptions={[5, 10, 25]}
-            />
+            
           </Paper>
         )}
 
@@ -258,6 +248,27 @@ export function EventManagerPage() {
           }}
         >
           Ver Eventos
+        </Button>
+
+         
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={handleInscriptions}
+          sx={{
+            borderColor: "#8b5e34",
+            color: "#8b5e34 ",
+            fontWeight: "bold",
+            borderRadius: "12px",
+            marginTop: "20px",
+            marginLeft: "20px",
+            padding: "12px 20px",
+            backgroundColor: "#faf6f1ff",
+            "&:hover": { backgroundColor: "#e0d8ceff", borderColor: "#283618" },
+          }}
+          
+        >
+          Ver Inscriptos
         </Button>
 
         {/* Modal de edición */}

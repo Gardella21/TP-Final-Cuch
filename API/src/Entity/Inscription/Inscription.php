@@ -10,13 +10,14 @@ final class Inscription {
         private string $surname,
         private string $email,
         private int $phone,
-        private int $idEvent 
+        private ?int $id_event = null, 
+        private ?string $event_title = null
     ) {
     }
 
-    public static function create(string $name, string $surname, string $email, int $phone, int $idEvent): self
+    public static function create(string $name, string $surname, string $email, int $phone, ?int $id_event = null): self
     {
-        return new self(null, $name, $surname, $email, $phone, $idEvent);
+        return new self(null, $name, $surname, $email, $phone, $id_event, null);
     }
 
 
@@ -43,8 +44,12 @@ final class Inscription {
     {
         return $this->phone;
     }
-    public function idEvent(): int
+    public function idEvent(): ?int
     {
-        return $this->idEvent;
+        return $this->id_event;
+    }
+    public function eventTitle(): ?string 
+    { 
+        return $this->event_title; 
     }
 }

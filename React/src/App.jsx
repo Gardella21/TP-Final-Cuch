@@ -23,6 +23,7 @@ import { CatalogPage } from "./pages/CatalogPage/CatalogPage";
 import EventPage from "./pages/EventPage/EventPage";
 import { AdminHomePage } from "./pages/Admin/Home/AdminHomePage";
 import { EventManagerPage } from "./pages/Admin/Events/EventManagerPage";
+import { InscriptionManagerPage } from "./pages/Admin/Events/InscriptionManagerPage";
 
 // CORRECCIÓN: default import para UserManagerPage
 import UserManagerPage from "./pages/Admin/Users/UserManagerPage";
@@ -71,6 +72,7 @@ function App() {
             <Route path="/admin/article-new" element={<ArticleCreationPage />} />
             <Route path="/admin/events" element={<EventManagerPage />} />
             <Route path="/admin/event-new" element={<EventCreationPage />} />
+            <Route path="/admin/inscriptions" element={<InscriptionManagerPage />}/>
             {/* Usuarios: accesible por adm y super_adm */}
             <Route path="/admin/users" element={<UserManagerPage />} />
           </Route>
