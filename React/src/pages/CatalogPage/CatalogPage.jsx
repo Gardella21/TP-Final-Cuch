@@ -20,6 +20,26 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import { bookService } from "../../services/bookService";
 
+
+const CACHE_KEY = "librosGuardados";
+
+const readCache = () => {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+};
+
+const writeCache = (books) => {
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify(books));
+  } catch {}
+};
+
+
 export function CatalogPage() {
   const [books, setBooks] = useState([]);
   const [q, setQ] = useState("");
@@ -30,21 +50,50 @@ export function CatalogPage() {
 
   useEffect(() => {
     const fetchBooks = async () => {
+      
+      const cached = readCache();
+      if (cached && cached.length > 0) {
+        setBooks(cached);
+        console.log("Libros cargados desde localStorage");
+        return;
+      }
+
+     
       try {
-        const { data } = await bookService.search({
-          titulo: q,
-          autor: author,
-          materia: category,
-          disponible: onlyAvailable ? 1 : null,
-          reservada: onlyReserved ? 1 : null,
-        });
-        setBooks(data);
+        console.log(" Pidiendo al backend...");
+        const { data } = await bookService.search({});
+        if (Array.isArray(data)) {
+          setBooks(data);
+          writeCache(data); 
+        }
       } catch (error) {
         console.error("Error cargando libros:", error);
       }
     };
+
     fetchBooks();
-  }, [q, author, category, onlyAvailable, onlyReserved]);
+  }, []);
+
+  
+  const filteredBooks = books.filter((book) => {
+    const matchesTitle = book.titulo?.toLowerCase().includes(q.toLowerCase());
+    const matchesAuthor = author
+      ? book.autor?.toLowerCase().includes(author.toLowerCase())
+      : true;
+    const matchesCategory = category
+      ? book.materia?.toLowerCase().includes(category.toLowerCase())
+      : true;
+    const matchesAvailable = onlyAvailable ? book.disponibilidad : true;
+    const matchesReserved = onlyReserved ? book.reservada : true;
+
+    return (
+      matchesTitle &&
+      matchesAuthor &&
+      matchesCategory &&
+      matchesAvailable &&
+      matchesReserved
+    );
+  });
 
   return (
     <div className="catalog-background">
@@ -128,7 +177,7 @@ export function CatalogPage() {
                 <TableCell>Código</TableCell>
                 <TableCell>Título</TableCell>
                 <TableCell>Autor</TableCell>
-                <TableCell>Materia</TableCell> 
+                <TableCell>Materia</TableCell>
                 <TableCell>Editorial</TableCell>
                 <TableCell>Año</TableCell>
                 <TableCell>Disponibilidad</TableCell>
@@ -136,19 +185,19 @@ export function CatalogPage() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {books.length === 0 ? (
+              {filteredBooks.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={8} align="center">
                     No se encontraron resultados
                   </TableCell>
                 </TableRow>
               ) : (
-                books.map((book) => (
+                filteredBooks.map((book) => (
                   <TableRow key={book.id}>
                     <TableCell>{book.codigo}</TableCell>
                     <TableCell>{book.titulo}</TableCell>
                     <TableCell>{book.autor}</TableCell>
-                    <TableCell>{book.materia}</TableCell> 
+                    <TableCell>{book.materia}</TableCell>
                     <TableCell>{book.editorial}</TableCell>
                     <TableCell>{book.anio}</TableCell>
 
@@ -166,7 +215,9 @@ export function CatalogPage() {
                     {/* Reservada con color */}
                     <TableCell
                       className={
-                        book.reservada ? "status-reserved" : "status-not-reserved"
+                        book.reservada
+                          ? "status-reserved"
+                          : "status-not-reserved"
                       }
                     >
                       {book.reservada ? "Reservada" : "No reservada"}
