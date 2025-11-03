@@ -38,7 +38,7 @@ function mapBackendErrorToMessage(raw) {
 export default function UserEditModal({ user, onClose, onSave }) {
   const [name, setName] = useState(user?.name || "");
   const [apellido, setApellido] = useState(user?.apellido || "");
-  const [dni, setDni] = useState(String(user?.dni ?? "")); // mantener como string de dígitos//
+  const [dni, setDni] = useState(String(user?.dni ?? "")); 
   const [email, setEmail] = useState(user?.email || "");
   const [role, setRole] = useState(user?.role || "visitor");
   const [loading, setLoading] = useState(false);
@@ -55,7 +55,7 @@ export default function UserEditModal({ user, onClose, onSave }) {
         apellido: (apellido || "").trim(),
         dni: (dni || "").trim(),
         email: (email || "").trim().toLowerCase(),
-        role: role, // valores esperados por back "visitor" | "admin" | "super_adm"  //
+        role: role, // valores esperados "admin" y "super_adm"  //
       };
 
       if (!payload.name || !payload.apellido || !payload.dni || !payload.email) {
@@ -146,7 +146,6 @@ export default function UserEditModal({ user, onClose, onSave }) {
             fullWidth
             required
           >
-            <MenuItem value="visitor">Visitante</MenuItem>
             <MenuItem value="admin">Administrativo/a</MenuItem>
             <MenuItem value="super_adm">Administrador/a</MenuItem>
           </TextField>

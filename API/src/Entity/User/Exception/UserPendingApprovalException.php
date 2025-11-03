@@ -1,14 +1,12 @@
-<?php
-
-declare(strict_types=1);
+<?php 
 
 namespace Src\Entity\User\Exception;
 
-use RuntimeException;
+use Exception;
 
-final class UserPendingApprovalException extends RuntimeException
+final class UserPendingApprovalException extends Exception
 {
-    public function __construct(string $message = "El usuario tiene la solicitud pendiente de aprobación por un administrador/a.")
+    public function __construct(string $message = 'El usuario tiene la solicitud pendiente de aprobación por un administrador/a.')
     {
         parent::__construct($message);
     }

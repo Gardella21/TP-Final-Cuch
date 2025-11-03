@@ -7,11 +7,14 @@ use Src\Infrastructure\Repository\User\UserRepository;
 use Src\Entity\User\Exception\UserNotFoundException;
 use Src\Entity\User\Exception\UserInvalidCredentialsException;
 use Src\Entity\User\Exception\UserBlockedException;
+use Src\Entity\User\Exception\UserPendingApprovalException;
 
 final readonly class UserLoginService
 {
-    // Límite de intentos fallidos antes de bloquear la cuenta //
-    private const MAX_ATTEMPTS = 5;
+    //Limites de intentos fallidos//
+    private const MAX_ATTEMPTS_SOFT = 5; // bloqueo por tiempo //
+    private const MAX_ATTEMPTS_HARD = 10; // bloqueo permanente //
+    private const SOFT_BLOCK_MIN    = 15; // minutos de bloqueo por tiempo //
 
     private UserRepository $repository;
     private UserFinderByEmailService $finder;
@@ -19,55 +22,69 @@ final readonly class UserLoginService
     public function __construct()
     {
         $this->repository = new UserRepository();
-        $this->finder     = new UserFinderByEmailService();
+        $this->finder= new UserFinderByEmailService();
     }
-    // Realiza el login de un usuario con email y password. //
-    public function login(string $email, string $password): array
+    // Login de un usuario con imail y contrseña//
+    public function login(string $email, string $password, ?string $clientIp = null): array
     {
-        $email = strtolower(trim($email));
-        // Buscar el usuario por email //
+        $email    = strtolower(trim($email));
+        $clientIp = $clientIp ?? '0.0.0.0';
+        //Busca el usuario por email //
         try {
             $user = $this->finder->find($email);
         } catch (UserNotFoundException) {
-            throw new UserInvalidCredentialsException(); 
+            throw new UserInvalidCredentialsException();
         }
-        // Verificar estado del usuario //
+        //Bloqueo permanente //
         if ($user->is_blocked()) {
-            throw new UserBlockedException(); //Usuario bloqueado por varios intentos fallidos//
+            throw new UserBlockedException();
         }
+        //Limpio el bloqueo si el tiempo ya se vencio//
+        $this->repository->clearSoftBlockIfExpired((int)$user->id());
+        //Bloqueo por tiempo//
+        if ($this->repository->isSoftBlocked((int)$user->id())) {
+            throw new UserBlockedException();
+        }
+        // Usuario pendiente //
         if (!$user->is_active()) {
-            // mantenemos tu mensaje específico //
-            throw new UserInvalidCredentialsException('Tu solicitud está pendiente de aprobación por un administrador.');
+            throw new UserPendingApprovalException();
         }
-        // Verificar contraseña //
+        //Verifico contraseña//
         if (!password_verify($password, $user->password())) {
-            $this->repository->incrementFailedAttempts($user->id());
-            $attempts = $this->repository->getFailedAttempts($user->id());
-            // Bloquea desde el 5º fallo //
-            if ($attempts >= self::MAX_ATTEMPTS) {
-                $this->repository->blockUser($user->id());
-                throw new UserBlockedException();
+            // Registrar fallo POR IP y aplicar reglas 5/10 //
+            $this->repository->registerFailedAttemptAtomic(
+                (int)$user->id(),
+                $clientIp,
+                self::MAX_ATTEMPTS_SOFT,
+                self::MAX_ATTEMPTS_HARD,
+                self::SOFT_BLOCK_MIN
+            );
+            // Verifico bloqueos //
+            if ($this->repository->isHardBlocked((int)$user->id())) {
+                throw new UserBlockedException(); // bloqueo permanenete//
+            }
+            if ($this->repository->isSoftBlocked((int)$user->id())) {
+                throw new UserBlockedException(); // bloqueo por tiempo //
             }
             throw new UserInvalidCredentialsException();
         }
-        // Login exitoso, resetear intentos fallidos y generar nuevo token //
-        $this->repository->resetFailedAttempts($user->id());
+        //Login exitoso resetear yu emitir token //
+        $this->repository->resetFailedAttempts((int)$user->id());
         $user->generateToken();
         $this->repository->updateToken($user);
-
-        // Devolver datos del usuario y token //
+        // Devuelvo los datos //
         return [
-            'status' => 200,
+            'status'=> 200,
             'message'=> 'Login exitoso.',
             'token'=> $user->token(),
             'user'=> [
-                'id' => $user->id(),
-                'name' => $user->name(),
-                'apellido' => $user->apellido(),
+                'id'=> $user->id(),
+                'name'=> $user->name(),
+                'apellido'=> $user->apellido(),
                 'dni'=> $user->dni(),
                 'email'=> $user->email(),
                 'role'=> $user->role(),
-                'token' => $user->token(),
+                'token'=> $user->token(),
             ],
         ];
     }

@@ -17,7 +17,7 @@ final readonly class UserAuthorizeAdminService
         $this->repository = new UserRepository();
         $this->finder     = new UserFinderService();
     }
-    //Autorizamos como admin (activa + role=admin + limpia flags).//
+    //Autorizamos como admin (activa + role=admin ).//
      public function approveAndPromote(int $actorId, int $userId): void
     {
         // Aseguro que el actor existe //
@@ -36,7 +36,7 @@ final readonly class UserAuthorizeAdminService
     // Verificamos existencia del usuario objetivo y ejecutamos la promocion.//
       public function approveAndPromoteByApiKey(string $apiKey, int $userId): void
     {
-        // 1) Si el token es inválido/expirado → 401) //
+        // Si el token es invalido //
         $actor = $this->repository->findByToken($apiKey);
         if (!$actor) {
             throw new UserInvalidCredentialsException();
@@ -46,7 +46,7 @@ final readonly class UserAuthorizeAdminService
         if (!$user) {
             throw new UserNotFoundException($userId);
         }
-        // Promoción + activacion //
+        // Activacion //
         $this->repository->authorizeAdmin($userId);
     }
 }

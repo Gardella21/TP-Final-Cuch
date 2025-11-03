@@ -9,7 +9,6 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
   font-weight: 900;
 }
-
 .footer-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -31,7 +30,6 @@
   align-items: center;
   margin-bottom: 0.3rem;
 }
-
 .footer-info p {
   margin: 0.1rem 0;
   font-size: 0.85rem;
@@ -56,7 +54,6 @@
   transition: transform 0.25s ease, color 0.25s ease, text-shadow 0.25s ease;
   transform-origin: center center;
 }
-
 .footer-info a:hover {
   transform: scale(1.05);
   color: #ffe7b2;

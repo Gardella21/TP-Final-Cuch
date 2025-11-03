@@ -30,8 +30,7 @@ export function LoginPage() {
   const navigate = useNavigate();
   const [error, setError] = useState(undefined);
   const [pendingMsg, setPendingMsg] = useState(undefined);
-
-  // auto-ocultar alertas a los 6s
+  // Oculta alertas a los 10s //
   useEffect(() => {
     if (!pendingMsg) return;
     const t = setTimeout(() => setPendingMsg(undefined), 6000);
@@ -44,68 +43,58 @@ export function LoginPage() {
     return () => clearTimeout(t);
   }, [error]);
 
-  // Mapea payload de backend a mensajes claros
+  // Detecta bloqueado por status 423 //
   function mapBackendToMessage(status, payload) {
-    const raw =
-      (typeof payload === "string" ? payload : payload?.error || payload?.message || "") || "";
+    const code =
+      (payload && (payload.error?.code || payload.code)) || null;
 
-    // pendiente / no autorizado
-    if ((status === 401 || status === 403) && /autorizad|pendient|aprobaci|inactiv/i.test(raw)) {
+    const raw =
+      (typeof payload === "string"
+        ? payload
+        : payload?.error?.message || payload?.message || payload?.error || ""
+      ) || "";
+
+    // Usuario bloqueado //
+    if (status === 423 || code === "USER_BLOCKED" || /bloquead/i.test(raw)) {
+      return { error: "Tu cuenta está bloqueada. Contactá al administrador." };
+    }
+    //Pendiente//
+    if (
+      (status === 401 || status === 403) &&
+      /autorizad|pendient|aprobaci|inactiv/i.test(raw)
+    ) {
       return {
         pending:
           "Tu solicitud aún está pendiente. Un administrador debe aprobarla antes de iniciar sesión.",
       };
     }
-    // credenciales inválidas
-    if (status === 401 || /credencial|password|contrase(?:ñ|n)a|clave|incorrect/i.test(raw)) {
+    //Credenciales invalidas//
+    if (
+      status === 401 ||
+      /credencial|password|contrase(?:ñ|n)a|clave|incorrect/i.test(raw)
+    ) {
       return { error: "Correo o contraseña incorrectos." };
     }
-    // email inválido
+   // mail invalido //
     if (status === 400 && /email|correo/i.test(raw)) {
       return { error: "El correo electrónico no es válido." };
     }
-    // fallback
+
     if (raw) return { error: raw };
     return { error: "Error al iniciar sesión" };
   }
-
-  async function onSubmit(formData) {
+  async function onSubmit(values) {
     try {
       setError(undefined);
       setPendingMsg(undefined);
-
-      // Enviar el OBJETO (Axios lo serializa), no stringify
-      const response = await authService.login(formData);
-
-      // Si tu Axios no rechaza 4xx/5xx:
-      if (response?.status && response.status >= 400) {
-        const msg = mapBackendToMessage(response.status, response.data);
-        if (msg.pending) setPendingMsg(msg.pending);
-        if (msg.error) setError(msg.error);
-        return;
-      }
-
-      const data = response?.data || {};
-      const headers = response?.headers || {};
-      const user = data?.user || {};
-
-      // Token tolerante (varias ubicaciones)
-      const token =
-        user?.token ??
-        data?.token ??
-        headers["x-api-key"] ??
-        headers["X-API-KEY"] ??
-        data?.auth?.token ??
-        null;
+      const data = await authService.login(values.email, values.password);
+      const user  = data?.user || {};
+      const token = data?.token || user?.token || null;
 
       if (!token) {
-        try {
-          localStorage.removeItem("token");
-        } catch {}
+        try { localStorage.removeItem("token"); } catch {}
         throw new Error("El servidor no devolvió un token válido");
       }
-
-      // Normalizar SIEMPRE en la misma key: current_user
       const normalizado = {
         id: user.id,
         email: user.email,
@@ -113,44 +102,51 @@ export function LoginPage() {
         nombre: user.nombre ?? user.name ?? "",
         apellido: user.apellido ?? user.lastName ?? "",
       };
-
-      // Guardado consistente
+      // Guardado consistente //
       localStorage.setItem("token", token);
       if (normalizado.role) {
         localStorage.setItem("role", String(normalizado.role).toLowerCase());
       }
       localStorage.setItem("current_user", JSON.stringify(normalizado));
 
-      // Avisar al header (avatar) que cambió el usuario
+      // Cambio de avatar segun usuario //
       window.dispatchEvent(new Event("auth:user-changed"));
 
       navigate("/admin");
     } catch (err) {
-      // Caso normal: Axios rechazó (status no-2xx)
+      // info del error //
       const status = err?.response?.status;
-      const data = err?.response?.data;
-      const msg = mapBackendToMessage(status, data);
-      if (msg.pending) setPendingMsg(msg.pending);
-      if (msg.error) setError(msg.error);
+      const data   = err?.response?.data;
+      const code   = err?.code || data?.code; 
+      const msg    = err?.message;
+      // Mapeo de mensajes //
+      if (!code && !msg?.length) {
+        const fallback = mapBackendToMessage(status, data);
+        if (fallback.pending) setPendingMsg(fallback.pending);
+        if (fallback.error)   setError(fallback.error);
+      } else {
+        if (code === "USER_PENDING_APPROVAL") {
+          setPendingMsg("Tu solicitud aún está pendiente. Un administrador debe aprobarla antes de iniciar sesión.");
+        } else {
+          setError(msg || "Error al iniciar sesión.");
+        }
+      }
       console.error("Error en login:", err);
     }
   }
-
   return (
     <main className="loginPage">
       <Container className="container">
         <header>
           <Title>Bienvenido!</Title>
         </header>
-
-        {/* Solicitud pendiente */}
+       {/* Solicitud pendiente */}
         {pendingMsg ? (
           <Alert className="pendingMsg" color="blue" variant="filled" radius="md" mt="md">
             {pendingMsg}
           </Alert>
         ) : null}
-
-        {/* Errores (credenciales/email) */}
+        {/* Errores credenciales/email/bloqueado */}
         {error ? (
           <Alert className="errorMsg" color="red" variant="light" radius="md" mt="md">
             {error}

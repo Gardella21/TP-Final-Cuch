@@ -19,7 +19,7 @@ final readonly class UserDeleteService
     //Borra un usuario por ID.//
     public function delete(int $userId): void
     {
-        // chequeo de existencia //
+        // chequeo si existe//
         $user = $this->finder->find($userId);
         if (!$user) {
             throw new UserNotFoundException($userId);

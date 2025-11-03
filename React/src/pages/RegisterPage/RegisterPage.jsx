@@ -1,4 +1,3 @@
-// src/pages/Register/RegisterPage.jsx
 import "./RegisterPage.css";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -16,7 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { authService } from "../../services/authService";
 import { useState } from "react";
 
-/** Validaciones */
+//Valida solo letras//
 const onlyLetters =
   /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü'´`¨^~\s-]{2,}$/; // nombres/apellidos con acentos, espacios, guiones//
 
@@ -43,7 +42,6 @@ const UserSchema = z.object({
     .string()
     .trim()
     .toLowerCase()
-    .email("El correo electrónico no es válido")
     .max(48, "Debe tener máximo 48 caracteres"),
   password: z
     .string()
@@ -51,7 +49,7 @@ const UserSchema = z.object({
     .max(32, "Debe tener máximo 32 caracteres"),
 });
 
-//Mapea mensajes del backend a algo claro para el usuario //
+// Mapea errores del backend //
 function mapBackendErrorToMessage(raw) {
   const txt = String(
     typeof raw === "string"
@@ -74,7 +72,6 @@ function mapBackendErrorToMessage(raw) {
   }
   return txt || "No se pudo completar el registro.";
 }
-
 export function RegisterPage() {
   const form = useForm({
     resolver: zodResolver(UserSchema),
@@ -90,8 +87,7 @@ export function RegisterPage() {
   const navigate = useNavigate();
   const [error, setError] = useState(undefined);
   const [info, setInfo] = useState(undefined);
-
-  // Normalización suave del DNI (solo dígitos)//
+  // Manejo solo digitos en el campo DNI //
   const handleDniChange = (e) => {
     const onlyDigits = e.currentTarget.value.replace(/\D+/g, "");
     form.setValue("dni", onlyDigits, { shouldValidate: true });
@@ -108,24 +104,20 @@ export function RegisterPage() {
         email: values.email.trim().toLowerCase(),
         password: values.password,
       };
+      // llamo al servicio de registro //
+      const data = await authService.register(payload);
+      const msg =
+        data?.message ||
+        "Usuario registrado correctamente. Tu solicitud quedó pendiente de aprobación por un Administrador. ¡Gracias!";
 
-      const response = await authService.register(payload);
+      setInfo(msg);
 
-      if (response?.status === 200 || response?.status === 201) {
-        const msg =
-          response?.data?.message ||
-          "Usuario registrado correctamente. Tu solicitud quedó pendiente de aprobación por un Administrador. ¡Gracias!";
-
-        setInfo(msg);
-
-        setTimeout(() => {
-          navigate("/login", { state: { message: msg } });
-        }, 6000);
-      } else {
-        throw new Error("Ocurrió un error inesperado");
-      }
+      setTimeout(() => {
+        navigate("/login", { state: { message: msg } });
+      }, 6000);
     } catch (err) {
-      const friendly = mapBackendErrorToMessage(err);
+      // Mapeo error del backend //
+      const friendly = mapBackendErrorToMessage(err?.message || err);
       setError(friendly);
       console.error("Error en registro:", err);
     }
