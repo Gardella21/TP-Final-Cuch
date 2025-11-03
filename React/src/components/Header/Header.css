@@ -3,93 +3,124 @@
   background: linear-gradient(to bottom, #D87A2E, #F4A35E);
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: baseline;
+  gap: 0.25rem; 
   font-family: 'Georgia', serif;
   color: #F4C16E;
   box-sizing: border-box;
-  padding: 1rem;
-  height: auto;
+  padding: 0.35rem;
+  flex: 0 0 auto;
 }
-
-.header-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.library-header .header-container {
   width: 100%;
   max-width: 1200px;
-}
-.logo-container {
-  flex-shrink: 0;
   display: flex;
   align-items: center;
+  justify-content: center;              
+  padding: 0 0.5rem;
+  box-sizing: border-box;
+  flex-direction: row;
+}
+.library-header .logo-link {
+  display: inline-flex;
+  align-items: baseline;
   justify-content: center;
+  flex: 0 0 auto;
+  margin-right: 1rem;
+}
+.library-header .library-logo {
+  display: inline-block;
+  width: auto;
+  max-height: 100px;
+  max-width: 180px;
+  object-fit: contain;
+  margin: 0; 
+  vertical-align: middle;
 }
 
-.library-logo {
-  width: auto;
-  max-height: 120px; 
-  max-width: 200px;
-  object-fit: contain;
-  margin-right: 1rem;
-  margin-left: 5px;
-}
-.header-text {
-  flex: 1;
+.library-header .header-text {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  text-align: center;
+  align-items: flex-start; 
+  text-align: left;
   white-space: normal;
   overflow: visible;
   word-break: break-word;
+  min-width: 0;
 }
 
-.library-title {
-  font-size: clamp(2rem, 3vw, 3rem);
-  font-weight: 900;
+.library-header .header-text .library-title.MuiTypography-root,
+.library-header .header-text .library-title,
+.library-header .library-title.MuiTypography-root,
+.library-header .library-title {
+  font-family: 'Georgia', serif !important;
+  font-weight: 900 !important;
+  text-transform: uppercase;
   letter-spacing: 2px;
   margin: 0;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-  -webkit-text-stroke: 0.5px rgba(0,0,0,0.3);
+  line-height: 1;
+  color: #ffffff !important;
+  -webkit-text-stroke: 0.5px rgba(0,0,0,0.28);
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.06),
+    0 2px 2px rgba(0,0,0,0.22),
+    0 6px 12px rgba(0,0,0,0.32);
+  font-size: clamp(1.6rem, 3.2vw, 2.6rem);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: inline-block;
+  transform: translateZ(0);
+  position: relative;
 }
-
-.library-subtitle {
-  font-size: clamp(1rem, 1.8vw, 1.3rem);
-  margin: 0.2rem 0 0 0;
-  font-weight: 700;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+.library-header .library-subtitle,
+.library-header .library-subtitle.MuiTypography-root,
+.library-header .header-text .library-subtitle.MuiTypography-root {
   font-family: 'Georgia', serif;
+  font-weight: 700;
+  font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+  margin: 0.35rem 0 0 0;
+  color: #ffffff !important;
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.04),
+    0 2px 4px rgba(0,0,0,0.22);
+  letter-spacing: 0.6px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .library-header {
-    padding: 0.5rem 1rem; 
-    height: auto;
+    padding: 0.6rem 0.75rem;
   }
 
-  .header-container {
-    flex-direction: column;
-    text-align: center;
+  .library-header .header-container {
+    flex-direction: column;   
+    gap: 0.35rem;            
+    align-items: center;
+    justify-content: center;
   }
 
-  .logo-container {
-    margin-bottom: 0.3rem;
-  }
-
-  .library-logo {
+  .library-header .library-logo {
     max-width: 100px;
-    max-height: 80px; 
-    margin: 0;
+    max-height: 80px;
   }
 
-  .library-title {
-    font-size: 1.3rem;
-    margin: 0;
+  .library-header .library-title,
+  .library-header .library-title.MuiTypography-root,
+  .library-header .header-text .library-title.MuiTypography-root {
+    font-size: clamp(1.4rem, 5vw, 1.7rem);
+    letter-spacing: 1px;
   }
 
-  .library-subtitle {
+  .library-header .library-subtitle,
+  .library-header .library-subtitle.MuiTypography-root,
+  .library-header .header-text .library-subtitle.MuiTypography-root {
     font-size: 0.9rem;
-    margin: 0; 
   }
 }
+
+.library-header .library-title,
+.library-header .library-subtitle {
+  color: inherit;
+}
+
+
