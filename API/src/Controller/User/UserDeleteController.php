@@ -24,7 +24,6 @@ final readonly class UserDeleteController
         }
         //verificar permisos//
         (new AuthMiddleware())->authenticate(true, ['super_adm']);
-
         try {
             $this->service->delete($id);
             http_response_code(200);

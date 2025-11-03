@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./InfoNosotros.css";
-
 const InfoNosotros = () => {
   const [index, setIndex] = useState(0);
 
@@ -54,7 +53,7 @@ const InfoNosotros = () => {
           Por sus salas pasaron destacadas personalidades como <strong>Jorge Luis Borges, Félix Luna, León Benarós, Ángel Battistessa</strong> y <strong>Benito Quinquela Martín</strong>.  
           En 2008 se creó el Rincón de Lectura junto a la Fundación Leer, en 2011 la Sala Infantil-Juvenil, y en 2018 la Sala de Colecciones, que conserva material histórico invaluable.  
           Estas áreas fomentan la lectura desde la infancia, fortalecen la inclusión educativa y preservan la memoria cultural de Chivilcoy.  
-          <em>Desde 1895, continúa siendo sinónimo de cultura, educación, encuentro y compromiso social.</em>
+          Desde 1895, continúa siendo sinónimo de cultura, educación, encuentro y compromiso social.
         </p>
       ),
       img: "/public/images/Espacio-Cultura.jpg",
@@ -136,15 +135,15 @@ const InfoNosotros = () => {
   const nextCard = () => setIndex((prev) => (prev + 1) % cards.length);
   const prevCard = () => setIndex((prev) => (prev - 1 + cards.length) % cards.length);
 
-  return (
+return (
     <div className="info-page">
       <section className="info-section">
-        <h1>{cards[index].title}</h1>
+        <h1 key={index}>{cards[index].title}</h1>
+
         {cards[index].content}
         {cards[index].img && <img src={cards[index].img} alt={cards[index].title} />}
       </section>
 
-      {/* Flechas de navegación */}
       <button className="arrow-btn left" onClick={prevCard}>⮜</button>
       <button className="arrow-btn right" onClick={nextCard}>⮞</button>
     </div>

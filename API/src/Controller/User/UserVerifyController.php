@@ -21,7 +21,7 @@ final readonly class UserVerifyController
         }
         //Cualquiera logueado//
         $userId = (new AuthMiddleware())->authenticate(true, []);
-        // Obtiene datos del usuario //
+        // Obtengo datos del usuario //
         $u = $this->finder->find($userId);
         // Responde //
         http_response_code(200);

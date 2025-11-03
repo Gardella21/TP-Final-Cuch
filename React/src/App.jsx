@@ -23,8 +23,6 @@ import { CatalogPage } from "./pages/CatalogPage/CatalogPage";
 import EventPage from "./pages/EventPage/EventPage";
 import { AdminHomePage } from "./pages/Admin/Home/AdminHomePage";
 import { EventManagerPage } from "./pages/Admin/Events/EventManagerPage";
-
-// CORRECCIÓN: default import para UserManagerPage
 import UserManagerPage from "./pages/Admin/Users/UserManagerPage";
 
 const MainLayout = () => (

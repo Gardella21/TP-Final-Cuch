@@ -17,7 +17,7 @@ final class UserSearchByEmailController
             return;
         }
         (new AuthMiddleware())->authenticate(true, ['admin','super_adm']);
-        // Email: limpiar (trim), normalizar (lowercase) y validar formato //
+       // Normalizar email //
         $email = strtolower(trim(urldecode($email)));
         // Buscar usuario //
         $svc = new UserFinderService();

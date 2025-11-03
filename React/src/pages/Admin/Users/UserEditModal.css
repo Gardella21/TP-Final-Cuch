@@ -17,7 +17,7 @@
   font-size: 1.8rem !important; 
   margin-bottom: 0.75rem !important;
 }
-/* Labels */
+/* Etiquetas */
 .edit-user-dialog .MuiInputLabel-root {
   color: #5d3a00 !important;
   font-weight: 600 !important;
@@ -40,7 +40,7 @@
   color: #5d3a00 !important;
   font-size: 1.05rem !important;   
   padding: 12px 14px !important;    
-}/* Espaciado del formulario */
+}
 .edit-user-dialog .MuiDialogContent-root {
   padding-top: 8px !important;
   padding-bottom: 8px !important;
@@ -68,7 +68,7 @@
   transform: translateY(-1px);
   box-shadow: 0 6px 16px rgba(93, 58, 0, 0.18) !important;
 }
-/* Botón: Guardar */
+/* Boton guardar */
 .edit-user-dialog .MuiButton-containedPrimary {
   background-color: #8b5e34 !important;
   color: #fff !important;
