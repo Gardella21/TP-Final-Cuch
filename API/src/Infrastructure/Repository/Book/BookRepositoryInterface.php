@@ -20,4 +20,13 @@ interface BookRepositoryInterface
         ?bool $disponibilidad = null,
         ?bool $reservada = null
     ): array;
+    public function beginTransaction(): void;
+
+    public function commit(): void;
+    
+    public function rollback(): void;
+
+    public function insertBooks(array $books): int;
+
+    public function clearAllBooks(): void;
 }

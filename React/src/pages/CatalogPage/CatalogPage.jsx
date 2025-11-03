@@ -1,6 +1,5 @@
-
 import "./CatalogPage.css";
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Container,
@@ -10,97 +9,104 @@ import {
   Grid,
   FormControlLabel,
   Checkbox,
-  MenuItem,
-  CircularProgress,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { bookService } from "../../services/bookservice";
+import { bookService } from "../../services/bookService";
 
 
+const CACHE_KEY = "librosGuardados";
 
-function useDebounce(value, delay = 350) {
-  const [debounced, setDebounced] = useState(value);
-  useEffect(() => {
-    const t = setTimeout(() => setDebounced(value), delay);
-    return () => clearTimeout(t);
-  }, [value, delay]);
-  return debounced;
-}
+const readCache = () => {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+};
+
+const writeCache = (books) => {
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify(books));
+  } catch {}
+};
+
 
 export function CatalogPage() {
- 
   const [books, setBooks] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
-
- 
   const [q, setQ] = useState("");
   const [author, setAuthor] = useState("");
   const [category, setCategory] = useState("");
   const [onlyAvailable, setOnlyAvailable] = useState(false);
   const [onlyReserved, setOnlyReserved] = useState(false);
 
- 
-  const dq = useDebounce(q);
-  const dAuthor = useDebounce(author);
-  const dCategory = useDebounce(category);
-  const dOnlyAvailable = useDebounce(onlyAvailable);
-  const dOnlyReserved = useDebounce(onlyReserved);
-
- 
   useEffect(() => {
     const fetchBooks = async () => {
-      setLoading(true);
-      setErrorMsg("");
+      
+      const cached = readCache();
+      if (cached && cached.length > 0) {
+        setBooks(cached);
+        console.log("Libros cargados desde localStorage");
+        return;
+      }
 
      
-      const disponible = dOnlyAvailable ? true : null;
-      const reservada = dOnlyReserved ? true : null;
-
       try {
-        const { data } = await bookService.search({
-          titulo: dq,
-          autor: dAuthor,
-          materia: dCategory, 
-          editorial: "",
-          anio: null,
-          disponible,
-          reservada,
-        });
-        setBooks(Array.isArray(data) ? data : []);
-      } catch (err) {
-        setErrorMsg(err?.message || "Error al cargar el catálogo");
-        setBooks([]);
-      } finally {
-        setLoading(false);
+        console.log(" Pidiendo al backend...");
+        const { data } = await bookService.search({});
+        if (Array.isArray(data)) {
+          setBooks(data);
+          writeCache(data); 
+        }
+      } catch (error) {
+        console.error("Error cargando libros:", error);
       }
     };
 
     fetchBooks();
-  }, [dq, dAuthor, dCategory, dOnlyAvailable, dOnlyReserved]);
+  }, []);
 
   
-  const authors = useMemo(
-    () => Array.from(new Set(books.map((b) => b.autor).filter(Boolean))).sort(),
-    [books]
-  );
-  const categories = useMemo(
-    () => Array.from(new Set(books.map((b) => b.materia).filter(Boolean))).sort(),
-    [books]
-  );
+  const filteredBooks = books.filter((book) => {
+    const matchesTitle = book.titulo?.toLowerCase().includes(q.toLowerCase());
+    const matchesAuthor = author
+      ? book.autor?.toLowerCase().includes(author.toLowerCase())
+      : true;
+    const matchesCategory = category
+      ? book.materia?.toLowerCase().includes(category.toLowerCase())
+      : true;
+    const matchesAvailable = onlyAvailable ? book.disponibilidad : true;
+    const matchesReserved = onlyReserved ? book.reservada : true;
+
+    return (
+      matchesTitle &&
+      matchesAuthor &&
+      matchesCategory &&
+      matchesAvailable &&
+      matchesReserved
+    );
+  });
 
   return (
-    <div  id="catalogo" className="catalog-background">
+    <div className="catalog-background">
       <Container maxWidth="lg" className="catalog">
         <Typography variant="h2" className="catalog-title">
           Catálogo
         </Typography>
 
-        {/* Buscador */}
+        {/* Buscador por título */}
         <TextField
           className="catalog-search"
           fullWidth
-          placeholder="Buscar por título…"
+          placeholder="Buscar por título..."
           variant="outlined"
           value={q}
           onChange={(e) => setQ(e.target.value)}
@@ -116,53 +122,30 @@ export function CatalogPage() {
         {/* Filtros */}
         <Box className="filters-card">
           <Grid container spacing={2} alignItems="center">
-            {/* Autor */}
             <Grid item xs={12} md={4}>
               <div className="field-label">Autor</div>
               <TextField
                 className="select-field"
-                select
-                fullWidth
                 variant="outlined"
                 value={author}
                 onChange={(e) => setAuthor(e.target.value)}
-                SelectProps={{ displayEmpty: true }}
-              >
-                <MenuItem value="">
-                  <span className="select-placeholder">Todos los autores</span>
-                </MenuItem>
-                {authors.map((a) => (
-                  <MenuItem key={a} value={a}>
-                    {a}
-                  </MenuItem>
-                ))}
-              </TextField>
+                placeholder="Buscar por autor..."
+                fullWidth
+              />
             </Grid>
 
-            {/* Categoría (materia) */}
             <Grid item xs={12} md={4}>
-              <div className="field-label">Categoría</div>
+              <div className="field-label">Materia</div>
               <TextField
                 className="select-field"
-                select
-                fullWidth
                 variant="outlined"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                SelectProps={{ displayEmpty: true }}
-              >
-                <MenuItem value="">
-                  <span className="select-placeholder">Todas las categorías</span>
-                </MenuItem>
-                {categories.map((c) => (
-                  <MenuItem key={c} value={c}>
-                    {c}
-                  </MenuItem>
-                ))}
-              </TextField>
+                placeholder="Buscar por materia..."
+                fullWidth
+              />
             </Grid>
 
-            {/* Checks */}
             <Grid item xs={12} md={4} className="filters-checks">
               <FormControlLabel
                 control={
@@ -180,53 +163,71 @@ export function CatalogPage() {
                     onChange={(e) => setOnlyReserved(e.target.checked)}
                   />
                 }
-                label="Colección reservada"
+                label="Solo reservados"
               />
             </Grid>
           </Grid>
         </Box>
 
-        {/* Estados */}
-        {loading && (
-          <Box style={{ display: "flex", justifyContent: "center", marginTop: 16 }}>
-            <CircularProgress />
-          </Box>
-        )}
+        {/* Resultados en tabla */}
+        <TableContainer component={Paper} className="catalog-table">
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Código</TableCell>
+                <TableCell>Título</TableCell>
+                <TableCell>Autor</TableCell>
+                <TableCell>Materia</TableCell>
+                <TableCell>Editorial</TableCell>
+                <TableCell>Año</TableCell>
+                <TableCell>Disponibilidad</TableCell>
+                <TableCell>Colección Reservada</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredBooks.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={8} align="center">
+                    No se encontraron resultados
+                  </TableCell>
+                </TableRow>
+              ) : (
+                filteredBooks.map((book) => (
+                  <TableRow key={book.id}>
+                    <TableCell>{book.codigo}</TableCell>
+                    <TableCell>{book.titulo}</TableCell>
+                    <TableCell>{book.autor}</TableCell>
+                    <TableCell>{book.materia}</TableCell>
+                    <TableCell>{book.editorial}</TableCell>
+                    <TableCell>{book.anio}</TableCell>
 
-        {!loading && errorMsg && (
-          <div className="no-results">{errorMsg}</div>
-        )}
+                    {/* Disponible con color */}
+                    <TableCell
+                      className={
+                        book.disponibilidad
+                          ? "status-available"
+                          : "status-unavailable"
+                      }
+                    >
+                      {book.disponibilidad ? "Disponible" : "No disponible"}
+                    </TableCell>
 
-        {/* Resultados */}
-        {!loading && !errorMsg && (
-          <>
-            {books.length === 0 ? (
-              <div className="no-results">No se encontraron resultados.</div>
-            ) : (
-              <Grid container spacing={2}>
-                {books.map((b) => (
-                  <Grid item xs={12} md={6} lg={4} key={b.id}>
-                    <Box className="book-card" padding={2}>
-                      <Typography className="book-title">{b.titulo}</Typography>
-                      <Typography>
-                        {b.autor || "Autor desconocido"} · {b.materia || "Sin categoría"}
-                      </Typography>
-                      <Typography>
-                        {b.editorial ? `Editorial: ${b.editorial}` : ""}
-                        {b.edicion ? ` · Edición: ${b.edicion}` : ""}
-                        {b.anio ? ` · Año: ${b.anio}` : ""}
-                      </Typography>
-                      <Typography className={b.disponibilidad ? "status-available" : "status-unavailable"}>
-                        {b.disponibilidad ? "Disponible" : "No disponible"}
-                        {b.reservada ? " · Reservada" : ""}
-                      </Typography>
-                    </Box>
-                  </Grid>
-                ))}
-              </Grid>
-            )}
-          </>
-        )}
+                    {/* Reservada con color */}
+                    <TableCell
+                      className={
+                        book.reservada
+                          ? "status-reserved"
+                          : "status-not-reserved"
+                      }
+                    >
+                      {book.reservada ? "Reservada" : "No reservada"}
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Container>
     </div>
   );
