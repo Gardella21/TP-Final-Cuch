@@ -1,9 +1,13 @@
 .articles-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center;         
+  width: 100%;
   padding: 36px;
   box-sizing: border-box;
-  width: 100%;
+  flex: 1;
 }
-
 .articles-grid {
   display: grid;
   gap: 24px;
@@ -12,7 +16,6 @@
   margin: 0 auto;
   width: 100%;
 }
-
 .article-link {
   text-decoration: none;
   color: inherit;
@@ -47,6 +50,7 @@
 .article-card:hover .article-image {
   transform: scale(1.05);
 }
+
 .article-image--placeholder {
   height: 240px;
   background: linear-gradient(180deg, #f2ebe0 0%, #e9ddc8 100%);
@@ -56,6 +60,7 @@
   justify-content: center;
   font-weight: 500;
 }
+
 .article-card:hover .MuiTypography-h6 {
   color: #620707;
   text-decoration: underline;
@@ -67,6 +72,7 @@
   margin-bottom: 12px;
   font-size: 0.9rem;
 }
+
 .article-summary {
   color: #2e2a25;
   line-height: 1.6;
@@ -74,6 +80,7 @@
   margin-top: 8px;
   text-align: justify;
 }
+
 .pagination-container {
   margin-top: 2rem;
   margin-bottom: 2rem;
@@ -82,16 +89,19 @@
   gap: 8px;
   flex-wrap: wrap;
 }
+
 .pagination-button {
   min-width: 40px;
   padding: 6px 12px;
   font-weight: bold;
   border-radius: 8px;
 }
+
 .pagination-button.active {
   background-color: #620707;
   color: white;
 }
+
 .pagination-button:hover {
   opacity: 0.85;
 }
