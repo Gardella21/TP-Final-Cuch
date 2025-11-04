@@ -85,7 +85,7 @@ const Questions = () => {
         <p>
           ¡Sí! Las donaciones son fundamentales para el crecimiento de la
           Biblioteca Popular “Dr. Antonio Novaro”. Aceptamos libros en buen
-          estado, material educativo, revistas culturales y aportes económicos.
+          estado, material educativo, revistas culturales, etc.
           Podés acercarte a la biblioteca en{" "}
           <strong>Moreno 30, Chivilcoy</strong>, o comunicarte al{" "}
           <strong>(2346) 432493</strong>. Cada aporte, grande o pequeño, ayuda a

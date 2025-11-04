@@ -25,6 +25,7 @@ const setCache = (key, value) => {
   try {
     localStorage.setItem(key, JSON.stringify(value || []));
   } catch {}
+
 };
 
 export const userService = {
@@ -87,7 +88,7 @@ export const userService = {
     return { active, pending };
   },
 
-  // Elimina de pendientes //
+  // Eliminar pendientes //
   reject: async (id) => {
     await api.delete(`/users/${id}`, { headers: baseHeaders });
     setCache(

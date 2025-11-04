@@ -20,7 +20,7 @@ final readonly class UserApproveController
             echo json_encode(['error' => 'Método no permitido']);
             return;
         }
-        // solo super_adm puede aprobar/promover//
+        // solo super_adm puede aprobar,promover//
         $actorId = (new AuthMiddleware())->authenticate(true, ['super_adm']);
         // aprobar y promover//
         $this->service->approveAndPromote($actorId, $id);
