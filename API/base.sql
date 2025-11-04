@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.2
+-- version 5.2.3
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: mysql:3306
--- Tiempo de generación: 04-11-2025 a las 14:56:04
+-- Tiempo de generación: 04-11-2025 a las 19:07:48
 -- Versión del servidor: 5.7.44
--- Versión de PHP: 8.2.29
+-- Versión de PHP: 8.3.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -189,10 +189,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `name`, `apellido`, `dni`, `email`, `password`, `token`, `token_auth_date`, `role`, `is_active`, `is_blocked`, `failed_attempts`, `failed_ip`, `soft_block_until`) VALUES
 (41, 'Cane', 'Corso', '808080808', 'canecorso@biblioteca.com', '$2y$10$bhqy.FxL6VAtnL/h2LAOd.BWAizKGheZTZ7ZIAAels7J9BMHPHlKO', 'eb359c48829128ea194df678c25a99b0', '2025-10-28 21:31:10', 'admin', 1, 0, 0, NULL, NULL),
 (42, 'Dogo', 'Argentino', '404040404', 'dogoargentino@biblioteca.com', '$2y$10$tFSaV2xDOz8j0fehrQb4g.ZvWag7zcLEJfE8xlaZhNYDsVQJn3fme', '006ad1c4b8332e4b07cae964fa1cac35', '2025-11-03 11:05:04', 'admin', 1, 1, 0, NULL, NULL),
-(44, 'Kangal', 'Turco', '121212121', 'kangal@biblioteca.com', '$2y$10$fO2buUDi3SCFvlK61vDG/eMND84OvfHpFN6pOfIuOfAPG/QSqqavK', '51e2ba0b3229604d677edce1381edd8b', '2025-11-03 17:40:45', 'admin', 1, 0, 0, NULL, NULL),
-(51, 'Administrador', 'Administrador', '353535353', 'admin@biblioteca.com', '$2y$10$qFvXkhQKZRb.Se6ZPnfb9edN6VO2Tfkyerusv2.ggLuh9HYP7UK8a', '7454374d4f1bbc9f8d9b0c4de4b6ce51', '2025-11-04 12:31:25', 'super_adm', 1, 0, 0, NULL, NULL),
-(54, 'Maria', 'Maria', '84848484', 'maria@biblioteca.com', '$2y$10$2V.oDwU0470XtGGimvmwguSIgZNxun28qLtbD7j7PZA9DAN0Qplx.', NULL, '2025-11-03 19:29:52', 'visitor', 0, 0, 0, NULL, NULL),
-(55, 'Presa', 'Canario', '656565565', 'presacanario@biblioteca.com', '$2y$10$76WPaSYLhvLFSlzi99o9sOn9dOP49NtwcI7e2g/mQOX/KPqeqQHXS', '8b2e878910d91e8e65ec8e46174e47c7', '2025-11-03 19:24:37', 'admin', 1, 0, 1, '172.18.0.1', NULL),
+(44, 'Kangal', 'Turco', '121212121', 'kangal@biblioteca.com', '$2y$10$fO2buUDi3SCFvlK61vDG/eMND84OvfHpFN6pOfIuOfAPG/QSqqavK', '8b7ebe012dd1e2fa30e451297cfbd58a', '2025-11-04 03:23:55', 'super_adm', 1, 1, 9, '172.18.0.1', '2025-11-04 19:21:11'),
+(51, 'Administrador', 'Administrador', '353535353', 'admin@biblioteca.com', '$2y$10$qFvXkhQKZRb.Se6ZPnfb9edN6VO2Tfkyerusv2.ggLuh9HYP7UK8a', '6547d01c26b63596d3ec69471d99a6bc', '2025-11-04 04:48:17', 'super_adm', 1, 0, 1, '172.18.0.1', NULL),
 (56, 'Pastor', 'Belga', '12345678', 'pastor@biblioteca.com', '$2y$10$PzxFqQejr8rt30WXwXwlfelBmA5WxZDJB8wV2VYIT2f9mJpEXOrjq', NULL, '2025-11-04 03:13:57', 'visitor', 0, 0, 0, NULL, NULL);
 
 --
