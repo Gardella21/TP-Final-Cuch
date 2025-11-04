@@ -175,7 +175,7 @@ export function LoginPage() {
           </Button>
 
           <Text ta="center" mt="md">
-            ¿Aún no tienes una cuenta? <Link to="/register">Registrarse</Link>
+            ¿Aún no tienes una cuenta? <Link to="/register"className="login-register-link">Registrarse</Link>
           </Text>
         </form>
       </Container>
