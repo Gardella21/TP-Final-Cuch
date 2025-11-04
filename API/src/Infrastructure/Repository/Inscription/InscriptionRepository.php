@@ -42,6 +42,7 @@ final readonly class InscriptionRepository extends PDOManager implements Inscrip
             E.title AS event_title
         FROM inscriptions A
         LEFT JOIN events E ON E.id = A.id_event
+        WHERE E.deleted = 0
         ORDER BY A.id DESC
     SQL;
 
@@ -55,6 +56,7 @@ final readonly class InscriptionRepository extends PDOManager implements Inscrip
     }
     return $out;
 }
+
 
     public function insert(Inscription $inscription): void
 {
