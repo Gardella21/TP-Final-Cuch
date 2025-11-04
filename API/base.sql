@@ -36,27 +36,6 @@ CREATE TABLE `articles` (
   `deleted` tinyint(1) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Volcado de datos para la tabla `articles`
---
-
-INSERT INTO `articles` (`id`, `title`, `image`, `date`, `body`, `deleted`) VALUES
-(17, 'TITULO 2', 'http://localhost:9000/imagenes/133861804548973604-20251019-173614.jpg', '2025-10-19 17:36:31', 'TEXTO', 1),
-(18, 'NOTICIA 20', 'http://localhost:9000/imagenes/klaus-20251019-191933.jpg', '2025-10-19 19:19:45', 'TEXTO', 1),
-(19, 'noticia 2', 'http://localhost:9000/imagenes/klaus-20251019-211151.jpg', '2025-10-19 21:12:16', 'texto', 1),
-(20, 'hola 25', 'http://localhost:9000/imagenes/133861804548973604-20251021-173657.jpg', '2025-10-21 17:37:04', 'hola', 1),
-(21, 'noticia 2', 'http://localhost:9000/imagenes/Fondo-SobreNosotros-20251028-191828.png', '2025-10-28 19:18:34', 's', 1),
-(22, 'noticia 1 23', 'http://localhost:9000/imagenes/klaus-20251029-190606.jpg', '2025-10-29 19:06:32', 'texto hola', 1),
-(23, 'noticia sol', 'http://localhost:9000/imagenes/klaus-20251029-205201.jpg', '2025-10-29 20:52:15', 'texto', 1),
-(24, 'proxbhihuihi ', 'http://localhost:9000/imagenes/klaus-20251103-093717.jpg', '2025-11-03 09:37:38', 'texto', 1),
-(25, 'noticia 45', 'http://localhost:9000/imagenes/klaus-20251103-145852.jpg', '2025-11-03 14:59:20', 'texto', 1),
-(26, 'dbfjkfk999999', 'http://localhost:9000/imagenes/klaus-20251103-161944.jpg', '2025-11-03 16:19:53', 'efouqwefjqweio', 1),
-(27, 'rwertsol', 'http://localhost:9000/imagenes/klaus-20251103-171442.jpg', '2025-11-03 17:14:52', 'rtert', 1),
-(28, 'noticia sol', 'http://localhost:9000/imagenes/133861804548973604-20251103-172959.jpg', '2025-11-03 17:30:16', 'texto', 1),
-(29, 'r', 'http://localhost:9000/imagenes/133861804548973604-20251103-174023.jpg', '2025-11-03 17:40:31', 't', 1),
-(30, 'rt', 'http://localhost:9000/imagenes/klaus-20251103-182356.jpg', '2025-11-03 18:24:04', 'ert', 1),
-(31, 'noticia', 'http://localhost:9000/imagenes/klaus-20251104-001822.jpg', '2025-11-04 00:18:48', 'texto', 0);
-
 -- --------------------------------------------------------
 
 --
