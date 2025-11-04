@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.2
+-- version 5.2.3
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: mysql:3306
--- Tiempo de generación: 24-10-2025 a las 13:21:49
+-- Tiempo de generación: 04-11-2025 a las 04:50:38
 -- Versión del servidor: 5.7.44
--- Versión de PHP: 8.2.28
+-- Versión de PHP: 8.3.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -35,6 +35,27 @@ CREATE TABLE `articles` (
   `body` longtext NOT NULL,
   `deleted` tinyint(1) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `articles`
+--
+
+INSERT INTO `articles` (`id`, `title`, `image`, `date`, `body`, `deleted`) VALUES
+(17, 'TITULO 2', 'http://localhost:9000/imagenes/133861804548973604-20251019-173614.jpg', '2025-10-19 17:36:31', 'TEXTO', 1),
+(18, 'NOTICIA 20', 'http://localhost:9000/imagenes/klaus-20251019-191933.jpg', '2025-10-19 19:19:45', 'TEXTO', 1),
+(19, 'noticia 2', 'http://localhost:9000/imagenes/klaus-20251019-211151.jpg', '2025-10-19 21:12:16', 'texto', 1),
+(20, 'hola 25', 'http://localhost:9000/imagenes/133861804548973604-20251021-173657.jpg', '2025-10-21 17:37:04', 'hola', 1),
+(21, 'noticia 2', 'http://localhost:9000/imagenes/Fondo-SobreNosotros-20251028-191828.png', '2025-10-28 19:18:34', 's', 1),
+(22, 'noticia 1 23', 'http://localhost:9000/imagenes/klaus-20251029-190606.jpg', '2025-10-29 19:06:32', 'texto hola', 1),
+(23, 'noticia sol', 'http://localhost:9000/imagenes/klaus-20251029-205201.jpg', '2025-10-29 20:52:15', 'texto', 1),
+(24, 'proxbhihuihi ', 'http://localhost:9000/imagenes/klaus-20251103-093717.jpg', '2025-11-03 09:37:38', 'texto', 1),
+(25, 'noticia 45', 'http://localhost:9000/imagenes/klaus-20251103-145852.jpg', '2025-11-03 14:59:20', 'texto', 1),
+(26, 'dbfjkfk999999', 'http://localhost:9000/imagenes/klaus-20251103-161944.jpg', '2025-11-03 16:19:53', 'efouqwefjqweio', 1),
+(27, 'rwertsol', 'http://localhost:9000/imagenes/klaus-20251103-171442.jpg', '2025-11-03 17:14:52', 'rtert', 1),
+(28, 'noticia sol', 'http://localhost:9000/imagenes/133861804548973604-20251103-172959.jpg', '2025-11-03 17:30:16', 'texto', 1),
+(29, 'r', 'http://localhost:9000/imagenes/133861804548973604-20251103-174023.jpg', '2025-11-03 17:40:31', 't', 1),
+(30, 'rt', 'http://localhost:9000/imagenes/klaus-20251103-182356.jpg', '2025-11-03 18:24:04', 'ert', 1),
+(31, 'noticia', 'http://localhost:9000/imagenes/klaus-20251104-001822.jpg', '2025-11-04 00:18:48', 'texto', 0);
 
 -- --------------------------------------------------------
 
@@ -111,36 +132,18 @@ CREATE TABLE `events` (
 --
 
 INSERT INTO `events` (`id`, `title`, `description`, `image`, `end_date`, `is_Active`, `deleted`) VALUES
-(8, 'titulo-nuevo', 'descripcion-nueva', '', '2025-09-24', 1, 0),
-(11, 'titulo', 'descripcion 1', 'http://localhost:9000/imagenes/ajedrez-20251022-114248.jpg', '2025-09-18', 1, 0),
-(13, 'titulo', 'info', 'http://localhost:9000/imagenes/biblioteca-20251022-114055.jpg', '2026-06-25', 1, 0),
-(15, 'Evento Ajedrez', 'Lunes Miercoles y Viernes.\n19hs a 21hs.', 'http://localhost:9000/imagenes/ajedrez-20251024-095134.jpg', '2025-12-20', 1, 0),
-(16, 'Curos Teatro', 'Martes y Jueves.\nde 14:00hs a 15:30hs', 'http://localhost:9000/imagenes/biblioteca-20251024-100618.jpg', '2025-12-10', 1, 0);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `inscriptions`
---
-
-CREATE TABLE `inscriptions` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `surname` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `phone` bigint(11) NOT NULL,
-  `id_event` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Volcado de datos para la tabla `inscriptions`
---
-
-INSERT INTO `inscriptions` (`id`, `name`, `surname`, `email`, `phone`, `id_event`) VALUES
-(10, 'Matias', 'Gardella', 'prueba1@gmail.com', 2346330076, 13),
-(12, 'Prueba', 'prueb', 'prieba@mail.com', 2345982121, 13),
-(13, 'matias', 'gardella', 'matias@hotmail.com', 2346459334, 11),
-(14, 'Matias ', 'Gardella', 'matiasgardella5@gmail.com', 2346330076, 15);
+(7, 'Titulo 1', '21hs.\r\nLunes Miercoles y Viernes.\r\n', '', '2025-09-24', 1, 1),
+(8, 'titulo-nuevo', 'descripcion-nueva', '', '2025-09-24', 1, 1),
+(9, 'tiutlo 3', '21hs', '', '2025-09-20', 1, 1),
+(10, 'titulo 4', 'lunes', '', '2025-09-22', 1, 1),
+(11, 'titulo SOL', 'descripcion 1', '', '2025-09-18', 1, 1),
+(12, 'Nuevos eventos 1', 'cartas para jubilados', 'http://localhost:9000/imagenes/133861804548973604-20251021-170323.jpg', '2026-12-26', 1, 1),
+(13, 'evento 2', 'texto', 'http://localhost:9000/imagenes/133861804548973604-20251028-191657.jpg', '2005-11-11', 1, 1),
+(14, 'evento proximo', 'texto', 'http://localhost:9000/imagenes/133861804548973604-20251029-191011.jpg', '2007-12-30', 1, 1),
+(15, 'evento 2', 'texto', 'http://localhost:9000/imagenes/klaus-20251103-093450.jpg', '2026-12-29', 1, 1),
+(16, 'dfdfg', 'etgaer', 'http://localhost:9000/imagenes/Fondo-SobreNosotros-20251103-094847.png', '2027-02-02', 1, 1),
+(17, 'evento de cartas', 'texto', 'http://localhost:9000/imagenes/klaus-20251103-145436.jpg', '2027-12-24', 1, 0),
+(18, 'gfbyh', 'gh', 'http://localhost:9000/imagenes/klaus-20251104-002134.jpg', '2026-12-23', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -160,22 +163,23 @@ CREATE TABLE `users` (
   `role` varchar(255) NOT NULL,
   `is_active` tinyint(1) NOT NULL DEFAULT '0',
   `is_blocked` tinyint(1) DEFAULT '0',
-  `failed_attempts` int(11) DEFAULT '0'
+  `failed_attempts` int(11) DEFAULT '0',
+  `failed_ip` varchar(64) DEFAULT NULL,
+  `soft_block_until` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `apellido`, `dni`, `email`, `password`, `token`, `token_auth_date`, `role`, `is_active`, `is_blocked`, `failed_attempts`) VALUES
-(41, 'Cane', 'Corso', '808080808', 'canecorso@biblioteca.com', '$2y$10$bhqy.FxL6VAtnL/h2LAOd.BWAizKGheZTZ7ZIAAels7J9BMHPHlKO', NULL, '2025-10-19 08:32:17', 'visitor', 0, 0, 0),
-(42, 'Dogo', 'Argentino', '404040404', 'dogoargentino@biblioteca.com', '$2y$10$tFSaV2xDOz8j0fehrQb4g.ZvWag7zcLEJfE8xlaZhNYDsVQJn3fme', NULL, '2025-10-19 08:33:18', 'visitor', 0, 0, 0),
-(43, 'Mastin', 'Napolitano', '90909090', 'mastin_n@biblioteca.com', '$2y$10$OFDYWpKAHIZvbE6Fd6szaOaYeuviieUAemJPNyVoM6uMwkyHx4dfC', '3429012c07b871c91e74f62c5c9082e5', '2025-10-19 06:41:46', 'admin', 1, 1, 6),
-(44, 'Kangal', 'Turco', '121212121', 'kangal@biblioteca.com', '$2y$10$fO2buUDi3SCFvlK61vDG/eMND84OvfHpFN6pOfIuOfAPG/QSqqavK', '32ed1371990e5f915c33ea44ef639995', '2025-10-19 18:08:00', 'super_adm', 1, 0, 0),
-(45, 'Malinois', 'Pastor', '474747474', 'pastor@biblioteca.com', '$2y$10$xE8Ww9gk3lOBSH2cDAG1AOxSA7dsLyJlnB31FzkHMG2QgDPTi4g2e', '2a53e9920b28f7131d8c39f4ceeab83e', '2025-10-19 06:41:54', 'super_adm', 1, 0, 4),
-(49, 'Klaus', 'Torres', '25252525', 'klaus@biblioteca.com', '$2y$10$tBmwf5B/JwHG9ko68L8pH.ZwJsnRf3HAVMQJ3WuD4mRmtik3NyOo6', '75e03856d6968b5582a350c6f2e3371b', '2025-10-19 18:41:33', 'super_adm', 1, 0, 0),
-(50, 'micaela', 'torres', '363773738', 'mica@biblioteca.com', '$2y$10$KqHV2usJV29UFqpZtikeoe4hjrMLKssSpD8r4kItoQ5gBMZ28Wdv2', NULL, '2025-10-19 20:20:45', 'visitor', 0, 0, 0),
-(51, 'Administrador', 'Administrador', '353535353', 'admin@biblioteca.com', '$2y$10$qFvXkhQKZRb.Se6ZPnfb9edN6VO2Tfkyerusv2.ggLuh9HYP7UK8a', 'fdc8fc61c4aeb801cc24ef115c42bccc', '2025-10-24 10:24:21', 'super_adm', 1, 0, 0);
+INSERT INTO `users` (`id`, `name`, `apellido`, `dni`, `email`, `password`, `token`, `token_auth_date`, `role`, `is_active`, `is_blocked`, `failed_attempts`, `failed_ip`, `soft_block_until`) VALUES
+(41, 'Cane', 'Corso', '808080808', 'canecorso@biblioteca.com', '$2y$10$bhqy.FxL6VAtnL/h2LAOd.BWAizKGheZTZ7ZIAAels7J9BMHPHlKO', 'eb359c48829128ea194df678c25a99b0', '2025-10-28 21:31:10', 'admin', 1, 0, 0, NULL, NULL),
+(42, 'Dogo', 'Argentino', '404040404', 'dogoargentino@biblioteca.com', '$2y$10$tFSaV2xDOz8j0fehrQb4g.ZvWag7zcLEJfE8xlaZhNYDsVQJn3fme', '006ad1c4b8332e4b07cae964fa1cac35', '2025-11-03 11:05:04', 'admin', 1, 1, 0, NULL, NULL),
+(44, 'Kangal', 'Turco', '121212121', 'kangal@biblioteca.com', '$2y$10$fO2buUDi3SCFvlK61vDG/eMND84OvfHpFN6pOfIuOfAPG/QSqqavK', '51e2ba0b3229604d677edce1381edd8b', '2025-11-03 17:40:45', 'admin', 1, 0, 0, NULL, NULL),
+(51, 'Administrador', 'Administrador', '353535353', 'admin@biblioteca.com', '$2y$10$qFvXkhQKZRb.Se6ZPnfb9edN6VO2Tfkyerusv2.ggLuh9HYP7UK8a', '604feba9de08f20517d8000817b64c91', '2025-11-04 02:47:30', 'super_adm', 1, 0, 0, NULL, NULL),
+(54, 'Maria', 'Maria', '84848484', 'maria@biblioteca.com', '$2y$10$2V.oDwU0470XtGGimvmwguSIgZNxun28qLtbD7j7PZA9DAN0Qplx.', NULL, '2025-11-03 19:29:52', 'visitor', 0, 0, 0, NULL, NULL),
+(55, 'Presa', 'Canario', '656565565', 'presacanario@biblioteca.com', '$2y$10$76WPaSYLhvLFSlzi99o9sOn9dOP49NtwcI7e2g/mQOX/KPqeqQHXS', '8b2e878910d91e8e65ec8e46174e47c7', '2025-11-03 19:24:37', 'admin', 1, 0, 1, '172.18.0.1', NULL),
+(56, 'Pastor', 'Belga', '12345678', 'pastor@biblioteca.com', '$2y$10$PzxFqQejr8rt30WXwXwlfelBmA5WxZDJB8wV2VYIT2f9mJpEXOrjq', NULL, '2025-11-04 03:13:57', 'visitor', 0, 0, 0, NULL, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -206,18 +210,12 @@ ALTER TABLE `events`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `inscriptions`
---
-ALTER TABLE `inscriptions`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id_event` (`id_event`);
-
---
 -- Indices de la tabla `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `uq_users_email` (`email`);
+  ADD UNIQUE KEY `uq_users_email` (`email`),
+  ADD KEY `idx_users_soft_block_until` (`soft_block_until`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -227,7 +225,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `articles`
 --
 ALTER TABLE `articles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT de la tabla `books`
@@ -245,29 +243,13 @@ ALTER TABLE `domains`
 -- AUTO_INCREMENT de la tabla `events`
 --
 ALTER TABLE `events`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
-
---
--- AUTO_INCREMENT de la tabla `inscriptions`
---
-ALTER TABLE `inscriptions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
-
---
--- Restricciones para tablas volcadas
---
-
---
--- Filtros para la tabla `inscriptions`
---
-ALTER TABLE `inscriptions`
-  ADD CONSTRAINT `fk_inscriptions_events` FOREIGN KEY (`id_event`) REFERENCES `events` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

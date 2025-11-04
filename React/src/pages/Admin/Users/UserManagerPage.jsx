@@ -9,7 +9,6 @@ import { Edit, Delete, CheckCircle, Cancel } from "@mui/icons-material";
 import { userService } from "../../../services/userService";
 import UserEditModal from "./UserEditModal";
 import "./UserManagerPage.css";
-
 const R = (r) =>
   (r || "").toLowerCase() === "super_adm" ? "Administrador" :
   (r || "").toLowerCase() === "admin" ? "Administrativo" : "Visitante";
@@ -47,7 +46,6 @@ export default function UserManagerPage() {
       show("error","No se pudo aprobar.");
     }
   };
-
   const reject  = async (id) => {
     try {
       await userService.reject(id);
