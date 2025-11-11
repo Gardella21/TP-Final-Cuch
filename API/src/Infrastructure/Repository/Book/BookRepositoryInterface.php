@@ -12,6 +12,7 @@ interface BookRepositoryInterface
 
     /** @return Book[] */
     public function search(
+        ?string $codigo = null,
         ?string $titulo = null,
         ?string $autor = null,
         ?string $materia = null,

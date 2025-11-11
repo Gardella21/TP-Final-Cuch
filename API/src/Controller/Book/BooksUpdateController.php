@@ -27,16 +27,18 @@ final readonly class BooksUpdateController
         try {
             $books = ControllerUtils::getPost("books", true);
 
-            if (empty($books)) {
+            if (empty($books) || !is_array($books)) {
                 http_response_code(400);
                 echo json_encode([
                     'status' => 'error',
-                    'message' => 'No se recibieron libros o el formato es incorrecto'
+                    'message' => 'No se recibieron libros o el formato es incorrecto.'
                 ], JSON_UNESCAPED_UNICODE);
                 return;
             }
 
             $result = $this->service->updateBooks($books);
+
+            http_response_code($result['status'] === 'ok' ? 200 : 400);
 
             echo json_encode($result, JSON_UNESCAPED_UNICODE);
 
