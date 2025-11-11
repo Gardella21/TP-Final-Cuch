@@ -61,6 +61,40 @@ final readonly class EventRepository extends PDOManager implements EventReposito
     return $eventsResults;
 }
 
+    public function searchWithCounts(bool $onlyActive = false): array
+{
+    $query = "
+        SELECT
+            A.id,
+            A.title,
+            A.description,
+            A.image,
+            A.end_date,
+            A.is_Active,
+            A.deleted,
+            COALESCE(C.cnt, 0) AS inscriptions_count
+        FROM events A
+        LEFT JOIN (
+            SELECT id_event, COUNT(*) AS cnt
+            FROM inscriptions
+            GROUP BY id_event
+        ) C ON C.id_event = A.id
+        WHERE A.deleted = 0
+        " . ($onlyActive ? " AND A.is_Active = 1" : "") . "
+        ORDER BY A.id DESC
+    ";
+
+    $rows = $this->execute($query);
+    if (!is_array($rows) || !$rows) return [];
+
+    foreach ($rows as &$r) {
+        $r['inscriptions_count'] = (int) $r['inscriptions_count'];
+    }
+    return $rows;
+}
+
+
+
 
      public function insert(Event $event): void
     {

@@ -197,7 +197,9 @@ export function EventManagerPage() {
                     <TableCell><b>ID</b></TableCell>
                     <TableCell><b>Título</b></TableCell>
                     <TableCell><b>Fecha fin</b></TableCell>
+                    <TableCell><b>Inscriptos</b></TableCell>
                     <TableCell align="right"><b>Acciones</b></TableCell>
+
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -210,6 +212,7 @@ export function EventManagerPage() {
                         <TableCell>
                           {ev.end_date ? String(ev.end_date).slice(0, 10) : "-"}
                         </TableCell>
+                        <TableCell>{ev.inscriptions_count ?? 0}</TableCell>
                         <TableCell align="right">
                           <IconButton className="edit-button" onClick={() => handleEditar(ev.id)}>
                             <Edit />

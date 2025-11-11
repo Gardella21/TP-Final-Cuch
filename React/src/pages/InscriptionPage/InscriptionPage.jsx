@@ -3,8 +3,9 @@ import "./InscriptionPage.css";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { inscriptionService } from "../../services/inscriptionService";
+import { eventService } from "../../services/eventService";
 import { useParams } from "react-router-dom";
 
 const UserSchema = z.object({
@@ -19,8 +20,8 @@ const UserSchema = z.object({
 });
 
 function InscriptionPage() {
-  const { id_event } = useParams(); // ← viene como string
-  const eventId = parseInt(id_event ?? "", 10); // ← convertir a número
+  const { id_event } = useParams();
+  const eventId = parseInt(id_event ?? "", 10);
 
   const form = useForm({
     resolver: zodResolver(UserSchema),
@@ -28,39 +29,58 @@ function InscriptionPage() {
   });
 
   const [error, setError] = useState(undefined);
+  const [success, setSuccess] = useState(false); // ✅ nuevo estado
+  const [eventTitle, setEventTitle] = useState("");
+  const [loadingEvent, setLoadingEvent] = useState(true);
 
+  // ✅ Obtener nombre del evento
+  useEffect(() => {
+    async function fetchEvent() {
+      try {
+        const response = await eventService.getEventById(eventId);
+        setEventTitle(response.data.title);
+      } catch (e) {
+        console.error("Error al obtener evento:", e);
+        setEventTitle("Evento desconocido");
+      } finally {
+        setLoadingEvent(false);
+      }
+    }
+
+    if (!Number.isNaN(eventId)) fetchEvent();
+  }, [eventId]);
+
+  // ✅ Enviar formulario
   const onSubmit = async (formData) => {
-  try {
-    setError(undefined);
-
-    if (Number.isNaN(eventId)) {
-      throw new Error("Evento inválido.");
-    }
-
-    const payload = { ...formData, id_event: eventId };
-
-    const resp = await inscriptionService.createInscription(payload);
-
-    if (resp?.status === 201 || resp?.status === 200 || resp?.data?.status === 200) {
-      alert("Inscripción enviada ");
-
-      form.reset();  
-
+    try {
       setError(undefined);
-    } else {
-      throw new Error("Ocurrió un error inesperado");
-    }
-  } catch (e) {
-    console.error("Inscripción error:", e?.response?.status, e?.response?.data || e);
-    setError(e?.message ?? "Error al guardar la inscripción.");
-  }
-};
+      setSuccess(false);
 
+      if (Number.isNaN(eventId)) throw new Error("Evento inválido.");
+
+      const payload = { ...formData, id_event: eventId };
+      const resp = await inscriptionService.createInscription(payload);
+
+      if (resp?.status === 201 || resp?.status === 200 || resp?.data?.status === 200) {
+        form.reset();
+        setSuccess(true); // 👈 mostrar mensaje
+      } else {
+        throw new Error("Ocurrió un error inesperado");
+      }
+    } catch (e) {
+      console.error("Inscripción error:", e?.response?.status, e?.response?.data || e);
+      setError(e?.message ?? "Error al guardar la inscripción.");
+    }
+  };
 
   return (
     <main className="inscription-page">
       <Container className="inscription-section">
-        <Title>Formulario de Inscripción</Title>
+        <Title>
+          {loadingEvent
+            ? "Cargando evento..."
+            : `Formulario de inscripción: ${eventTitle}`}
+        </Title>
 
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <TextInput
@@ -88,13 +108,21 @@ function InscriptionPage() {
             {...form.register("phone")}
           />
 
-          {/* Mostrar error si lo hay */}
-          {error && <div style={{ color: "crimson", margin: "8px 0" }}>{error}</div>}
+          {/* ✅ Mensaje de éxito o error */}
+          {success && (
+            <div style={{ margin: "10px 0", fontWeight: "bold" }}>
+              ¡Tu inscripción fue enviada correctamente!
+            </div>
+          )}
+
+          {error && (
+            <div style={{ color: "crimson", margin: "8px 0" }}>{error}</div>
+          )}
 
           <Button
             className="inscriptinoButton"
             variant="filled"
-            type="submit" // 👈 submit
+            type="submit"
             loading={form.formState.isSubmitting}
           >
             Inscribirme
