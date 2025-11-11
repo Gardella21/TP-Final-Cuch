@@ -17,7 +17,7 @@ final readonly class BooksUpdateController
         header('Content-Type: application/json; charset=utf-8');
         header('Access-Control-Allow-Origin: *');
         header('Access-Control-Allow-Methods: POST, OPTIONS');
-        header('Access-Control-Allow-Headers: Content-Type, Authorization');
+        header('Access-Control-Allow-Headers: Content-Type, Authorization, X-API-Key');
 
         if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
             http_response_code(204);
@@ -25,6 +25,20 @@ final readonly class BooksUpdateController
         }
 
         try {
+            // 🛡️ Validación de clave API
+            $providedKey = $_SERVER['HTTP_X_API_KEY'] ?? null;
+            $expectedKey = $_ENV['API_SECRET_KEY'];
+
+            if ($providedKey !== $expectedKey) {
+                http_response_code(401);
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'Acceso no autorizado: clave API inválida'
+                ], JSON_UNESCAPED_UNICODE);
+                return;
+            }
+
+            // 📘 Obtener datos del cuerpo del request
             $books = ControllerUtils::getPost("books", true);
 
             if (empty($books)) {
@@ -36,6 +50,7 @@ final readonly class BooksUpdateController
                 return;
             }
 
+            // 🔄 Ejecutar actualización
             $result = $this->service->updateBooks($books);
 
             echo json_encode($result, JSON_UNESCAPED_UNICODE);

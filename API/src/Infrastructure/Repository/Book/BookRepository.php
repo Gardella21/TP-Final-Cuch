@@ -24,8 +24,8 @@ final readonly class BookRepository extends PDOManager implements BookRepository
         return $this->primitiveToBook($result[0]);
     }
 
-
     public function search(
+        ?string $codigo = null,
         ?string $titulo = null,
         ?string $autor = null,
         ?string $materia = null,
@@ -36,6 +36,11 @@ final readonly class BookRepository extends PDOManager implements BookRepository
     ): array {
         $query = "SELECT * FROM books WHERE 1=1";
         $params = [];
+
+        if ($codigo !== null && $codigo !== '') {
+            $query .= " AND codigo LIKE :codigo";
+            $params["codigo"] = "%$codigo%";
+        }
 
         if ($titulo !== null && $titulo !== '') {
             $query .= " AND titulo LIKE :titulo";
@@ -81,6 +86,11 @@ final readonly class BookRepository extends PDOManager implements BookRepository
 
         return $bookResults;
     }
+    public function searchAsArray(): array
+    {
+        $query = "SELECT * FROM books";
+        return $this->execute($query, []);
+    }
 
     public function beginTransaction(): void
     {
@@ -89,14 +99,13 @@ final readonly class BookRepository extends PDOManager implements BookRepository
 
     public function commit(): void
     {
-        $this->getConnection()->commit();   
-        
+        $this->getConnection()->commit();
     }
 
     public function rollback(): void
     {
         $this->getConnection()->rollBack();
-    }       
+    }
 
     public function insertBooks(array $books): int
     {
@@ -124,6 +133,35 @@ final readonly class BookRepository extends PDOManager implements BookRepository
 
         return $insertedCount;
     }
+    public function updateBook(array $oldBook, array $newBook): bool
+    {
+        $query = "UPDATE books
+                  SET materia = :materia,
+                      titulo = :titulo,
+                      autor = :autor,
+                      editorial = :editorial,
+                      edicion = :edicion,
+                      anio = :anio,
+                      disponibilidad = :disponibilidad,
+                      reservada = :reservada
+                  WHERE codigo = :codigo";
+
+        $params = [
+            "codigo"        => $oldBook['codigo'],
+            "materia"       => $newBook['materia'] ?? $oldBook['materia'],
+            "titulo"        => $newBook['titulo'] ?? $oldBook['titulo'],
+            "autor"         => $newBook['autor'] ?? $oldBook['autor'],
+            "editorial"     => $newBook['editorial'] ?? $oldBook['editorial'],
+            "edicion"       => $newBook['edicion'] ?? $oldBook['edicion'],
+            "anio"          => $newBook['anio'] ?? $oldBook['anio'],
+            "disponibilidad"=> isset($newBook['disponibilidad']) ? (int)$newBook['disponibilidad'] : (int)$oldBook['disponibilidad'],
+            "reservada"     => isset($newBook['reservada']) ? (int)$newBook['reservada'] : (int)$oldBook['reservada'],
+        ];
+
+        $this->execute($query, $params);
+        return true;
+    }
+
     public function clearAllBooks(): void
     {
         $query = "DELETE FROM books";
