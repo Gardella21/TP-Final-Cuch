@@ -1,8 +1,16 @@
 <?php
 
 $apiUrl = 'http://localhost:9091/books/update';
+$apiKey = 'oUZz675qq58'; //debe coincidir con la API_SECRET_KEY del .env
 
 $filePath = __DIR__ . '/books.json';
+
+// Verificar que el archivo exista
+if (!file_exists($filePath)) {
+    die("Archivo no encontrado: $filePath\n");
+}
+
+// Leer y decodificar el archivo JSON
 $jsonData = file_get_contents($filePath);
 $data = json_decode($jsonData, true);
 
@@ -10,30 +18,20 @@ if (!isset($data['books']) || !is_array($data['books'])) {
     die("El archivo JSON no contiene una clave 'books' válida.\n");
 }
 
-if (!file_exists($filePath)) {
-    die("Archivo no encontrado: $filePath\n");
-}
-
-// Leer y decodificar el archivo JSON
-$books = json_decode(file_get_contents($filePath), true);
-
-if ($books === null || !is_array($books)) {
-    die("Error al decodificar JSON\n");
-}
-
 $payload = json_encode(['books' => $data['books']], JSON_UNESCAPED_UNICODE);
 
+// Configurar cURL
 $ch = curl_init($apiUrl);
 curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_POST => true,
     CURLOPT_HTTPHEADER => [
-        'Content-Type: application/json; charset=utf-8'
+        'Content-Type: application/json; charset=utf-8',
+        "X-API-Key: $apiKey"
     ],
     CURLOPT_POSTFIELDS => $payload,
     CURLOPT_TIMEOUT => 30
 ]);
-
 
 // Ejecutar la petición
 $response = curl_exec($ch);
