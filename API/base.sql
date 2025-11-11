@@ -204,6 +204,11 @@ INSERT INTO `users` (`id`, `name`, `apellido`, `dni`, `email`, `password`, `toke
 ALTER TABLE `events`
   ADD PRIMARY KEY (`id`);
 
+-- Indices de la tabla `books`
+--
+ALTER TABLE `books`
+  ADD PRIMARY KEY (`id`);
+
 --
 -- Indices de la tabla `inscriptions`
 --
@@ -229,6 +234,10 @@ ALTER TABLE `users`
 ALTER TABLE `events`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
+-- AUTO_INCREMENT de la tabla `books`
+--
+ALTER TABLE `books`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT de la tabla `inscriptions`
 --
