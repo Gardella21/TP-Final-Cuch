@@ -26,6 +26,30 @@ final readonly class BookRoutes {
         "url" => "/books",
         "controller" => "Book/BooksGetController.php",
         "method" => "POST"
+      ],
+      [
+        "name" => "book_reservation_create",
+        "url" => "/book-reservations",
+        "controller" => "BookReservation/BookReservationPostController.php",
+        "method" => "POST"
+      ],
+      [
+        "name" => "book_reservations_get",
+        "url" => "/book-reservations",
+        "controller" => "BookReservation/BookReservationsGetController.php",
+        "method" => "GET"
+      ],
+      [
+        "name" => "book_reservation_update",
+        "url" => "/book-reservations/{id}",
+        "controller" => "BookReservation/BookReservationPutController.php",
+        "method" => "PUT",
+        "parameters" => [
+          [
+            "name" => "id",
+            "type" => "int"
+          ]
+        ]
       ]
     ];
   }
