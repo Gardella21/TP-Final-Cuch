@@ -24,10 +24,9 @@ import EventPage from "./pages/EventPage/EventPage";
 import { AdminHomePage } from "./pages/Admin/Home/AdminHomePage";
 import { EventManagerPage } from "./pages/Admin/Events/EventManagerPage";
 import { InscriptionManagerPage } from "./pages/Admin/Events/InscriptionManagerPage";
-
-// CORRECCIÓN: default import para UserManagerPage
 import UserManagerPage from "./pages/Admin/Users/UserManagerPage";
 import { EventCreationPage } from "./pages/Admin/Events/EventCreationPage";
+import { BookReservationManagerPage } from "./pages/Admin/BookReservations/BookReservationManagerPage"; // NUEVO
 
 const MainLayout = () => (
   <div className="layout-container">
@@ -46,7 +45,6 @@ function App() {
       <BrowserRouter>
         <Routes>
 
-          {/* Rutas con la barra de navegación estándar */}
           <Route element={<MainLayout />}>
             <Route path='/' element={<HomePage/>} />
             <Route path='/noticias' element={<ArticlePage />} />
@@ -59,13 +57,11 @@ function App() {
             <Route path='/preguntas' element={<Questions />} />
           </Route>
 
-          {/* Rutas inaccesibles con token activo */}
           <Route element={<PublicRoute />}>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
           </Route>
 
-          {/* Rutas inaccesibles sin token activo */}
           <Route element={<PrivateRoute />}>
             <Route path="/admin" element={<AdminHomePage />} />
             <Route path="/admin/articles" element={<ArticleManagerPage />} />
@@ -73,11 +69,10 @@ function App() {
             <Route path="/admin/events" element={<EventManagerPage />} />
             <Route path="/admin/event-new" element={<EventCreationPage />} />
             <Route path="/admin/inscriptions" element={<InscriptionManagerPage />}/>
-            {/* Usuarios: accesible por adm y super_adm */}
             <Route path="/admin/users" element={<UserManagerPage />} />
+            <Route path="/admin/book-reservations" element={<BookReservationManagerPage />} /> {/* NUEVO */}
           </Route>
 
-          {/* Rutas solo para super_adm */}
           <Route element={<PrivateRoute role="super_adm" />}>
             <Route path="/admin/users" element={<UserManagerPage />} />
           </Route>

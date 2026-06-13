@@ -1,0 +1,93 @@
+.book-reservation-manager-page {
+  background: linear-gradient(135deg, #f5e6d3, #fdf6f0);
+  min-height: 100vh;
+  padding: 2rem 0;
+}
+
+/* Título */
+.title-book-reservation {
+  margin-bottom: 1.5rem;
+  color: #5d3a00;
+  font-size: 2rem !important;
+  font-weight: bold;
+  font-style: italic;
+  text-align: left;
+  text-shadow: 0 0 5px #fff5e6, 0 0 10px #ffd699, 0 0 15px #ffb84d;
+}
+
+/* Contenedor */
+.crear-container {
+  margin-top: 2rem;
+}
+
+/* Botón volver */
+.volver-btn {
+  background-color: #606c38 !important;
+  color: #fefae0 !important;
+  font-weight: bold;
+  border-radius: 12px !important;
+  padding: 10px 16px !important;
+  transition: background-color 0.3s ease;
+}
+
+.volver-btn:hover {
+  background-color: #283618 !important;
+}
+
+/* Header de tabla */
+.book-reservation-manager-page .table-header {
+  background-color: #5d3a00;
+}
+.book-reservation-manager-page .table-header th {
+  color: #fff !important;
+  font-weight: 700;
+}
+
+/* ====== Mobile ====== */
+@media (max-width: 700px) {
+  .book-reservation-manager-page .reservation-table thead {
+    display: none !important;
+  }
+
+  .book-reservation-manager-page .reservation-table,
+  .book-reservation-manager-page .reservation-table tbody,
+  .book-reservation-manager-page .reservation-table tr,
+  .book-reservation-manager-page .reservation-table td {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .book-reservation-manager-page .reservation-table tr {
+    margin: 12px 0;
+    border: 1px solid #e5d2b8;
+    border-radius: 12px;
+    background: #fffaf5;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+  }
+
+  .book-reservation-manager-page .reservation-table td {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px;
+    padding: 10px 12px !important;
+    border-bottom: 1px solid #f0e0d6;
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  .book-reservation-manager-page .reservation-table td:last-child {
+    border-bottom: none;
+  }
+
+  .book-reservation-manager-page .reservation-table td::before {
+    position: static !important;
+    content: attr(data-label);
+    font-weight: 700;
+    color: #5d3a00;
+    width: auto !important;
+    margin: 0 0 2px 0;
+    white-space: normal;
+  }
+}
