@@ -1,3 +1,9 @@
+// CAMBIOS respecto al CatalogPage original:
+// 1. Se importa BookReservationModal
+// 2. Se agrega estado selectedBook y modalOpen
+// 3. Se agrega columna "Reservar" en la tabla con botón por libro
+// 4. Se renderiza el modal al final del componente
+
 import "./CatalogPage.css";
 import { useEffect, useState } from "react";
 import {
@@ -16,10 +22,11 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Button,        // NUEVO
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { bookService } from "../../services/bookService";
-
+import { BookReservationModal } from "../../components/BookReservationModal/BookReservationModal"; // NUEVO
 
 const CACHE_KEY = "librosGuardados";
 
@@ -39,7 +46,6 @@ const writeCache = (books) => {
   } catch {}
 };
 
-
 export function CatalogPage() {
   const [books, setBooks] = useState([]);
   const [q, setQ] = useState("");
@@ -48,33 +54,30 @@ export function CatalogPage() {
   const [onlyAvailable, setOnlyAvailable] = useState(false);
   const [onlyReserved, setOnlyReserved] = useState(false);
 
+  // NUEVO: estado para el modal de reserva
+  const [selectedBook, setSelectedBook] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+
   useEffect(() => {
     const fetchBooks = async () => {
-      
       const cached = readCache();
       if (cached && cached.length > 0) {
         setBooks(cached);
-        console.log("Libros cargados desde localStorage");
         return;
       }
-
-     
       try {
-        console.log(" Pidiendo al backend...");
         const { data } = await bookService.search({});
         if (Array.isArray(data)) {
           setBooks(data);
-          writeCache(data); 
+          writeCache(data);
         }
       } catch (error) {
         console.error("Error cargando libros:", error);
       }
     };
-
     fetchBooks();
   }, []);
 
-  
   const filteredBooks = books.filter((book) => {
     const matchesTitle = book.titulo?.toLowerCase().includes(q.toLowerCase());
     const matchesAuthor = author
@@ -95,6 +98,12 @@ export function CatalogPage() {
     );
   });
 
+  // NUEVO: abre el modal con el libro seleccionado
+  const handleOpenReservation = (book) => {
+    setSelectedBook(book);
+    setModalOpen(true);
+  };
+
   return (
     <div className="catalog-background">
       <Container maxWidth="lg" className="catalog">
@@ -102,7 +111,6 @@ export function CatalogPage() {
           Catálogo
         </Typography>
 
-        {/* Buscador por título */}
         <TextField
           className="catalog-search"
           fullWidth
@@ -119,7 +127,6 @@ export function CatalogPage() {
           }}
         />
 
-        {/* Filtros */}
         <Box className="filters-card">
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={12} md={4}>
@@ -169,7 +176,6 @@ export function CatalogPage() {
           </Grid>
         </Box>
 
-        {/* Resultados en tabla */}
         <TableContainer component={Paper} className="catalog-table">
           <Table>
             <TableHead>
@@ -182,12 +188,13 @@ export function CatalogPage() {
                 <TableCell>Año</TableCell>
                 <TableCell>Disponibilidad</TableCell>
                 <TableCell>Colección Reservada</TableCell>
+                <TableCell>Reservar</TableCell>{/* NUEVO */}
               </TableRow>
             </TableHead>
             <TableBody>
               {filteredBooks.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={8} align="center">
+                  <TableCell colSpan={9} align="center">
                     No se encontraron resultados
                   </TableCell>
                 </TableRow>
@@ -200,8 +207,6 @@ export function CatalogPage() {
                     <TableCell>{book.materia}</TableCell>
                     <TableCell>{book.editorial}</TableCell>
                     <TableCell>{book.anio}</TableCell>
-
-                    {/* Disponible con color */}
                     <TableCell
                       className={
                         book.disponibilidad
@@ -211,8 +216,6 @@ export function CatalogPage() {
                     >
                       {book.disponibilidad ? "Disponible" : "No disponible"}
                     </TableCell>
-
-                    {/* Reservada con color */}
                     <TableCell
                       className={
                         book.reservada
@@ -222,6 +225,18 @@ export function CatalogPage() {
                     >
                       {book.reservada ? "Reservada" : "No reservada"}
                     </TableCell>
+
+                    {/* NUEVO: botón de reserva — solo si el libro está disponible */}
+                    <TableCell>
+                      <Button
+                        variant="contained"
+                        size="small"
+                        disabled={!book.disponibilidad}
+                        onClick={() => handleOpenReservation(book)}
+                      >
+                        {book.disponibilidad ? "Reservar" : "No disponible"}
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))
               )}
@@ -229,6 +244,13 @@ export function CatalogPage() {
           </Table>
         </TableContainer>
       </Container>
+
+      {/* NUEVO: modal de reserva */}
+      <BookReservationModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        book={selectedBook}
+      />
     </div>
   );
 }

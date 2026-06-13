@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import ArticleIcon from "@mui/icons-material/Article";
 import EventIcon from "@mui/icons-material/Event";
 import PeopleIcon from "@mui/icons-material/People";
+import MenuBookIcon from "@mui/icons-material/MenuBook"; // NUEVO
 import "./AdminHomePage.css";
 
 export function AdminHomePage() {
@@ -37,6 +38,15 @@ export function AdminHomePage() {
               <CardContent className="admin-card-content">
                 <PeopleIcon fontSize="large" sx={{ mb: 1, color: "#5d3a00" }} />
                 <Typography variant="h5">Gestion de suarios</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          {/* NUEVO */}
+          <Grid item>
+            <Card className="admin-card" onClick={() => navigate("/admin/book-reservations")}>
+              <CardContent className="admin-card-content">
+                <MenuBookIcon fontSize="large" sx={{ mb: 1, color: "#5d3a00" }} />
+                <Typography variant="h5">Reservas de <br/> Libros</Typography>
               </CardContent>
             </Card>
           </Grid>
