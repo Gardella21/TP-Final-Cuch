@@ -28,6 +28,9 @@ function startRouter(): Router
     include_once "Routes/BookRoutes.php";
     $routes = array_merge($routes, BookRoutes::getRoutes());
 
+    include_once "Routes/MemberRoutes.php";
+    $routes = array_merge($routes, MemberRoutes::getRoutes());
+
     $routesClass = [];
     foreach ($routes as $route) {
         $routesClass[] = Route::fromArray($route);
