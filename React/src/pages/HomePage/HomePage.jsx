@@ -6,6 +6,7 @@ import { FeaturedArticle } from "../../components/FeaturedArticle/FeaturedArticl
 import { RecommendedArticle } from "../../components/RecommendedArticle/RecommendedArticle";
 import { useNavigate } from "react-router";
 import Author from "../../components/Author/Author";
+import InstagramFeed from "../../components/InstagramFeed/InstagramFeed";
 
 function formatDate(dateString) {
   if (!dateString) return "";
@@ -120,6 +121,7 @@ export function HomePage() {
           </div>
         </div>
       </section>
+      <InstagramFeed />
     </div>
   );
 }
