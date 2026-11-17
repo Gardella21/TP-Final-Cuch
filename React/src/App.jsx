@@ -26,7 +26,9 @@ import { EventManagerPage } from "./pages/Admin/Events/EventManagerPage";
 import { InscriptionManagerPage } from "./pages/Admin/Events/InscriptionManagerPage";
 import UserManagerPage from "./pages/Admin/Users/UserManagerPage";
 import { EventCreationPage } from "./pages/Admin/Events/EventCreationPage";
-import { BookReservationManagerPage } from "./pages/Admin/BookReservations/BookReservationManagerPage"; // NUEVO
+import { BookReservationManagerPage } from "./pages/Admin/BookReservations/BookReservationManagerPage";
+import MembershipPage from "./pages/MembershipPage/MembershipPage";                      // SOCIOS
+import { MemberManagerPage } from "./pages/Admin/Members/MemberManagerPage";             // SOCIOS
 
 const MainLayout = () => (
   <div className="layout-container">
@@ -55,6 +57,7 @@ function App() {
             <Route path='/catalogo' element={<CatalogPage />} />
             <Route path='/donaciones' element={<DonationsPage />} />
             <Route path='/preguntas' element={<Questions />} />
+            <Route path='/asociarse' element={<MembershipPage />} />   {/* SOCIOS */}
           </Route>
 
           <Route element={<PublicRoute />}>
@@ -70,7 +73,8 @@ function App() {
             <Route path="/admin/event-new" element={<EventCreationPage />} />
             <Route path="/admin/inscriptions" element={<InscriptionManagerPage />}/>
             <Route path="/admin/users" element={<UserManagerPage />} />
-            <Route path="/admin/book-reservations" element={<BookReservationManagerPage />} /> {/* NUEVO */}
+            <Route path="/admin/book-reservations" element={<BookReservationManagerPage />} />
+            <Route path="/admin/members" element={<MemberManagerPage />} />   {/* SOCIOS */}
           </Route>
 
           <Route element={<PrivateRoute role="super_adm" />}>
