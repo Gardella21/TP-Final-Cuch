@@ -20,9 +20,17 @@ const Questions = () => {
       pregunta: "📚 ¿Cómo me hago socio?",
       respuesta: (
         <p>
-          Para ser socio de la Biblioteca Popular de Chivilcoy, solo necesitás
-          presentarte con tu DNI y completar la planilla de inscripción en la
-          biblioteca. La inscripción es gratuita y te permite acceder a libros,
+          Podés iniciar tu asociación desde la web completando el formulario de
+          la sección{" "}
+          <span
+            className="link-interno"
+            onClick={() => handleNavigate("/asociarse", "asociarse")}
+          >
+            ‘Hacete socio’
+          </span>
+          . Luego acercate a la biblioteca con tu DNI para finalizar el trámite.
+          También podés hacerlo de forma presencial, completando la planilla de
+          inscripción en la biblioteca. Ser socio te permite acceder a libros,
           salas de lectura y talleres culturales.
         </p>
       ),

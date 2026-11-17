@@ -7,8 +7,8 @@ const navItems = [
   { name: 'Cursos y Eventos', route: '/cursos-y-eventos' },
   { name: 'Sobre Nosotros', route: '/nosotros' },
   { name: 'Catálogo', route: '/catalogo' },
-  { name: 'Preguntas', route: '/preguntas' }, 
-
+  { name: 'Preguntas', route: '/preguntas' },
+  { name: 'Hacete socio', route: '/asociarse' },
 ];
 
 const Navbar = () => {

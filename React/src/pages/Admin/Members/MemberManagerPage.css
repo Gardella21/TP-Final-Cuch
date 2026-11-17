@@ -1,0 +1,121 @@
+.member-manager-page {
+  background: linear-gradient(135deg, #f5e6d3, #fdf6f0);
+  min-height: 100vh;
+  padding: 2rem 0;
+}
+
+/* Titulo */
+.title-member {
+  margin-bottom: 1.5rem;
+  color: #5d3a00;
+  font-size: 2rem !important;
+  font-weight: bold;
+  font-style: italic;
+  text-align: left;
+  text-shadow: 0 0 5px #fff5e6, 0 0 10px #ffd699, 0 0 15px #ffb84d;
+}
+
+/* Contenedor */
+.crear-container {
+  margin-top: 2rem;
+}
+
+/* Boton volver */
+.volver-btn {
+  background-color: #606c38 !important;
+  color: #fefae0 !important;
+  font-weight: bold;
+  border-radius: 12px !important;
+  padding: 10px 16px !important;
+  transition: background-color 0.3s ease;
+}
+
+.volver-btn:hover {
+  background-color: #283618 !important;
+}
+
+/* Filtros por estado */
+.member-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.filter-btn {
+  background-color: #fffaf5 !important;
+  color: #5d3a00 !important;
+  font-weight: 700 !important;
+  border-radius: 12px !important;
+  padding: 10px 20px !important;
+  box-shadow: 0 3px 8px rgba(139, 69, 19, 0.2);
+  transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 14px rgba(139, 69, 19, 0.35);
+}
+
+.filter-btn-active {
+  background-color: #5d3a00 !important;
+  color: #fff !important;
+}
+
+/* Header de tabla */
+.member-manager-page .table-header {
+  background-color: #5d3a00;
+}
+.member-manager-page .table-header th {
+  color: #fff !important;
+  font-weight: 700;
+}
+
+/* ====== Mobile ====== */
+@media (max-width: 700px) {
+  .member-manager-page .member-table thead {
+    display: none !important;
+  }
+
+  .member-manager-page .member-table,
+  .member-manager-page .member-table tbody,
+  .member-manager-page .member-table tr,
+  .member-manager-page .member-table td {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .member-manager-page .member-table tr {
+    margin: 12px 0;
+    border: 1px solid #e5d2b8;
+    border-radius: 12px;
+    background: #fffaf5;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+  }
+
+  .member-manager-page .member-table td {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px;
+    padding: 10px 12px !important;
+    border-bottom: 1px solid #f0e0d6;
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  .member-manager-page .member-table td:last-child {
+    border-bottom: none;
+  }
+
+  .member-manager-page .member-table td::before {
+    position: static !important;
+    content: attr(data-label);
+    font-weight: 700;
+    color: #5d3a00;
+    width: auto !important;
+    margin: 0 0 2px 0;
+    white-space: normal;
+  }
+}
