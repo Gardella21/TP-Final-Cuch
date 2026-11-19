@@ -6,3 +6,8 @@
 /vendor/
 composer.phar
 .vscode
+
+# Variables de entorno (credenciales): no subir
+.env
+.env.*
+!.env.example
